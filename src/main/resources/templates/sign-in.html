@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In - Youth QR Connect</title>
+    <link th:href="@{./css/styles.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="auth-form">
+        <h2 class="auth-title">Sign In</h2>
+        <form th:action="@{/login}"  method="post" id="login-form" class="space-y-4">
+          <div class="form-group">
+            <label for="username" class="form-label"> Telephone </label>
+            <input
+              id="username"
+              name="username"
+              type="tel"
+              required
+              class="form-input"
+              placeholder="Enter your Phone Number"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label"> Password </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              class="form-input"
+              placeholder="Enter your password"
+            />
+          </div>
+          <div th:if="${param.error}">
+            <p th:if="${param.error[0] == 'disabled'}" class="error-message">
+              Your account is not enabled. Please contact admin.
+            </p>
+            <p th:if="${param.error[0] == 'invalid'}" class="error-message">
+              Invalid username or password.
+            </p>
+          </div>
+          <div th:if="${param.logout}" class="success-message">
+            <p>You have successfully signed out. Come back soon!</p>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end">
+            <a href="#" class="link"> Forgot password? </a>
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+          </div>
+
+          <div>
+            <button type="button" id="demo-account" class="btn btn-secondary">
+              Use Demo Account
+            </button>
+          </div>
+        </form>
+
+        <div style="margin-top: 1rem; text-align: center; font-size: 0.875rem">
+          <p>
+            Don't have an account?
+            <a th:href="@{/register}" class="link"> Sign Up </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+  </body>
+</html>

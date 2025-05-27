@@ -1,0 +1,244 @@
+/* Base styles and reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Profile Container */
+.profile-container {
+  max-width: 800px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  padding-bottom: 30px;
+}
+
+/* Profile Header */
+.profile-header {
+  background: linear-gradient(90deg, hsla(186, 33%, 94%, 1) 0%, hsla(216, 41%, 79%, 1) 100%);
+  padding: 40px 20px 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: #2d3748;
+  position: relative;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-name h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.profile-tag {
+  display: inline-block;
+  background-color: rgba(255,255,255,0.6);
+  padding: 3px 12px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  margin-top: 5px;
+}
+
+/* Edit Profile Button */
+.edit-profile {
+  margin-top: 15px;
+}
+
+.edit-button {
+  display: inline-block;
+  background-color: #8B5CF6;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.edit-button:hover {
+  background-color: #7C3AED;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Profile Stats */
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: white;
+  margin-top: -20px;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -5px 10px rgba(0,0,0,0.02);
+  position: relative;
+}
+
+.stat {
+  text-align: center;
+  padding: 0 25px;
+  border-right: 1px solid #edf2f7;
+  flex: 1;
+}
+
+.stat:last-child {
+  border-right: none;
+}
+
+.stat-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: #4a5568;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #718096;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Progress Bar */
+.profile-progress {
+  padding: 0 30px 30px;
+  margin-top: 10px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #edf2f7;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, hsla(46, 73%, 75%, 1) 0%, hsla(176, 73%, 88%, 1) 100%);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+/* Profile Details */
+.profile-details {
+  padding: 20px 30px;
+  margin-top: 10px;
+}
+
+.profile-details h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #2d3748;
+  font-weight: 600;
+  border-bottom: 2px solid #edf2f7;
+  padding-bottom: 8px;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.detail-label {
+  min-width: 120px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.detail-value {
+  color: #2d3748;
+  flex: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .profile-container {
+    margin: 10px;
+    border-radius: 15px;
+  }
+  
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .profile-name h1 {
+    font-size: 20px;
+  }
+  
+  .stat {
+    padding: 0 15px;
+  }
+  
+  .detail-row {
+    flex-direction: column;
+  }
+  
+  .detail-label {
+    margin-bottom: 3px;
+  }
+}
+
+@media (min-width: 768px) {
+  .profile-header {
+    flex-direction: row;
+    text-align: left;
+    padding: 40px;
+  }
+  
+  .profile-avatar {
+    margin-right: 30px;
+    margin-bottom: 0;
+  }
+  
+  .profile-name {
+    flex: 1;
+  }
+  
+  .edit-profile {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    margin-top: 0;
+  }
+}

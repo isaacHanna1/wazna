@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WAZNA</title>
+  <link th:href="@{./css/styles.css}" rel="stylesheet" />
+
+</head>
+<body>
+<div class="auth-container">
+  <div class="auth-form">
+    <h2 class="auth-title">Create Your Account</h2>
+    <form
+            id="register-form"
+            class="space-y-4"
+            enctype="multipart/form-data"
+            th:action="@{/register}"
+            th:object="${profile}"
+            method="POST"
+    >
+      <div class="form-group">
+        <label for="firstName" class="form-label"> First Name </label>
+        <input
+                id		="firstName"
+                name="firstName"
+                th:field="*{firstName}"
+                type="text"
+                 
+                class="form-input"
+                placeholder="Enter Your First Name"
+        />
+        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message"></span>
+        <span id="fName-err" class="error-message"></span>
+      </div>
+      <div class="form-group">
+        <label for="lastName" class="form-label"> Last Name </label>
+        <input
+                id="lastName"
+                name="lastName"
+                th:field="*{lastName}"
+                type="text"
+                 
+                class="form-input"
+                placeholder="Enter Your last Name"
+        />
+        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></span>
+        <span id="lName-err" class="error-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="gender" class="form-label"> Gender </label>
+        <select
+                id="gender"
+                name="gender"
+                th:field="*{gender}"
+                 
+                class="form-input">
+          <option value=""    >Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error-message"></span>
+        <span id="gender-err" class="error-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="phone" class="form-label"> phone </label>
+        <input
+                id="phone"
+                name="phone"
+                th:field="*{phone}"
+                type="tel"
+                 
+                class="form-input"
+                placeholder="Enter Your Phone"
+        />
+        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
+        <span id="phone-err" class="error-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label"> Password </label>
+        <input
+                id="password"
+                name="password"
+                th:field="*{user.password}"
+                type="password"
+                 
+                class="form-input"
+                placeholder="Create a password"
+                minlength="6"
+        />
+		<span id="password-err" class="error-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">
+          Confirm Password
+        </label>
+        <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                 
+                class="form-input"
+                placeholder="Confirm your password"
+                minlength="6"
+        />
+        <span id="confirmPass-err" class="error-message"></span>
+
+      </div>
+      <div class="form-group">
+        <label for="meeting" class="form-label">Meeting</label>
+        <select id = "meeting" name="meetings.id"   class="form-input">
+          <option value="" selected disabled>Select Meeting</option>
+          <option th:each="meeting : ${meeting}"
+                  th:value="${meeting.id}"
+                  th:text="${meeting.description}">
+          </option>
+        </select>
+        <span th:if="${#fields.hasErrors('meetings')}" th:errors="*{meetings}" class="error-message"></span>
+        <span id="meetings-err" class="error-message"></span>
+      </div>
+
+        <div class="form-group">
+        <label for="Church" class="form-label">Church</label>
+        <select id = "Church" name="church.id"   class="form-input">
+          <option value="" selected disabled>Select Church</option>
+          <option th:each="church : ${church}"
+                  th:value="${church.id}"
+                  th:text="${church.churchName}">
+          </option>
+        </select>
+        <span th:if="${#fields.hasErrors('church')}" th:errors="*{church}" class="error-message"></span>
+        <span id="church-err" class="error-message"></span>
+      </div>
+
+        <div class="form-group">
+        <label for="serviceStage" class="form-label">Stage</label>
+        <select id = "serviceStage" name="serviceStage.id"   class="form-input">
+          <option value="" selected disabled>Select stage</option>
+          <option th:each="stage : ${stages}"
+                  th:value="${stage.id}"
+                  th:text="${stage.description}">
+          </option>
+        </select>
+        <span th:if="${#fields.hasErrors('serviceStage')}" th:errors="*{serviceStage}" class="error-message"></span>
+        <span id="serviceStage-err" class="error-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="birthday" class="form-label"> Birth Day</label>
+        <input
+                id="birthday"
+                name="birthday"
+                th:field="*{birthday}"
+                type="date"
+                 
+                class="form-input"
+        />
+        <span th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="error-message"></span>
+        <span id="birthday-err" class="error-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="address" class="form-label"> Address</label>
+        <input
+                id="address"
+                name="address"
+                type="text"
+                th:field="*{address}"
+                 
+                class="form-input"
+                placeholder="Enter Full Address"
+        />
+        <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></span>
+        <span id="address-err" class="error-message"></span>
+
+      </div>
+      <div class="form-group">
+        <label for="fatherPeriest" class="form-label">
+          Father Periest</label
+        >
+        <select
+                id="fatherPeriest"
+                name="fatherPeriest"
+                th:field="*{fatherPeriest}"
+                 
+                class="form-input"
+        >
+
+          <option value="">Select</option>
+          <option value ="ابونا بنيامين">ابونا بنيامين</option>
+          <option value="ابونا يسطس">ابونا يسطس</option>
+          <option value="ابونا يوسف">ابونا يوسف</option>
+          <option value="ابونا مرقوريوس">ابونا مرقوريوس</option>
+          <option value="ابونا روفائيل">ابونا روفائيل</option>
+          <option value="ابونا يؤانس">ابونا يؤانس</option>
+          <option value="ابونا جورجيوس">ابونا جورجيوس</option>
+          <option value="ابونا باخوميوس">ابونا باخوميوس</option>
+        </select>
+        <span th:if="${#fields.hasErrors('fatherPeriest')}" th:errors="*{fatherPeriest}" class="error-message"></span>
+        <span id="father-err" class="error-message"></span>
+      </div>
+      <div class="form-group">
+        <label for="image" class="form-label"> Select an Image: </label>
+        <input
+                id="image"
+                name="image"
+                type="file"
+                 
+                class="form-input"
+                placeholder="Image Profile"
+                accept="image/*"
+        />
+        <span th:if="${#fields.hasErrors('profileImagePath')}" th:errors="*{profileImagePath}" class="error-message"></span>
+        <span id="image-err" class="error-message"></span>
+
+      </div>
+      <div style="padding-top: 0.5rem">
+        <input type="submit" value ="Sign Up" class="btn btn-primary">
+      </div>
+    </form>
+    <div th:if="${globalError}" class="error-message">
+      <p th:text="${globalError}"></p>
+    </div>
+    <div style="margin-top: 1rem; text-align: center; font-size: 0.875rem">
+      <p>
+        Already have an account?
+        <a href="sign-in.html" class="link"> Sign In </a>
+      </p>
+    </div>
+  </div>
+</div>
+<script th:src="@{./js/jCommon/Common.js}"></script>
+<script th:src="@{./js/register.js}"></script>
+</body>
+</html>

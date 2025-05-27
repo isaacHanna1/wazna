@@ -1,0 +1,159 @@
+:root {
+    --youth-primary: #6E59A5;
+    --youth-secondary: #9b87f5;
+    --youth-accent: #E5DEFF;
+    --youth-light: #F1F0FB;
+    --youth-dark: #1A1F2C;
+    --success-green: #4CAF50;
+    --highlight: #FFD700;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--youth-light);
+    color: var(--youth-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.celebration-container {
+    position: relative;
+    background: linear-gradient(135deg, var(--youth-accent), var(--youth-light));
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 420px;
+    width: 100%;
+    z-index: 10;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1.congrats-text {
+    color: var(--youth-primary);
+    font-size: 28px;
+    margin-bottom: 12px;
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.points-earned {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--highlight);
+    margin: 15px 0;
+    animation: bounce 0.8s ease infinite alternate;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+.total-points {
+    font-size: 20px;
+    color: var(--youth-secondary);
+    font-weight: 600;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 24px;
+    background-color: var(--youth-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.button:hover {
+    background-color: var(--youth-secondary);
+    transform: scale(1.05);
+}
+
+.button:after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 100%; }
+    100% { left: 100%; }
+}
+
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.celebration-icon {
+    font-size: 60px;
+    margin: 20px 0;
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* For the floating emoji effects */
+.floating-emoji {
+    position: fixed;
+    font-size: 24px;
+    opacity: 0;
+    animation: emojiFloat 3s ease-in-out forwards;
+}
+
+@keyframes emojiFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+}

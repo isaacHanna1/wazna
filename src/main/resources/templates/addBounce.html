@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Wazna</title>
+    <link th:href="@{/css/addBounce.css}" rel="stylesheet" />
+    <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+      <!-- Include the navbar fragment -->
+  <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+<div class="container">
+    <div class="form-wrapper">
+        <h2>WAZNA</h2>
+        <p class="subtitle">Add WAZNA for achievements</p>
+        <form id="bountyForm" class="bounty-form">
+            <div class="form-group">
+                <label for="userName">Search User by Phone</label>
+                <div class="user-data">
+                    <input type="tel" id="userName" name="userName" placeholder="phone Number" class="form-control">
+                    <input type="text" disabled value="" id="userFullName" class="form-control"/>
+                </div>
+            </div>
+            <div id="userInfoBox" class="info-box" style="display: none;"></div>
+
+            <div class="form-group">
+                <label for="bountyType">Bounty Type</label>
+                <select id="bountyType" name="bountyType" class="form-control">
+                    <option value="">Select Bounty Type</option>
+                    <option th:each="bonus : ${bonusType}" 
+                            th:value="${bonus.id}"
+                            th:text="|${bonus.description} (+${bonus.point} WAZNA)|">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Current Points</label>
+                <div class="points-display current-points">
+                    <span class="points-icon">⭐</span>
+                    <span id="currentPoints" class="points-value">0</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="addPoints">Points to Add</label>
+                <input type="number" id="addPoints" name="addPoints" readonly class="form-control points-input" placeholder="0">
+            </div>
+
+            <button type="submit" id="addBtn" class="btn-primary">
+                <span class="btn-icon">➕</span>
+                Add Points
+            </button>
+        </form>
+    </div>
+</div>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+<script th:src="@{/js/addBounce.js}"></script>
+<script th:src="@{/js/nav.js}"></script>
+</body>
+</html>

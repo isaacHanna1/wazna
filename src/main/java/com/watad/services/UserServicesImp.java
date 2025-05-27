@@ -1,0 +1,77 @@
+package com.watad.services;
+
+import com.watad.dao.RoleDao;
+import com.watad.dao.ServiceStageDao;
+import com.watad.dao.UserDao;
+import com.watad.entity.Profile;
+import com.watad.entity.Role;
+import com.watad.entity.ServiceStage;
+import com.watad.entity.User;
+import com.watad.enumValues.Gender;
+import com.watad.security.CustomUserDetails;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+public class UserServicesImp implements UserServices{
+
+
+    private final ServiceStageDao serviceStageDao;
+
+    private final UserDao userDao;
+
+    private final RoleDao roleDao;
+
+
+
+    public UserServicesImp(ServiceStageDao serviceStageDao, UserDao userDao , RoleDao roleDao) {
+        this.serviceStageDao = serviceStageDao;
+        this.userDao         = userDao;
+        this.roleDao         = roleDao;
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userDao.saveUser(user);
+    }
+
+    @Override
+    public User findUserById(int id) {
+        return userDao.findUserBYId(id).orElseThrow(()->new NoResultException());
+    }
+
+    @Override
+    public Optional<User> findByUserNameForLogin(String userName) {
+        return userDao.findByUserNameForLogin(userName);
+    }
+
+    @Override
+    public boolean existsByPhone(String phone) {
+            return userDao.existsByPhone(phone);
+    }
+
+    @Override
+    public User logedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth !=null && auth.getPrincipal() instanceof CustomUserDetails){
+            CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
+            int id  =  customUserDetails.getId();
+            return  findUserById(id);
+        }
+        return null;
+    }
+
+
+}

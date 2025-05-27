@@ -27,7 +27,7 @@ public class ProfileServiceImp implements ProfileService {
     private final PasswordEncoder passwordEncoder;
     private final UserPointTransactionService userPointTransactionService;
 
-    private  final String UPLOAD_DIR = "src/main/resources/static/uploads/profile";
+    private  final String UPLOAD_DIR = "./uploads/profile_pic";
     private final ProfileDao  profileDao;
     private final RoleService roleService;
     private final UserDao     userDao;
@@ -108,7 +108,6 @@ public class ProfileServiceImp implements ProfileService {
         return dto;
     }
 
-    // You can make this private since it's internal use
     private String saveProfileImage(MultipartFile file) throws IOException {
 
         if (!file.getContentType().startsWith("image/")) {

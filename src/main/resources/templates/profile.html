@@ -13,7 +13,7 @@
   <div class="profile-container">
     <div class="profile-header">
       <div class="profile-avatar">
-        <img th:src="@{'../uploads/profile/' + ${profileDto.imagePath}}" alt="Profile">
+          <img th:src="@{'/profile_pic/' + ${profileDto.imagePath}}" alt="Profile">
       </div>
       <div class="profile-name">
          <h1 th:text="${profileDto.firstName + ' ' + profileDto.lastName}">Alex Johnson</h1>

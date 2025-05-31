@@ -23,6 +23,8 @@ public class YouthMeatingApplication {
 		return args -> {
 			roleService.findOrCreate("ROLE_YOUTH");
 			roleService.findOrCreate("ROLE_SERVER");
+			roleService.findOrCreate("ROLE_SUPER");
+
 		};
 	}
 }

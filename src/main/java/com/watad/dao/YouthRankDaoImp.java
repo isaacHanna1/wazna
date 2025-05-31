@@ -19,26 +19,42 @@ public class YouthRankDaoImp implements YouthRankDao  {
     }
 
     @Override
-    public List<YouthRankDto> getYouthRank(int sprintId, int churchId, int meetingId , int limit, int offset) {
+    public List<YouthRankDto> getYouthRank(int sprintId, int churchId, int meetingId ,String userRoles ,int limit, int offset) {
+
+        System.out.println("the user roles is "+userRoles);
         String nativeSql = """
-        SELECT 
-           DENSE_RANK() OVER (PARTITION BY p.meeting_id, p.church_id , upt.sprint_id ORDER BY SUM(upt.points) DESC) AS r,
-            p.profile_id,
-            p.first_name,
-            p.last_name,
-            SUM(upt.points) AS total_points
-        FROM profile p
-        JOIN user_point_transaction upt ON p.profile_id = upt.profile_id
-        WHERE p.meeting_id = :meetingId AND p.church_id = :churchId and upt.sprint_id = :sprintId
-        GROUP BY p.profile_id, p.first_name, p.last_name, p.meeting_id, p.church_id , upt.sprint_id
-        limit :limit offset :offset
+                SELECT
+                    DENSE_RANK() OVER (
+                        PARTITION BY p.meeting_id, p.church_id, upt.sprint_id
+                        ORDER BY SUM(upt.points) DESC
+                    ) AS r,
+                    p.profile_id,
+                    p.first_name,
+                    p.last_name,
+                    SUM(upt.points) AS total_points
+                FROM profile p
+                JOIN user_point_transaction upt ON p.profile_id = upt.profile_id
+                JOIN user u ON u.profile_id = p.profile_id
+                WHERE p.meeting_id = :meeting_id
+                  AND p.church_id = :church_id
+                  AND upt.sprint_id = :sprint_id
+                  AND u.id IN (
+                      SELECT ur.user_id
+                      FROM user_role ur
+                      WHERE ur.role_id IN (:allowed_roles)
+                  )
+                GROUP BY
+                    p.profile_id, p.first_name, p.last_name,
+                    p.meeting_id, p.church_id, upt.sprint_id
+                    limit :limit offset :offset
     """;
 
         List<Object[]> youth = entityManager.createNativeQuery(nativeSql)
-                .setParameter("meetingId", meetingId)
-                .setParameter("churchId", churchId)
+                .setParameter("meeting_id", meetingId)
+                .setParameter("church_id", churchId)
+                .setParameter("allowed_roles",userRoles)
                 .setParameter("limit",limit)
-                .setParameter("sprintId",sprintId)
+                .setParameter("sprint_id",sprintId)
                 .setParameter("offset",offset).getResultList();
 
         List<YouthRankDto>  rankedYouth = new ArrayList<>();
@@ -87,7 +103,7 @@ public class YouthRankDaoImp implements YouthRankDao  {
     }
 
     @Override
-    public int getSpecificYouthRank(int sprintId, int churchId, int meetingId , int profileId) {
+    public int getSpecificYouthRank(int sprintId, int churchId, int meetingId , int profileId , String userRoles) {
         String  nativeQuery =
                 """
                          select r from   (  SELECT
@@ -98,22 +114,24 @@ public class YouthRankDaoImp implements YouthRankDao  {
                                     SUM(upt.points) AS total_points
                                 FROM profile p
                                 JOIN user_point_transaction upt ON p.profile_id = upt.profile_id
+                                JOIN user u ON u.profile_id = p.profile_id
                                 WHERE p.meeting_id =:meetingId  AND p.church_id =:churchId and upt.sprint_id =:sprintId
+                                      AND u.id IN (
+                                        			 SELECT ur.user_id
+                                        			 FROM user_role ur
+                                        			 WHERE ur.role_id IN (:allowed_roles)
+                                            )
                                 GROUP BY p.profile_id, p.first_name, p.last_name, p.meeting_id, p.church_id , upt.sprint_id) ranks where ranks.profile_id =:profileId
                 """;
 
         try {
-            System.out.println("Parameters: meetingId=" + meetingId +
-                               ", churchId=" + churchId +
-                               ", sprintId=" + sprintId +
-                               ", profileId=" + profileId);
-
             // Directly get the rank as Number and convert to int
             Number rank = (Number) entityManager.createNativeQuery(nativeQuery)
                     .setParameter("meetingId", meetingId)
                     .setParameter("churchId", churchId)
                     .setParameter("sprintId", sprintId)
                     .setParameter("profileId", profileId)
+                    .setParameter("allowed_roles",userRoles)
                     .getSingleResult();
 
             return rank != null ? rank.intValue() : 0;

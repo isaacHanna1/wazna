@@ -4,10 +4,12 @@ import com.watad.dao.YouthRankDao;
 import com.watad.dto.response.YouthRankDto;
 import com.watad.entity.Meetings;
 import com.watad.entity.Profile;
+import com.watad.entity.Role;
 import com.watad.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class YouthRankServiceImp implements  YouthRankService{
@@ -30,7 +32,11 @@ public class YouthRankServiceImp implements  YouthRankService{
         int theMeetingId = theMeeting.getId();
         int theChurchId     = theProfile.getChurch().getId();
         int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
-        List<YouthRankDto> listOfYouth =  youthRankDao.getYouthRank(theSprintId,theChurchId,theMeetingId,limit,offset);
+        String user_roles = user.getRoles().stream()
+                .map(role -> String.valueOf(role.getId()))
+                .collect(Collectors.joining(","));
+
+        List<YouthRankDto> listOfYouth =  youthRankDao.getYouthRank(theSprintId,theChurchId,theMeetingId,user_roles,limit,offset);
         if (listOfYouth.isEmpty()) {
             System.out.println("No youth found " );
         }
@@ -55,6 +61,9 @@ public class YouthRankServiceImp implements  YouthRankService{
         int theMeetingId = theMeeting.getId();
         int theChurchId     = theProfile.getChurch().getId();
         int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
-        return youthRankDao.getSpecificYouthRank(theSprintId,theChurchId,theMeetingId,user.getProfile().getId());
+        String user_roles = user.getRoles().stream()
+                .map(role -> String.valueOf(role.getId()))
+                .collect(Collectors.joining(","));
+        return youthRankDao.getSpecificYouthRank(theSprintId,theChurchId,theMeetingId,user.getProfile().getId(),user_roles);
     }
 }

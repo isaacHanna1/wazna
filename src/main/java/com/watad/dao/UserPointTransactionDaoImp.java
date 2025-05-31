@@ -36,7 +36,7 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
     }
 
     @Override
-    public List<ProfileDtlDto> findProfileBuUserName(int church_id, int meeting_id, int sprint_id, String userPhone) {
+    public List<ProfileDtlDto> findProfileBuUserName(int church_id, int meeting_id, int sprint_id, String userPhone , int userRole) {
         System.out.println("the church id "+church_id +"the meeting_id "+meeting_id+" the sprint id "+sprint_id +" the user phone :"+userPhone);
         List <ProfileDtlDto> listOfProfile = new ArrayList<>();
         String sql = """
@@ -56,10 +56,16 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                                    AND upt.church_id  =:church_id
                                    AND upt.meeting_id =:meeting_id
                                    AND upt.sprint_id  =:sprint_id
+                               JOIN user u ON u.profile_id = p.profile_id 
                                WHERE
                                    p.church_id      = :church_id
                                    AND p.meeting_id = :meeting_id
                                    AND p.phone LIKE CONCAT('%', :userPhone, '%')
+                                   AND u.id IN (
+                       					 SELECT ur.user_id
+                       					 FROM user_role ur
+                       					 WHERE ur.role_id <= :userRole
+                                    )
                                GROUP BY
                                    p.profile_id,
                                    p.first_name,
@@ -72,6 +78,7 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                 .setParameter("sprint_id",sprint_id)
                 .setParameter("church_id",church_id)
                 .setParameter("userPhone",userPhone)
+                .setParameter("userRole",userRole)
                 .setParameter("meeting_id",meeting_id).getResultList();
 
         for (Object[] row : result) {

@@ -39,6 +39,18 @@ public class EventDetail {
     private LocalDate from_date;
     @Column(name = "to_date")
     private LocalDate to_date;
+
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "meeting_id")
+    private Meetings meetings;
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "church_id")
+    private Church curch ;
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "sprint_id")
+    private SprintData sprintData;
+
+
     // Constructors
     public EventDetail() {}
 
@@ -139,5 +151,29 @@ public class EventDetail {
 
     public void setTo_date(LocalDate to_date) {
         this.to_date = to_date;
+    }
+
+    public Meetings getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(Meetings meetings) {
+        this.meetings = meetings;
+    }
+
+    public Church getCurch() {
+        return curch;
+    }
+
+    public void setCurch(Church curch) {
+        this.curch = curch;
+    }
+
+    public SprintData getSprintData() {
+        return sprintData;
+    }
+
+    public void setSprintData(SprintData sprintData) {
+        this.sprintData = sprintData;
     }
 }

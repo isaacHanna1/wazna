@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface EventDao {
 
-    List<EventDetail> findAllActiveEvent();
+    List<EventDetail> findAllActiveEvent(int curch_id , int meeting_id , int sprint_id);
 }

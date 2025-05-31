@@ -11,5 +11,5 @@ public interface UserPointTransactionDao {
     double getTotalPointsByProfileIdAndSprintId(int profileId, Integer sprintId);
 
     // find users by search by userName (phone)
-    List<ProfileDtlDto> findProfileBuUserName(int chuch_id , int meeting_id , int sprint_id , String userPhone);
+    List<ProfileDtlDto> findProfileBuUserName(int chuch_id , int meeting_id , int sprint_id , String userPhone ,int userRole);
 }

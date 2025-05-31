@@ -54,7 +54,7 @@
                 Profile
             </a>
         </li>
-        <li class="nav-item protected-content" sec:authorize="hasRole('SERVER')">
+        <li class="nav-item protected-content" sec:authorize="hasAnyRole('SERVER','SUPER')">
         <a th:href="@{/youth/point/add}" class="nav-link logout-button">
             <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	const fatherEl    = document.getElementById("fatherPeriest");
 	const genderEl    = document.getElementById("gender");
 	const formEL      = document.getElementById('register-form');
+	const mode        = document.getElementById('mode');
 
     if (firstNameEl) {
         firstNameEl.addEventListener("blur", function () {
@@ -56,11 +57,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			validateRequiredField(this,"address-err","Address is required");
 		});
 	}
-	if(imageEl){
-			imageEl.addEventListener("blur",function(){
-			validateRequiredField(this,"image-err","Image is required");
-		});
-	}
+    if (imageEl) {
+        if (mode.value !== "edit") {
+            imageEl.addEventListener("blur", function () {
+                validateRequiredField(this, "image-err", "Image is required");
+            });
+        }
+    }
 	if(serviceEl){
 		serviceEl.addEventListener("blur",function(){
 			validateRequiredSelect(this,"stage-err","Stage is required");
@@ -158,6 +161,7 @@ function checkBeforSubmit() {
     const serviceEl   = document.getElementById("serviceStage");
     const fatherEl    = document.getElementById("fatherPeriest");
     const genderEl    = document.getElementById("gender");
+    const mode        = document.getElementById("mode");
 
     if (!validateRequiredField(firstNameEl, "fName-err", "First name is required")) isValid = false;
     if (!validateRequiredField(lastNameEl, "lName-err", "Last name is required")) isValid = false;
@@ -166,7 +170,9 @@ function checkBeforSubmit() {
     if (!checkPasswordConfirmPassword()) isValid = false;
     if (!validateRequiredField(birthdayEl, "birthday-err", "Birthday is required")) isValid = false;
     if (!validateRequiredField(addressEl, "address-err", "Address is required")) isValid = false;
-    if (!validateRequiredField(imageEl, "image-err", "Image is required")) isValid = false;
+    if(mode.value !="edit"){
+        if (!validateRequiredField(imageEl, "image-err", "Image is required")) isValid = false;
+    }
     if (!validateRequiredSelect(serviceEl, "stage-err", "Stage is required")) isValid = false;
     if (!validateRequiredSelect(fatherEl, "father-err", "Father is required")) isValid = false;
     if (!validateRequiredSelect(genderEl, "gender-err", "Gender is required")) isValid = false;

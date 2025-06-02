@@ -116,7 +116,7 @@
           </option>
         </select>
         <span th:if="${#fields.hasErrors('serviceStage')}" th:errors="*{serviceStage}" class="error-message"></span>
-        <span id="serviceStage-err" class="error-message"></span>
+        <span id="stage-err" class="error-message"></span>
       </div>
 
       <div class="form-group">
@@ -161,14 +161,14 @@
 
           <option value="">Select</option>
           <option value ="ابونا بنيامين">ابونا بنيامين</option>
-          <option value ="ابونا سداروس">ابونا بنيامين</option>
+          <option value ="ابونا سداروس">ابونا سداروس</option>
           <option value="ابونا يسطس">ابونا يسطس</option>
           <option value="ابونا يوسف">ابونا يوسف</option>
           <option value="ابونا مرقوريوس">ابونا مرقوريوس</option>
-          <option value="ابونا ايساك">ابونا مرقوريوس</option>
+          <option value="ابونا ايساك">ابونا ايساك</option>
           <option value="ابونا روفائيل">ابونا روفائيل</option>
           <option value="ابونا يؤانس">ابونا يؤانس</option>
-          <option value="ابونا مرقص">ابونا يؤانس</option>
+          <option value="ابونا مرقص">ابونا مرقص</option>
           <option value="ابونا جورجيوس">ابونا جورجيوس</option>
           <option value="ابونا باخوميوس">ابونا باخوميوس</option>
         </select>
@@ -193,6 +193,7 @@
       <div style="padding-top: 0.5rem">
         <input type="submit" value ="Edit Profile" class="btn btn-primary">
       </div>
+      <input type="hidden" id="mode" value="edit">
     </form>
     <div th:if="${globalError}" class="error-message">
       <p th:text="${globalError}"></p>

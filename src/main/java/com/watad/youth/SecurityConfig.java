@@ -51,6 +51,7 @@ public class SecurityConfig {
                                 "/sign-in",
                                 "/register",
                                 "/css/**",
+                                "/js/**",
                                 "/api/scan/code/**"
                         ).permitAll()
                         .anyRequest().authenticated()

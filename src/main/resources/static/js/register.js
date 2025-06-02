@@ -3,7 +3,6 @@
 */
 
 // start validation when on blur form textbox 
-
 document.addEventListener("DOMContentLoaded", function () {
     const firstNameEl = document.getElementById("firstName");
     const lastNameEl  = document.getElementById("lastName");

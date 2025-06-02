@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -88,6 +89,7 @@ public class ProfileServiceImp implements ProfileService {
         int theId = user.getProfile().getId();
         Profile profile=  profileDao.getProfileById(theId);
         ProfileDtlDto dto = new ProfileDtlDto();
+        dto.setId(theId);
         dto.setFirstName(profile.getFirstName());
         dto.setLastName(profile.getLastName());
         dto.setGendre(profile.getGender().toString());
@@ -122,5 +124,44 @@ public class ProfileServiceImp implements ProfileService {
 
     public  Profile getProfileById(int id ){
         return profileDao.getProfileById(id);
+    }
+
+    @Override
+    public void editPrfofile(Profile profile , MultipartFile image , int id ) throws IOException {
+        Profile existsOne = profileDao.getProfileById(id);
+        String old_image = UPLOAD_DIR +"/"+existsOne.getProfileImagePath();
+        if (image != null && !image.isEmpty()){
+            System.out.println("New image uploaded. Replacing old image.");
+            System.out.println("the old image path is "+old_image);
+            deleteOldFile(old_image);
+            String imageName = saveProfileImage(image);
+            profile.setProfileImagePath(imageName);
+        }
+        else{
+            System.out.println("No new image uploaded. Keeping old image.");
+            profile.setProfileImagePath(getProfileImageName(profile.getId()));
+        }
+        User user = existsOne.getUser();
+        user.setUserName(profile.getPhone());
+        profile.setUser(user);
+        profile.setJoinDate(existsOne.getJoinDate());
+        profileDao.editprofile(profile);
+
+    }
+
+    @Override
+    public String getProfileImageName(int profile_id) {
+        String imageName = profileDao.getPrfoileImageName(profile_id);
+        if(imageName ==  null)
+            return  "";
+        return imageName;
+    }
+
+
+    private void deleteOldFile(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }

@@ -9,4 +9,6 @@ public interface ProfileDao {
     public List<Profile> findAll();
     public void saveProfile(Profile profile);
     public Profile getProfileById(int id);
+    public void editprofile(Profile profile);
+    String getPrfoileImageName(int id);
 }

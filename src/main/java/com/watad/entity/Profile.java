@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,7 +43,7 @@ public class Profile {
     @NotNull(message = "Choose Gender")
     private Gender gender;
 
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @OneToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH},fetch = FetchType.LAZY)
     @JoinColumn(name="service_stage_id")
     @NotNull(message = "Choose Service Stage")
     private ServiceStage serviceStage;
@@ -57,6 +58,7 @@ public class Profile {
     @Column(name = "birth_day")
     @NotNull(message = "Enter Your BirthDay")
     @MinimumAge(value = 17, message = "You must be at least 17 years old")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
     @Column(name="address")
@@ -82,11 +84,11 @@ public class Profile {
     @OneToOne(mappedBy = "profile")
     private User user;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH} , fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     @NotNull(message = "Choose Meeting")
     private Meetings meetings;
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH} ,fetch = FetchType.LAZY)
     @JoinColumn(name = "church_id")
     @NotNull(message = "Choose Church")
     private Church church;

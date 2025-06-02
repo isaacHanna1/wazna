@@ -20,7 +20,7 @@
         <p class="profile-tag" th:text="${profileDto.serviceStage}"> High School</p>
       </div>
       <div class="edit-profile">
-        <a href="#" class="edit-button">Edit Profile</a>
+        <a th:href="@{'/editProfile/' + ${profileDto.id}}" class="edit-button">Edit Profile</a>
       </div>
     </div>
     

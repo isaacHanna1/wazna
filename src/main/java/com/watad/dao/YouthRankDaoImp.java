@@ -21,7 +21,6 @@ public class YouthRankDaoImp implements YouthRankDao  {
     @Override
     public List<YouthRankDto> getYouthRank(int sprintId, int churchId, int meetingId ,String userRoles ,int limit, int offset) {
 
-        System.out.println("the user roles is "+userRoles);
         String nativeSql = """
                 SELECT
                     DENSE_RANK() OVER (

@@ -15,5 +15,7 @@ public interface ProfileService {
     public void saveProfile(Profile profile , MultipartFile image) throws IOException;
     public ProfileDtlDto getProfileById();
     public  Profile getProfileById(int id );
+    public  void editPrfofile(Profile profile , MultipartFile image , int id )  throws IOException;
+    public String getProfileImageName(int profile_id);
 
 }

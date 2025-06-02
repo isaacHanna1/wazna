@@ -1,5 +1,6 @@
 package com.watad.dao;
 
+import com.watad.entity.Church;
 import com.watad.entity.Profile;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -43,5 +44,20 @@ public class profileDaoImp implements ProfileDao{
         } catch (NoResultException e) {
             throw new NoResultException("There Is no Profile Founded with Id "+id);
         }
+    }
+
+    @Override
+    @Transactional
+    public void editprofile(Profile profile) {
+        entityManager.merge(profile);
+    }
+
+    @Override
+    public String getPrfoileImageName(int id) {
+        System.out.println("the profile the id is "+id);
+        String jpql = "SELECT p.profileImagePath FROM Profile p WHERE p.id = :id";
+        return entityManager.createQuery(jpql, String.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 }

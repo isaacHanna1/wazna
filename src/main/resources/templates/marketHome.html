@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link th:href="@{/css/market.css}" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+  <title>Wazna Market</title>
+</head>
+<body>
+      <!-- Include the navbar fragment -->
+  <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+<div class="container-market">
+  <div class="header">
+    <h1>Wazna Market</h1>
+    <p>Shop amazing items with your Wazna points!</p>
+  </div>
+
+  <div class="filter-menu">   
+          <a class="filter-btn"
+            th:each="cat : ${category}"
+            th:text="${cat.description}"
+          th:href="@{/market/category/{id}(id=${cat.id}, page=0)}">
+</a>
+  </div>
+<div class="items-grid" id="itemsGrid" >
+    <div class="item-card" th:each="item : ${itemMarket}" th:attr="data-category=${item.category.description}">
+      <div class="item-image">
+      <img th:src="@{/market/{imageName}(imageName=${item.imageName})}" alt="Item Image"/>
+        <div class="item-category" th:text="${item.category.description}">Category</div>
+      </div>
+      <div class="item-content">
+        <div class="item-title" th:text="${item.itemName}">Item Name</div>
+        <div class="item-description" th:text="${item.itemDesc}">Item description here</div>
+        <div class="item-price">
+          <div class="wazna-icon">W</div>
+          <span th:text="${item.points}">250</span>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="pagination" th:if="${totalPages > 1}">
+    <ul>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/market/category/{categoryId}(categoryId=${categoryId}, page=${i})}"
+               th:text="${i + 1}"
+               th:classappend="${i == currentPage} ? 'active' : ''">
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<script th:src="@{/js/nav.js}"></script>
+</body>
+</html>

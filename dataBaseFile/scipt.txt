@@ -1,0 +1,35 @@
+CREATE TABLE market_category (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    description VARCHAR(255) NOT NULL,
+    church_id INT NOT NULL,
+    meeting_id INT,
+    active BOOLEAN DEFAULT TRUE
+);
+
+
+
+ALTER TABLE market_category
+ADD CONSTRAINT fk_category_church
+    FOREIGN KEY (church_id) REFERENCES church(id),
+ADD CONSTRAINT fk_category_meeting
+    FOREIGN KEY (meeting_id) REFERENCES meetings(id);
+	
+	
+	
+	
+	
+CREATE TABLE market_item (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    item_name VARCHAR(255) NOT NULL,
+    item_desc TEXT,
+    points INT NOT NULL,
+    category_id INT NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES market_category(id)
+);
+
+ALTER TABLE market_item
+ADD COLUMN image_name VARCHAR(255);
+
+
+ALTER TABLE market_item
+MODIFY COLUMN points DOUBLE;	

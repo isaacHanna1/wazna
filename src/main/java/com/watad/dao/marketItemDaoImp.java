@@ -28,11 +28,11 @@ public class marketItemDaoImp implements MarketItemDao {
 
     @Override
     public List<MarketItem> findByCategoryWithPagination(int categoryId, int page, int size) {
-        String jpql = "SELECT m FROM MarketItem m WHERE m.category.id = :categoryId";
+        String jpql = " SELECT m FROM MarketItem m WHERE m.category.id = :categoryId order by id ";
 
         return entityManager.createQuery(jpql, MarketItem.class)
                 .setParameter("categoryId", categoryId)
-                .setFirstResult(page * size)   // page 0 = first 10, page 1 = next 10, etc.
+                .setFirstResult(page * size)
                 .setMaxResults(size)
                 .getResultList();
     }

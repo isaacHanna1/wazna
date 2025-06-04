@@ -16,6 +16,11 @@ public class MarketCategoryController {
 
     private final MarketCategoryService marketCategoryService;
     private final MarketItemService marketItemService;
+
+
+    private static final int DEFAULT_CATEGORY_ID = 1;
+    private static final int PAGE_SIZE = 10;
+
     public MarketCategoryController(MarketCategoryService marketCategoryService , MarketItemService marketItemService) {
         this.marketCategoryService = marketCategoryService;
         this.marketItemService     = marketItemService;
@@ -24,20 +29,20 @@ public class MarketCategoryController {
     @GetMapping("market")
     public String getMarketHome(Model model){
         model.addAttribute("category" , marketCategoryService.allActiveCategory());
-        model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(1,0,10));
+        // by default send the category one
+        model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(DEFAULT_CATEGORY_ID,0,PAGE_SIZE));
         model.addAttribute("catCount",marketItemService.countByCategory(1));
-        model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(1) / 10));
+        model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(DEFAULT_CATEGORY_ID) / PAGE_SIZE));
         model.addAttribute("categoryId","1");
         return "marketHome";
     }
 
     @GetMapping("/market/category/{id}")
-    public String getMarketCategory(Model model, @PathVariable int id, @RequestParam int page){
+    public String getMarketCategory(Model model, @PathVariable int id, @RequestParam(defaultValue = "0") int page){
         model.addAttribute("category" , marketCategoryService.allActiveCategory());
-        model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(id,page,10));
-        model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(id) / 10));
+        model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(id,page,PAGE_SIZE));
+        model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(id) / PAGE_SIZE));
         model.addAttribute("categoryId",id);
-
         return "marketHome";
     }
 }

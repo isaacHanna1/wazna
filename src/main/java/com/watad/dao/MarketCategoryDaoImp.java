@@ -14,7 +14,6 @@ public class MarketCategoryDaoImp implements MarketCategoryDao{
 
     private  final EntityManager entityManager;
 
-    
     public MarketCategoryDaoImp(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

@@ -26,6 +26,7 @@ public class MarketCategoryController {
         this.marketItemService     = marketItemService;
     }
 
+
     @GetMapping("market")
     public String getMarketHome(Model model){
         model.addAttribute("category" , marketCategoryService.allActiveCategory());

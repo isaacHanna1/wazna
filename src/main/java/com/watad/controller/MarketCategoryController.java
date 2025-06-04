@@ -36,7 +36,6 @@ public class MarketCategoryController {
         model.addAttribute("categoryId","1");
         return "marketHome";
     }
-
     @GetMapping("/market/category/{id}")
     public String getMarketCategory(Model model, @PathVariable int id, @RequestParam(defaultValue = "0") int page){
         model.addAttribute("category" , marketCategoryService.allActiveCategory());

@@ -36,11 +36,9 @@ public class UserPointTransactionServiceImp implements UserPointTransactionServi
     @Override
     public List<ProfileDtlDto> findProfileByUserName(String userPhone) {
         User user           = userServices.logedInUser();
-        Profile theProfile  = user.getProfile();
-        Meetings theMeeting = theProfile.getMeetings();
-        int theMeetingId    = theMeeting.getId();
-        int theChurchId     = theProfile.getChurch().getId();
-        int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
+        int theMeetingId    = userServices.getLogInUserMeeting().getId();
+        int theChurchId     = userServices.getLogInUserChurch().getId();
+        int theSprintId     = userServices.getActiveSprint().getId();
         int roleId = user.getRoles().iterator().next().getId()-1; // for single role we -1 to find the user have lowe role in system to give him point
         return userPointTransactionDao.findProfileBuUserName(theChurchId,theMeetingId,theSprintId,userPhone,roleId);
     }

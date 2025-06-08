@@ -27,40 +27,31 @@ public class YouthRankServiceImp implements  YouthRankService{
     @Override
     public List<YouthRankDto> getRankedYouth(int limit , int offset) {
         User user = userServices.logedInUser();
-        Profile theProfile = user.getProfile();
-        Meetings theMeeting = theProfile.getMeetings();
-        int theMeetingId = theMeeting.getId();
-        int theChurchId     = theProfile.getChurch().getId();
-        int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
+        int theMeetingId    = userServices.getLogInUserMeeting().getId();
+        int theChurchId     = userServices.getLogInUserChurch().getId();
+        int theSprintId     = userServices.getActiveSprint().getId();
         String user_roles = user.getRoles().stream()
                 .map(role -> String.valueOf(role.getId()))
                 .collect(Collectors.joining(","));
 
-        List<YouthRankDto> listOfYouth =  youthRankDao.getYouthRank(theSprintId,theChurchId,theMeetingId,user_roles,limit,offset);
-        if (listOfYouth.isEmpty()) {
-            System.out.println("No youth found " );
-        }
-        return listOfYouth;
+        return youthRankDao.getYouthRank(theSprintId,theChurchId,theMeetingId,user_roles,limit,offset);
+
     }
     @Override
     public double getYouthPoint() {
-        User user = userServices.logedInUser();
-        Profile theProfile = user.getProfile();
-        Meetings theMeeting = theProfile.getMeetings();
-        int theMeetingId = theMeeting.getId();
-        int theChurchId     = theProfile.getChurch().getId();
-        int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
+        Profile theProfile  = userServices.getLogedInUserProfile();
+        int theMeetingId    = userServices.getLogInUserMeeting().getId();
+        int theChurchId     = userServices.getLogInUserChurch().getId();
+        int theSprintId     = userServices.getActiveSprint().getId();
         return  youthRankDao.getYouthPoint(theProfile.getId(),theSprintId,theChurchId,theMeetingId);
     }
 
     @Override
     public int getSpecificYouthRank() {
-        User user = userServices.logedInUser();
-        Profile theProfile = user.getProfile();
-        Meetings theMeeting = theProfile.getMeetings();
-        int theMeetingId = theMeeting.getId();
-        int theChurchId     = theProfile.getChurch().getId();
-        int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
+        User user           = userServices.logedInUser();
+        int theMeetingId    = userServices.getLogInUserMeeting().getId();
+        int theChurchId     = userServices.getLogInUserChurch().getId();
+        int theSprintId     = userServices.getActiveSprint().getId();
         String user_roles = user.getRoles().stream()
                 .map(role -> String.valueOf(role.getId()))
                 .collect(Collectors.joining(","));

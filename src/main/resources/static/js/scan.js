@@ -20,8 +20,9 @@ function startScan() {
       // Handle scan errors if needed
     }
   ).catch(err => {
-    console.error("Scan start error:", err);
-  });
+     console.error("Scan start error:", err);
+     showModal("Camera access failed. Please allow Browser to access the camera in iPhone settings.");
+   });
 }
 
 function stopScan() {

@@ -3,10 +3,7 @@ package com.watad.services;
 import com.watad.dao.RoleDao;
 import com.watad.dao.ServiceStageDao;
 import com.watad.dao.UserDao;
-import com.watad.entity.Profile;
-import com.watad.entity.Role;
-import com.watad.entity.ServiceStage;
-import com.watad.entity.User;
+import com.watad.entity.*;
 import com.watad.enumValues.Gender;
 import com.watad.security.CustomUserDetails;
 import jakarta.persistence.NoResultException;
@@ -34,12 +31,14 @@ public class UserServicesImp implements UserServices{
 
     private final RoleDao roleDao;
 
+    private final SprintDataService sprintDataService;
 
 
-    public UserServicesImp(ServiceStageDao serviceStageDao, UserDao userDao , RoleDao roleDao) {
+    public UserServicesImp(ServiceStageDao serviceStageDao, UserDao userDao , RoleDao roleDao ,SprintDataService sprintDataService) {
         this.serviceStageDao = serviceStageDao;
         this.userDao         = userDao;
         this.roleDao         = roleDao;
+        this.sprintDataService = sprintDataService;
     }
 
     @Override
@@ -71,6 +70,22 @@ public class UserServicesImp implements UserServices{
             return  findUserById(id);
         }
         return null;
+    }
+
+    public Profile getLogedInUserProfile(){
+        return  logedInUser().getProfile();
+    }
+    public Church getLogInUserChurch(){
+        return  getLogedInUserProfile().getChurch();
+    }
+    public Meetings getLogInUserMeeting(){
+        return getLogedInUserProfile().getMeetings();
+    }
+    public SprintData getActiveSprint(){
+
+       int theMeetingId    = getLogInUserMeeting().getId();
+       int theChurchId     = getLogInUserChurch().getId();
+       return sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId);
     }
 
 

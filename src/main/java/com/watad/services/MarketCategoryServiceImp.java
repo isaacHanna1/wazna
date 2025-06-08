@@ -21,9 +21,9 @@ public class MarketCategoryServiceImp implements MarketCategoryService{
 
     @Override
     public List<MarketCategory> allActiveCategory() {
-        User user = userServices.logedInUser();
-        int theMeeting = user.getProfile().getMeetings().getId();
-        int theChurch  = user.getProfile().getChurch().getId();
+        User user        = userServices.logedInUser();
+        int theMeeting   = userServices.getLogInUserMeeting().getId();
+        int theChurch    = userServices.getLogInUserChurch().getId();
         return  marketCategoryDao.allActiveCategory(theMeeting,theChurch);
     }
 }

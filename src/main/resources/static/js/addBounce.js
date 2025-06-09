@@ -156,24 +156,24 @@ function hideSubmittingAnimation() {
 }
 
 function showSuccessMessage(message) {
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message';
-    successDiv.textContent = message;
+  const successDiv = document.createElement('div');
+  successDiv.className = 'success-message';
+  successDiv.textContent = message;
 
-    document.body.appendChild(successDiv);
+  document.body.appendChild(successDiv);
 
+  // Trigger fade-in and scale after DOM render
+  setTimeout(() => {
+    successDiv.classList.add('show');
+  }, 50);
+
+  // Hide after 3 seconds
+  setTimeout(() => {
+    successDiv.classList.remove('show');
     setTimeout(() => {
-        successDiv.style.opacity = '1';
-        successDiv.style.transform = 'translateY(0)';
-    }, 100);
-
-    setTimeout(() => {
-        successDiv.style.opacity = '0';
-        successDiv.style.transform = 'translateY(-20px)';
-        setTimeout(() => {
-            document.body.removeChild(successDiv);
-        }, 300);
-    }, 3000);
+      document.body.removeChild(successDiv);
+    }, 300); // match CSS transition
+  }, 2000);
 }
 
 function showErrorMessage(message) {
@@ -209,7 +209,8 @@ function showNoUserFound() {
 
 function resetForm() {
     bountyTypeSelect.value = '';
-    addPointsInput.value = '';
+    addPointsInput.value   = '';
+    userFullName.value     = '';
     updateFormState();
 }
 
@@ -251,9 +252,10 @@ let elementConstruct = "<ul>";
 
 function selectTheUser(userStr){
     const user              = JSON.parse(decodeURIComponent(userStr));
-    console.log(user);
-    const userFullName      = document.getElementById('userFullName');
     const infoBox           = document.getElementById('userInfoBox');
+    userFullName.value      = '';
+    userFullName.id         = '';
+    userNameInput.value     = '';
     userFullName.value      = `${user.name}`;
     userFullName.id         = `${user.id}`;
     userNameInput.value     = `${user.phone}`;
@@ -335,7 +337,6 @@ async function loadBonusType() {
 
 async function addPoints(profileId, userId, bonusTypeId) {
     const URL = getBaseUrl(); // adjust this to your context
-
     try {
         const response = await fetch(`${URL}/api/youth/point/${profileId}/${userId}/${bonusTypeId}`, {
             method: 'POST',

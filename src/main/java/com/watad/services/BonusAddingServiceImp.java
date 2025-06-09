@@ -31,7 +31,7 @@ public class BonusAddingServiceImp implements BonusAddingService{
         int curchId           = theProfile.getChurch().getId();
         int meetingID         = theProfile.getMeetings().getId();
         SprintData sprintData = sprintDataService.getSprintDataByIsActive(curchId,meetingID);
-        UserBonus userBonus   = new UserBonus(user.getProfile(), bonusType, bonusType.getPoint(), sprintData, user, sprintData.getPointPrice(), bonusType.getPoint() , theProfile.getMeetings());
+        UserBonus userBonus   = new UserBonus(theProfile, bonusType, bonusType.getPoint(), sprintData, user, sprintData.getPointPrice(), bonusType.getPoint() , theProfile.getMeetings());
         userBounsService.save(userBonus);
         handleUserPointTran(theProfile,bonusType.getPoint(),bonusType.getDescription());
     }

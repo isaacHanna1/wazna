@@ -50,7 +50,6 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         return new PointsSummaryDTO(0.0 ,0.0);
     }
 
-
     private void handleAttendanceService(Attendance attendance , User user , QrCode qrCode){
         AttendanceId attendanceId = new AttendanceId();
         attendanceId.setUser(user);
@@ -60,7 +59,6 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
     }
 
     private double handleUserBounsService(QrCode qrCode,Attendance attendance ,User user){
-
 
         BonusType bonusType = bonusTypeService.getBonusTypeByDescription("Attendance");
         Profile profile     = user.getProfile();

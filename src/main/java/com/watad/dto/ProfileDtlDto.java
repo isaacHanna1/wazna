@@ -31,8 +31,21 @@ public class ProfileDtlDto {
     private int rank;
     private String imagePath;
     private int age;
-
+    private int churchId;
+    private int meetingId;
+    private int userId;
     public ProfileDtlDto() {
+    }
+
+    public ProfileDtlDto(int id, String firstName, String lastName , int meetingId ,int churchId ,int userId , String phone , String imagePath) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName  = lastName;
+        this.churchId  = churchId;
+        this.meetingId = meetingId;
+        this.userId    = userId;
+        this.phone     = phone;
+        this.imagePath = imagePath;
     }
 
     public ProfileDtlDto(int id, String firstName, String lastName, String gendre, String serviceStage, String phone, LocalDate birthday, String address, String fatherPeriest, String userName) {
@@ -215,5 +228,29 @@ public class ProfileDtlDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getChurchId() {
+        return churchId;
+    }
+
+    public void setChurchId(int churchId) {
+        this.churchId = churchId;
+    }
+
+    public int getMeetingId() {
+        return meetingId;
+    }
+
+    public void setMeetingId(int meetingId) {
+        this.meetingId = meetingId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

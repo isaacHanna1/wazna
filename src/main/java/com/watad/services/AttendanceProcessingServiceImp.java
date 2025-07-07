@@ -45,7 +45,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
                 int curchId    = profile.getChurch().getId();
                 int meetingID  = profile.getChurch().getId();
                 double totalPoint = userPointTransactionService.getTotalPointsByProfileIdAndSprintId(user.getProfile().getId(),sprintDataService.getSprintDataByIsActive(curchId,meetingID).getId());
-                return new PointsSummaryDTO(addPoint,totalPoint);
+                return new PointsSummaryDTO(addPoint,totalPoint,user.getId(),profile.getFirstName(), profile.getLastName(), profile.getPhone());
             }
         return new PointsSummaryDTO(0.0 ,0.0);
     }

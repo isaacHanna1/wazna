@@ -4,6 +4,7 @@ import com.watad.entity.Meetings;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 @Repository
 public class MeetingDaoImp implements  MeetingDao{
@@ -20,4 +21,5 @@ public class MeetingDaoImp implements  MeetingDao{
     public List<Meetings> findAll() {
         return entityManager.createQuery("FROM Meetings", Meetings.class).getResultList();
     }
+
 }

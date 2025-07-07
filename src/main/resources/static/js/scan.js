@@ -36,6 +36,7 @@ function stopScan() {
 async function sendQrCode(code, id) {
   try {
     const baseURL = getBaseUrl();
+    console.log((baseURL+`/api/scanner/${code}/${id}`));
     const response  = await fetch(baseURL+`/api/scanner/${code}/${id}`, {
       method: 'GET',
       headers: {

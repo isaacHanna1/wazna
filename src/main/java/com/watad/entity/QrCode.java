@@ -36,6 +36,11 @@ public class QrCode {
     @JoinColumn( name = "meeting_id")
     private Meetings meetings ;
 
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn( name = "church_id")
+    private Church church ;
+
+
     public QrCode() {
     }
 
@@ -101,5 +106,13 @@ public class QrCode {
 
     public void setMeetings(Meetings meetings) {
         this.meetings = meetings;
+    }
+
+    public Church getChurch() {
+        return church;
+    }
+
+    public void setChurch(Church church) {
+        this.church = church;
     }
 }

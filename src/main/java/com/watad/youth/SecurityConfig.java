@@ -32,20 +32,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs (if needed)
+                .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form
-                        .loginPage("/sign-in") // the control UL handle show the view
-                        .loginProcessingUrl("/login") // the controller that handle logic for authentication
+                        .loginPage("/sign-in")
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/home", true)
                         .failureHandler(new CustomAuthenticationFailureHandle(userDetailsService))
                         .permitAll()
-                )
+
+                ).rememberMe(config->config.key("IsaacHanna1@2022")
+                        .tokenValiditySeconds(3600))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/sign-in?logout=true")
                         .permitAll()
                 )
                 .authorizeHttpRequests(auth ->
+
                         auth.requestMatchers("/youth/point/add").hasAnyRole("SERVER","SUPER")
                         .requestMatchers(
                                 "/sign-in",

@@ -21,17 +21,18 @@ public class ScanRestController {
     private final QrCodeService qrCodeService;
     private final AttendanceProcessingService processingService ;
     private final UserServices userServices;
+
+
     public ScanRestController(QrCodeService qrCodeService , AttendanceProcessingService processingService , UserServices userServices) {
         this.qrCodeService = qrCodeService;
         this.processingService = processingService;
         this.userServices = userServices;
     }
-
     @GetMapping("/scanner/{code}/{userId}")
     public PointsSummaryDTO checkCode(@PathVariable String code , @PathVariable int userId){
         User user = userServices.findUserById(userId);
         PointsSummaryDTO pointsSummaryDTO =  processingService.attendanceProcessing(user,code);
-         pointsSummaryDTO.setRedirectURl("/notifyWithPoints");
+        pointsSummaryDTO.setRedirectURl("/notifyWithPoints");
         return pointsSummaryDTO;
     }
 }

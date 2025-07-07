@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -157,7 +158,16 @@ public class ProfileServiceImp implements ProfileService {
         return imageName;
     }
 
-
+    @Override
+    public List<ProfileDtlDto> findByUserPhone(String phone) {
+        List<ProfileDtlDto> listOfProfile = new ArrayList<>();
+        if(!phone.isEmpty()) {
+            int churchId = userServices.getLogInUserChurch().getId();
+            int meetingId = userServices.getLogInUserMeeting().getId();
+             listOfProfile = profileDao.findByUserPhone(phone, churchId, meetingId);
+        }
+        return  listOfProfile;
+    }
     private void deleteOldFile(String filePath) {
         File file = new File(filePath);
         if (file.exists()) {

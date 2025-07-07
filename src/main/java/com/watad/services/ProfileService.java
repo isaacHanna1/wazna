@@ -17,5 +17,5 @@ public interface ProfileService {
     public  Profile getProfileById(int id );
     public  void editPrfofile(Profile profile , MultipartFile image , int id )  throws IOException;
     public String getProfileImageName(int profile_id);
-
+    List<ProfileDtlDto> findByUserPhone(String phone);
 }

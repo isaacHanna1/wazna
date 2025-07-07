@@ -77,6 +77,17 @@
             Add Wazna
         </a>
     </li>
+    <!-- Add Attendance (new) -->
+    <li class="nav-item protected-content" sec:authorize="hasAnyRole('SERVER','SUPER')">
+        <a th:href="@{/manualAttandance}" class="nav-link logout-button">
+            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+            </svg>
+            Add Attendance
+        </a>
+    </li>
     <li class="nav-item protected-content" sec:authorize="hasRole('YOUTH')">
             <a th:href="@{/scan}" class="nav-link logout-button">
                 <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"

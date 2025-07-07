@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
 
                         auth.requestMatchers("/youth/point/add").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/manualAttandance").hasAnyRole("SERVER","SUPER")
                         .requestMatchers(
                                 "/sign-in",
                                 "/register",

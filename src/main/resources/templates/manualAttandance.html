@@ -9,26 +9,15 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+        <link th:href="@{../../css/styles.css}" rel="stylesheet" />
   </head>
   <body>
+    <!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
     <!-- Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
     <div class="app">
-      <!-- Header -->
-      <header class="header">
-        <div class="container header-content">
-          <div class="header-main">
-            <div class="brand">
-              <h1 class="brand-title">Wazna</h1>
-              <p class="brand-subtitle">
-                Manage attendance and track engagement points
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <!-- Main Content -->
       <main class="main">
         <div class="container">
@@ -286,6 +275,7 @@
         </div>
       </main>
     </div>
+    <script th:src="@{/js/nav.js}"></script>
     <script th:src="@{/js/jCommon/Common.js}"></script>
     <script th:src="@{/js/manualAttandance.js}"></script>
   </body>

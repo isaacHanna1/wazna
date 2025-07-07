@@ -413,6 +413,7 @@ searchInput.addEventListener("keyup", debouncedSearch);
         const userDisplay          = document.getElementById("user-display");
         searchInput.value          = `${user.phone}`;
         userDisplay.className      = "user-display filled";
+        console.log(`${user.userId}`);
         userDisplay.innerHTML      = `
                 <div class="user-info">
                     <img src ="${baseURL}/images/${user.imagePath}" class="user-avatar" />
@@ -421,7 +422,7 @@ searchInput.addEventListener("keyup", debouncedSearch);
                         <div class="user-meta">
                             <span>ID: ${user.id}</span>
                             <span>Phone: ${user.phone}</span>
-                            <input type = "hidden" id = "userId" value=${user.userId} />
+                            <input type = "hidden" id ="user_Id" value="${user.userId}" />
                         </div>
                     </div>
                 </div>
@@ -435,7 +436,8 @@ searchInput.addEventListener("keyup", debouncedSearch);
             const btnInnerHtml  = btn_attendance.innerHTML;
             btn_attendance.innerHTML = `<div class="loading-spinner"></div>Recording Attendance...`;
             let meetingCode  = document.getElementById("meetingCode").value;
-            let userId       = document.getElementById("userId").value;
+            let userId       = document.getElementById("user_Id").value;
+            console.log(userId);
              const response  = await fetch(baseURL+`/api/scanner/${meetingCode}/${userId}`);
              console.l
             if(!response.ok){

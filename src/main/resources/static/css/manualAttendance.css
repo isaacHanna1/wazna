@@ -436,7 +436,7 @@ body {
   opacity: 0.3;
 }
 
-.user-info {
+.user_info {
   display: flex;
   align-items: center;
   gap: var(--space-3);

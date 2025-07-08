@@ -415,7 +415,7 @@ searchInput.addEventListener("keyup", debouncedSearch);
         userDisplay.className      = "user-display filled";
         console.log(`${user.userId}`);
         userDisplay.innerHTML      = `
-                <div class="user-info">
+                <div class="user_info">
                     <img src ="${baseURL}/images/${user.imagePath}" class="user-avatar" />
                     <div class="user-details">
                         <h3 class="user-name">${user.firstName} ${user.lastName}</h3>
@@ -436,10 +436,14 @@ searchInput.addEventListener("keyup", debouncedSearch);
             const btnInnerHtml  = btn_attendance.innerHTML;
             btn_attendance.innerHTML = `<div class="loading-spinner"></div>Recording Attendance...`;
             let meetingCode  = document.getElementById("meetingCode").value;
+            if (meetingCode === "") {
+                showToast("Error", "Meeting Code is mandatory", "error");
+                btn_attendance.innerHTML  = btnInnerHtml;
+                btn_attendance.disabled = false;
+                return;
+            }
             let userId       = document.getElementById("user_Id").value;
-            console.log(userId);
              const response  = await fetch(baseURL+`/api/scanner/${meetingCode}/${userId}`);
-             console.l
             if(!response.ok){
                 const errorData    = await response.json();
                 btn_attendance.innerHTML      = btnInnerHtml;

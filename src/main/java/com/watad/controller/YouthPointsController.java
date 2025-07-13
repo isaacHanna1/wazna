@@ -61,6 +61,9 @@ public class YouthPointsController {
         }
         model.addAttribute("message", message);
         model.addAttribute("type", type);
+        List<User> superUSers = userServices.findByRole(3); // get user have Super role;
+        model.addAttribute("SuperUser",superUSers);
+        model.addAttribute("logedInUser",userServices.logedInUser().getId());
         return  "TransferWazna";
     }
 

@@ -23,13 +23,13 @@
   padding: 0;
 }
 
-
 body {
   font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #f7f7f7;
   color: #333;
   line-height: 1.6;
 }
+
 .success-message {
   position: fixed;
   top: 50%;
@@ -50,11 +50,20 @@ body {
   z-index: 9999;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
+
 .success-message.show {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
+  animation: fadeOut 3s ease forwards;
+  animation-delay: 2s;
 }
 
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
 /*Global style*/
 
 .invalid {

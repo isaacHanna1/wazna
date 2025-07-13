@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -75,6 +76,13 @@ public class UserServicesImp implements UserServices{
     public Profile getLogedInUserProfile(){
         return  logedInUser().getProfile();
     }
+
+
+    @Override
+    public List<User> findByRole(int role_id) {
+        return  userDao.findByRoleId(role_id);
+    }
+
     public Church getLogInUserChurch(){
         return  getLogedInUserProfile().getChurch();
     }

@@ -48,8 +48,8 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(auth ->
-
                         auth.requestMatchers("/youth/point/add").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/youth/point/transfer").hasAnyRole("YOUTH","SERVER")
                                 .requestMatchers("/manualAttandance").hasAnyRole("SERVER","SUPER")
                         .requestMatchers(
                                 "/sign-in",

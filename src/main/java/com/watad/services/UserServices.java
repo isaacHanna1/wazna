@@ -2,6 +2,7 @@ package com.watad.services;
 
 import com.watad.entity.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserServices {
@@ -15,4 +16,6 @@ public interface UserServices {
     Meetings getLogInUserMeeting();
     Church getLogInUserChurch();
     Profile getLogedInUserProfile();
+    List<User> findByRole(int role_id);
+
 }

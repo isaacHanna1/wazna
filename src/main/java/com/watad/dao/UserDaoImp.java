@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -61,5 +63,19 @@ public class UserDaoImp implements  UserDao{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<User> findByRoleId(int role_id) {
+        String JPQL = """
+                              SELECT u FROM User u
+                                JOIN u.roles r
+                                JOIN u.profile p
+                                WHERE r.id = :roleId
+                """;
+        List<User> users =  new ArrayList<>();
+        users = entityManager.createQuery(JPQL,User.class).setParameter("roleId",role_id).getResultList();
+        return  users;
+
     }
 }

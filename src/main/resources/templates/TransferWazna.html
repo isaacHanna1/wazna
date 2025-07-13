@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wazna Transfer</title>
+  <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+
+</head>
+<body>
+
+<!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+<!-- Toast Container -->
+<div class="auth-container">
+  <div class="auth-form">
+    <h2 class="auth-title">Transfer Wazna</h2>
+    <form action="/youth/point/transfer" method="POST">
+      <div class="form-group">
+        <label class="form-label" for="points">Number of points to transfer:</label>
+        <input class="form-input" type="number" id="points" name="point" min="1" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="transferTo">Transfer To:</label>
+        <select class="form-input" id="transferTo" name="toUserId" rows="3" required>
+          <option th:each="user : ${SuperUser}"
+                  th:value="${user.id}"
+                  th:text="${user.profile.firstName} + ' ' + ${user.profile.lastName}">
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="reason">Reason For Transfer:</label>
+        <textarea class="form-input" id="reason" name="reason" rows="3" required></textarea>
+      </div>
+      <input type="hidden" name="fromUserId" th:value="${logedInUser}" />
+      <button type="submit" class="btn btn-primary">Transfer Now</button>
+      <div th:if="${message}"
+          th:class="'success-message show ' + (${type} == 'error' ? 'error-message' : '')"
+          th:text="${message}">
+      </div>
+    </form>
+  </div>
+</div>
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+</body>
+</html>

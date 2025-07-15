@@ -9,6 +9,7 @@ import com.watad.services.UserServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,27 +45,23 @@ public class YouthPointsController {
 
     @PostMapping("/transfer")
     public String transferPoint(@RequestParam int fromUserId,
-                              @RequestParam int toUserId,
-                              @RequestParam double point,
-                              @RequestParam String reason,
-                                Model model) {
-        String message    = "We suceed transfer wazna ";
-        String type       = "pass";
-
-
+                                @RequestParam int toUserId,
+                                @RequestParam double point,
+                                @RequestParam String reason,
+                                RedirectAttributes redirectAttributes) {
+        String message = "We succeed in transferring wazna";
+        String type = "success";
 
         try {
             boolean result = upts.transferPoint(fromUserId, toUserId, point, reason);
-        } catch (NotEnoughPointsException ex){
-            message      = "You don't have enough wazna points to complete this transfer.";
-            type         = "error";
+        } catch (NotEnoughPointsException ex) {
+            message = "You don't have enough wazna points to complete this transfer.";
+            type = "error";
         }
-        model.addAttribute("message", message);
-        model.addAttribute("type", type);
-        List<User> superUSers = userServices.findByRole(3); // get user have Super role;
-        model.addAttribute("SuperUser",superUSers);
-        model.addAttribute("logedInUser",userServices.logedInUser().getId());
-        return  "TransferWazna";
+
+        redirectAttributes.addFlashAttribute("message", message);
+        redirectAttributes.addFlashAttribute("type", type);
+        return "redirect:/youth/point/transfer";
     }
 
 }

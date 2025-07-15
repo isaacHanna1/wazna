@@ -11,7 +11,10 @@
 
 <!-- Include the navbar fragment -->
 <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
-<!-- Toast Container -->
+
+ <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
 <div class="auth-container">
   <div class="auth-form">
     <h2 class="auth-title">Transfer Wazna</h2>
@@ -35,14 +38,24 @@
       </div>
       <input type="hidden" name="fromUserId" th:value="${logedInUser}" />
       <button type="submit" class="btn btn-primary">Transfer Now</button>
-      <div th:if="${message}"
-          th:class="'success-message show ' + (${type} == 'error' ? 'error-message' : '')"
-          th:text="${message}">
-      </div>
+
+
+      <!--hidden values  this data come from backend -->
+      <input type="hidden" name="message" id ="msg_data" th:value='${message}'>
+      <input type="hidden" name="type" id ="msg_type" th:value='${type}'>
     </form>
   </div>
 </div>
 <script th:src="@{/js/nav.js}"></script>
 <script th:src="@{/js/jCommon/Common.js}"></script>
+<script>
+  let msg_data = document.getElementById("msg_data");
+  let msg_type = document.getElementById("msg_type");
+
+  if(msg_data != null && msg_data.value != ""){
+    showToast("Alert" , msg_data.value , msg_type.value);
+  }
+
+</script>
 </body>
 </html>

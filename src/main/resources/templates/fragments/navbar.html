@@ -103,18 +103,22 @@
     </li>
         <!--  New Transfer Menu -->
         <li class="nav-item protected-content" sec:authorize="hasRole('YOUTH')">
-            <a th:href="@{/youth/point/transfer}" class="nav-link logout-button">
-                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 17v2a2 2 0 0 0 2 2h2"></path>
-                    <polyline points="7 7 3 12 7 17"></polyline>
-                    <line x1="3" y1="12" x2="15" y2="12"></line>
-                    <polyline points="17 7 21 12 17 17"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
+            <a th:href="@{/youth/point/transfer}" class="nav-link logout-button d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" width="20" height="20" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     viewBox="0 0 24 24">
+                    <path d="M16 17h6" />
+                    <path d="M22 17l-4-4" />
+                    <path d="M22 17l-4 4" />
+                    <path d="M8 7H2" />
+                    <path d="M2 7l4-4" />
+                    <path d="M2 7l4 4" />
                 </svg>
-                Transfer Points
+
+                Transfer Wazna
             </a>
         </li>
+
         <li class="nav-item protected-content">
             <form th:action="@{/logout}" method="post" style="display: inline;">
                 <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer;">

@@ -105,3 +105,27 @@ function showModal(message) {
 function getBaseUrl() {
   return `${window.location.protocol}//${window.location.host}`;
 }
+
+
+function showToast(title, message, type = "info") {
+        const toastContainer = document.getElementById("toast-container");
+        const toast          = document.createElement("div");
+        toast.className      = `toast toast-${type}`;
+
+        toast.innerHTML = `
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+        toastContainer.appendChild(toast);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.remove();
+          }
+        }, 5000);
+}

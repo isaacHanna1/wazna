@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code</title>
+  <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+
+</head>
+<body>
+
+<!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+ <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+<div class="auth-container">
+  <div class="auth-form">
+    <h2 class="auth-title">Create Meeting</h2>
+    <form th:action="@{/qr/code}"  method="POST"  th:object="${qrCode}">
+      <div class="form-group">
+        <label class="form-label" for="QrCode">QR Code:</label>
+        <input class="form-input" type="text" id="QrCode" name="code" th:field ="*{code}" required>
+      </div>
+
+       <div class="form-group">
+        <label class="form-label" for="QrCodeDesc">QR Code Description :</label>
+        <input class="form-input" type="text" id="QrCodeDesc" name="description" th:field ="*{description}"  required>
+      </div>
+
+      <div class="form-group">
+        <label  class = "form-label" for="ValidDate">Meeting Day :</label>
+        <input  class = "form-input" type="date" id="ValidDate" name="validDate" th:field ="*{validDate}" >
+      </div>
+
+      <div class="form-group">
+        <label  class = "form-label" for="StartTime">Start Time :</label>
+        <input  class = "form-input" type="time" id="StartTime" name="validStart" th:field ="*{validStart}">
+      </div>
+
+      <div class="form-group">
+        <label  class = "form-label" for="endTime">End Time :</label>
+        <input  class = "form-input" type="time" id="endTime" name="validEnd" th:field ="*{validEnd}" >
+      </div>
+      
+      <div class="form-group">
+        <label  class = "form-label" for="active">Active :</label>
+        <input   type="checkbox" id="active" name="active" th:field ="*{active}" >
+      </div>
+
+
+      <button type="submit" class="btn btn-primary">Create</button>
+      <input type="hidden" name="msg"  id="msg"         th:value="${msg}">
+      <input type="hidden" name="type" id ="msg_type" th:value='${type}'>
+
+    </form>
+  </div>
+</div>
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+<script>
+        let msg      = document.getElementById("msg");
+        let msg_type = document.getElementById("msg_type");
+        if (msg && msg.value !== "" && msg_type && msg_type.value != null) {
+            showToast("Note", msg.value, msg_type.value);
+        }
+</script>
+</body>
+</html>

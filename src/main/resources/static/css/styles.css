@@ -5,6 +5,7 @@
   --youth-accent: #E5DEFF;
   --youth-light: #F1F0FB;
   --youth-dark: #1A1F2C;
+  --youth-white:#fff;
   /* Brand Colors */
   --brand-50: #f0f4ff;
   --brand-100: #e0e9ff;
@@ -71,6 +72,9 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /*font size*/
+    --heading-2em :2em;
 }
 
 
@@ -161,14 +165,60 @@ body {
 .navbar-logo {
   margin-right: 0.5rem;
 }
-
 .navbar-nav {
   display: flex;
   list-style-type: none;
   gap: 1rem;
   align-items: center;
 }
+.main-menu {
+  position: relative;
+}
+.main-menu:hover .sub-menu{
+  display: block;
+  position: absolute;
+  top: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
+}
+.main-menu .sub-menu li a{
+  font-size: .8em;
+  width: 8rem; 
+  color: #555;
+
+}
+.navbar-nav  .sub-menu{
+  display: none;
+  position: relative;
+}
+.navbar-nav .sub-sub-menu{
+  display: none;
+  background-color: #fff;
+}
+.navbar-nav  .sub-menu:hover .sub-sub-menu {
+  position: absolute;
+  display: block;
+  right: 100%;
+  top:20px;
+}
+@media (max-width: 768px) {
+.navbar-nav .nav-item .menu-name{
+  display: none;
+}
+.main-menu:hover .sub-menu{
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 50px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 8;
+}
+.navbar-nav .nav-item .sub-menu .menu-name{
+  display: block;
+}
+}
 .nav-item {
   display: flex;
   align-items: center;
@@ -177,6 +227,7 @@ body {
 .nav-link {
   display: flex;
   align-items: center;
+  width: 100%;
   padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
   font-size: 0.875rem;
@@ -199,6 +250,9 @@ body {
 .nav-icon {
   margin-right: 0.5rem;
 }
+
+
+
 
 .user-info {
   display: flex;
@@ -367,7 +421,15 @@ body {
 .text-center {
   text-align: center;
 }
-
+.mar-auto{
+  margin: auto;
+}
+.just-con-center{
+    justify-content: center
+}
+.pad-10px{
+  padding:10px;
+}
 /* Hero Section */
 .hero {
   background: linear-gradient(to right, var(--youth-primary), var(--youth-secondary));
@@ -676,10 +738,10 @@ body {
     top: 0;
     right: -220px; 
     height: 100vh;
-    width: 220px;
+    width: 65px;
     background-color: rgb(255, 255, 255);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem;
+    padding-top: 1rem;
     z-index: 10;
     transition: right 0.3s ease; 
   }
@@ -824,4 +886,127 @@ body {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+
+
+/* Start General Style */
+
+.form-element{
+  background-color: var(--youth-white);
+  padding: var(--space-6);
+  border-radius: var(--space-5);
+}
+.heading-h2{
+  font-size: var(--heading-2em);
+}
+.input{
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+.label{
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 0.25rem; 
+  display: inline-block;
+}
+.width-120px{
+  width: 120px;
+}
+.mar-bottom-3px{
+  margin-bottom: 3px;
+}
+.pad-10px{
+  padding: 10px;
+}
+.mar-bottom-5px{
+  margin-bottom: 5px;
+}
+.btn-no-width{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+  margin-top: 0.5rem;
+}
+
+.flex{
+  display: flex;
+}
+.flx-wrap{
+  flex-wrap: wrap;
+}
+.space-between{
+ justify-content: space-between; 
+}
+.color-primary{
+  color: var(--youth-primary);
+}
+.mar-left-90{
+  margin-left:90%;
+}
+.table{
+  width: 100%;
+}
+.table thead{
+  background-color: var(--youth-primary);
+  color: var(--youth-white);
+  padding: var(--space-5);
+}
+.table td{
+  text-align: center;
+}
+.gap-5{
+  gap: 5;
+}
+
+/* Show only on mobile related to tables only */
+@media (max-width: 768px) {
+  
+.mob-hid{
+    display: none;  
+  }
+.table thead th {
+  font-size: 12px;
+}
+.table tbody td  {
+  font-size: 10px;
+}
+}
+
+/* To Make form take the directional as column*/
+@media (max-width:768px) {
+  .flex-mob{
+    flex-direction: column;
+  }
+  
+}
+
+.pagination-link {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination-link:hover,
+.active-page {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+.ul-list-style-none{
+list-style: none;
 }

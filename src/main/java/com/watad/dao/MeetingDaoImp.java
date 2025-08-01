@@ -22,4 +22,11 @@ public class MeetingDaoImp implements  MeetingDao{
         return entityManager.createQuery("FROM Meetings", Meetings.class).getResultList();
     }
 
+    @Override
+    public Meetings createMeating(Meetings meetings) {
+         entityManager.persist(meetings);
+         entityManager.flush();
+         return  meetings;
+    }
+
 }

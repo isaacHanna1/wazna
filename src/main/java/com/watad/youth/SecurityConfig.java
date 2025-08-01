@@ -1,6 +1,7 @@
 package com.watad.youth;
 
 import com.watad.security.CustomAuthenticationFailureHandle;
+import com.watad.security.events.LoginSuccessHandler;
 import com.watad.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,12 +30,16 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form
                         .loginPage("/sign-in")
+                        .successHandler(loginSuccessHandler)
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/home", true)
                         .failureHandler(new CustomAuthenticationFailureHandle(userDetailsService))

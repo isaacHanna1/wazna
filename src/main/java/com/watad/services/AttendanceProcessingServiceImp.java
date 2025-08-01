@@ -6,7 +6,7 @@ import com.watad.dto.PointsSummaryDTO;
 import com.watad.entity.*;
 import com.watad.exceptions.QrCodeException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 @Service
@@ -30,6 +30,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public PointsSummaryDTO attendanceProcessing(User user , String code) {
             boolean isvalid = qrCodeService.isValid(code);
                if(isvalid){
@@ -66,7 +67,9 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         int meetingID       = profile.getMeetings().getId();
         SprintData sprintData = sprintDataService.getSprintDataByIsActive(curchId,meetingID);
         if (bonusType == null || sprintData == null) {
-            throw new IllegalArgumentException("User or QR code cannot be null or empty");
+            System.out.println("User or QR code cannot be null or empty");
+            throw new IllegalArgumentException("Internal Error Happened !");
+
         }
             int points = bonusType.getPoint();
             double addedPoint = YouthMeetingCalcPoints.calculatePoints(qrCode.getValidStart(), qrCode.getValidEnd(), points, attendance.getScannedAt());

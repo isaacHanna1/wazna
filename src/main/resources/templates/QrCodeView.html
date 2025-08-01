@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>QR Codes</title>
+    <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+  <!-- Include the navbar fragment -->
+  <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+  <div class="container">
+      <h2 class="el-messiri heading text-center color-primary" >All Meetings </h2>
+      <form th:action="@{/qr/viewEditQrCode}" method="get" class="form-element flex flex-mob   flx-wrap space-between">
+        <div class="mar-bottom-5px">
+          <label for="fromDate" class="width-120px label">Valid Date From:</label>
+          <input type="date" id="fromDate" name="fromDate" th:value="${start}" class="input" required />
+        </div>
+        <div>
+          <label for="toDate" class="width-120px label">Valid Date To:</label>
+          <input type="date" id="toDate" name="toDate"   th:value="${end}"  class="input" required/>
+        </div>
+        <div>
+          <button type="submit" class="btn-no-width btn-primary">Filter</button>
+        </div>
+        <input type="hidden"  th:value="${pageNum}"  name="pageNum"/>
+        <input type="hidden"  th:value="${pageSize}"  name="pageSize"/>
+      </form>
+      <form  th:action="@{/qr/update}" method="post">
+        <table class="table mar-bottom-5px">
+          <h3 class="color-primary pad-10px">Meetings</h3>
+          <thead>
+            <tr>
+              <th class="mob-hid" >SNo</th>
+              <th>QR Code</th>
+              <th>Valid Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>active</th>
+            </tr>
+          </thead>
+          <tbody>
+           <tr th:each="qr, iterStat : ${qrCodeList}" th:object="${qrCodeFormWrapper}">
+              <td th:text="${iterStat.index + 1}" class="mob-hid">1</td>
+              <td th:text="${qr.code}"></td>
+              <td th:text="${qr.validDate}"></td>
+              <td th:text="${qr.validStart}"></td>
+              <td th:text="${qr.validEnd}"></td>
+              <td>
+                <input type="hidden" 
+                          th:field="*{list[__${iterStat.index}__].id}" 
+                          th:value="${qr.id}"/>
+                    <input type="checkbox" 
+                          th:field="*{list[__${iterStat.index}__].active}"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+          <input type="hidden"  th:value="${start}"    name="fromDate"/>
+          <input type="hidden"  th:value="${end}"      name="toDate"/>
+          <input type="hidden"  th:value="${numOfPages}" name="numOfPages"/>
+          <div class="pad-10px">
+          <button type="submit" class="btn-no-width btn-primary">Execute</button>
+        </div>
+  </form>
+</div>
+<div class="pagination pad-10px flex just-con-center">
+  <ul class="pagination-list flex gap-5 ul-list-style-none ">
+    <li th:each="pageNum : ${#numbers.sequence(1, numOfPages)}">
+      <a th:href="@{/qr/viewEditQrCode(
+                     pageNum=${pageNum}, 
+                     pageSize=${pageSize}, 
+                     fromDate=${start}, 
+                     toDate=${end})}"
+         th:classappend="${pageNum == currentPage} ? 'active-page'"
+         class="pagination-link">
+        <span th:text="${pageNum}">1</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+</body>
+</html>

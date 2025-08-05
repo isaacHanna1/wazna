@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+    <title>Wazna - Profile-Management</title>
+</head>
+<body>
+    <!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+    <div class="el-messiri heading-h2 text-center color-primary pad-10px">
+        Profile Management
+    </div>
+    <div class="container profile_manage">
+        <div class="status flex flx-wrap space-between">
+            <div class="card ">
+                Total User
+                <span class="color-primary" th:text="${totalUser}"></span>
+            </div>
+            <div class="card ">
+                Active User
+                <span class="color-primary" th:text="${activeUser}"></span>
+            </div>
+            <div class="card ">
+                Inactive User
+                <span class="inactive" th:text="${inactiveUser}" ></span>
+            </div>
+        </div>
+        <div class="filter form-element mar-bottom-5px">
+            <form class="flex flx-wrap flex-mob gap-5 just-con-bet manage_filter">
+                <div class="searchContainer">
+                    <input type="text" placeholder="Search by Name Or Phone " class="input" id ="searchBox" name="keyword" th:value="${keyword}" autocomplete="off">
+                    <input type="hidden" th:value="${searchProfileId}" name="searchProfileId" id ="searchProfileId"/>
+                    <input type="hidden" th:value="${meetingId}" name="meetingId" id = "meetingId"/>
+                    <input type="hidden" th:value="${churchId}" name="churchId"   id = "churchId"/>
+                    <input type="hidden" th:value="${pageSize}" name="pageSize"   id = "pageSize"/>
+                    <input type="hidden" th:value="${currentPage}"  name="pageNum"     id = "pageNum"/>
+                    <ul id="profileSuggestion" class="dis_none profileSuggestion">                        
+                    </ul>
+                </div>
+                <div>
+                    <select class="input" name="status">
+                        <option value="All"   th:selected="${status} == 'All'">All Status</option>
+                        <option value="true"  th:selected="${status} == 'true'">Active</option>
+                        <option value="false" th:selected="${status} == 'false'">Inactive</option>
+                    </select>
+                </div>
+                <div>
+                        <select class="input" name="gender">
+                            <option value="All"    th:selected="${gender} == 'All'">All Gender</option>
+                            <option value="Male"   th:selected="${gender} == 'Male'">Male</option>
+                            <option value="Female" th:selected="${gender} == 'Female'">Female</option>
+                        </select>
+                </div>
+                <button type="submit" class="btn-no-width btn-primary" id="filter_btn">Filter</button>
+            </form>
+        </div>
+        <div class="profiles">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>SNo</th>
+                        <th>Name</th>
+                        <th>phone</th>
+                        <th class="mob-hid">Gender</th>
+                        <th class="mob-hid">Address</th>
+                        <th class="mob-hid">State</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <tr th:each="profile, iterStat : ${profiles}">
+                <td th:text="${iterStat.index + 1}">1</td>
+                <td th:text="${profile.firstName} + ' ' + ${profile.lastName}">--</td>
+                <td th:text="${profile.phone}">--</td>
+                <td class="mob-hid" th:text="${profile.gender}">--</td>
+                <td class="mob-hid" th:text="${profile.address}">--</td>
+                <td class="mob-hid" th:text="${profile.serviceStage}">--</td>
+                  <td>
+                        <a href="#" onclick="updateProfileStatus();"
+                            th:class="  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text enabled_btn ' : 'btn-no-width btn-primary enabled_btn'"
+                            th:text="${profile.isEnabled} ? 'Disabled' : 'Enabled'">
+                            
+                        </a>                    
+                  </td>
+                <input type="hidden" th:value="${profile.isEnabled}" name="enabled" id="isEnabled" />
+                <input type="hidden" th:value="${profile.userName}"       name="profileId" id="userName" />
+            </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination pad-10px flex just-con-center" th:if="${numOfPages > 0}" >
+            <ul class="pagination-list flex gap-5 ul-list-style-none ">
+                <li th:each="pageNum : ${#numbers.sequence(1, numOfPages)}">
+                <a th:href="@{/profileManage(pageNum=${pageNum}, pageSize=${pageSize}, status=${status}, gender=${gender})}"
+
+                    th:classappend="${pageNum == currentPage} ? 'active-page'"
+                    class="pagination-link">
+                    <span th:text="${pageNum}">1</span>
+                </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script th:src="@{/js/nav.js}"></script>
+    <script th:src="@{/js/jCommon/Common.js}"></script>
+    <script th:src="@{/js/manageProfile.js}"></script>
+</body>
+
+</html>

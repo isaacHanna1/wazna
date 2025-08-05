@@ -93,7 +93,7 @@ public class ProfileServiceImp implements ProfileService {
         dto.setId(theId);
         dto.setFirstName(profile.getFirstName());
         dto.setLastName(profile.getLastName());
-        dto.setGendre(profile.getGender().toString());
+        dto.setGender(profile.getGender().toString());
         dto.setPhone(profile.getPhone());
         dto.setBirthday(profile.getBirthday());
         dto.setAddress(profile.getAddress());
@@ -168,10 +168,28 @@ public class ProfileServiceImp implements ProfileService {
         }
         return  listOfProfile;
     }
+
+
     private void deleteOldFile(String filePath) {
         File file = new File(filePath);
         if (file.exists()) {
             file.delete();
         }
     }
+
+    @Override
+    public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status, String gender, int pageNum, int pageSize) {
+       return  profileDao.findAllByFilterPaginated( profileId ,status,gender,pageNum,pageSize);
+    }
+
+    @Override
+    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId) {
+        return profileDao.getTotalPagesByFilter(status,gender,pageSize , profileId);
+    }
+
+    @Override
+    public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword, int churchId, int meetingId) {
+        return  profileDao.findProfileByNameOrPhone(keyword,churchId,meetingId);
+    }
+
 }

@@ -13,7 +13,7 @@ public class ProfileDtlDto {
     private int id ;
     private String firstName;
     private String lastName;
-    private String gendre;
+    private String gender;
     private List<Gender> genderList;
     private String serviceStage;
     private List<ServiceStage> serviceStageList;
@@ -34,10 +34,17 @@ public class ProfileDtlDto {
     private int churchId;
     private int meetingId;
     private int userId;
+    private boolean isEnabled ; // staus of account in user table is enabled or not
     public ProfileDtlDto() {
     }
 
-    public ProfileDtlDto(int id, String firstName, String lastName , int meetingId ,int churchId ,int userId , String phone , String imagePath) {
+    public ProfileDtlDto(int id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public ProfileDtlDto(int id, String firstName, String lastName , int meetingId , int churchId , int userId , String phone , String imagePath) {
         this.id = id;
         this.firstName = firstName;
         this.lastName  = lastName;
@@ -48,11 +55,13 @@ public class ProfileDtlDto {
         this.imagePath = imagePath;
     }
 
-    public ProfileDtlDto(int id, String firstName, String lastName, String gendre, String serviceStage, String phone, LocalDate birthday, String address, String fatherPeriest, String userName) {
+    public ProfileDtlDto(int id, String firstName, String lastName, String gender,
+                         String serviceStage, String phone, LocalDate birthday,
+                         String address, String fatherPeriest, String userName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gendre = gendre;
+        this.gender = gender;
         this.serviceStage = serviceStage;
         this.phone = phone;
         this.birthday = birthday;
@@ -60,6 +69,24 @@ public class ProfileDtlDto {
         this.fatherPeriest = fatherPeriest;
         this.userName = userName;
     }
+
+    public ProfileDtlDto(int id, String firstName, String lastName, Gender gender,
+                         String serviceStage, String phone, LocalDate birthday,
+                         String address, String fatherPeriest, String userName  , boolean isEnabled) {
+        this.id = id;
+        this.firstName  = firstName;
+        this.lastName         = lastName;
+        this.gender           = gender.toString();
+        this.serviceStage     = serviceStage;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.address = address;
+        this.fatherPeriest = fatherPeriest;
+        this.userName = userName;
+        this.isEnabled = isEnabled;
+    }
+
+
 
 
     public int getId() {
@@ -86,12 +113,12 @@ public class ProfileDtlDto {
         this.lastName = lastName;
     }
 
-    public String getGendre() {
-        return gendre;
+    public String getGender() {
+        return gender;
     }
 
-    public void setGendre(String gendre) {
-        this.gendre = gendre;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getServiceStage() {
@@ -252,5 +279,14 @@ public class ProfileDtlDto {
 
     public void setUserId(int userId) {
         this.userId = userId;
+
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

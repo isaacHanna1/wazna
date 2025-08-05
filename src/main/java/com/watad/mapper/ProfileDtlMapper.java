@@ -17,7 +17,7 @@ public class ProfileDtlMapper {
         dtlDto.setPhone(profile.getPhone());
         dtlDto.setFirstName(profile.getFirstName());
         dtlDto.setLastName(profile.getLastName());
-        dtlDto.setGendre(profile.getGender().toString());
+        dtlDto.setGender(profile.getGender().toString());
         dtlDto.setServiceStage(profile.getServiceStage().getDescription());
         dtlDto.setUserName(profile.getUser().getUserName());
         return dtlDto;
@@ -34,7 +34,7 @@ public class ProfileDtlMapper {
             dtlDto.setPhone(profile.getPhone());
             dtlDto.setFirstName(profile.getFirstName());
             dtlDto.setLastName(profile.getLastName());
-            dtlDto.setGendre(profile.getGender().toString());
+            dtlDto.setGender(profile.getGender().toString());
             dtlDto.setServiceStage(profile.getServiceStage().getDescription());
             dtlDto.setUserName(profile.getUser().getUserName());
             dtlDto.setFatherPeriest(profile.getFatherPeriest());

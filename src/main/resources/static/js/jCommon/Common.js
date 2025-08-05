@@ -129,3 +129,74 @@ function showToast(title, message, type = "info") {
           }
         }, 5000);
 }
+
+// calling API for autoComplete the Profile of user (profile ID  , First_name , Last_name)
+
+async function getProfile(keyword, churchId, meetingId) {
+    const URL = getBaseUrl();
+    try {
+        const response = await fetch(`${URL}/api/profile/${keyword}?churchId=${churchId}&meetingId=${meetingId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Error when fetching the user data");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+        return [];
+    }
+}
+
+
+async function loadBonusType() {
+    const URL          = getBaseUrl();
+    try {
+        const response = await fetch(`${URL}/api/bonusType`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Error when fetching the user data");
+        }
+
+        const data     = await response.json();
+
+        // Convert each user into a clean object
+       const  bountyPoints = data.map(bonus => {
+            let bonusDesc = [bonus.description]
+            return {
+                'id':bonus.id,
+                [bonus.description]: bonus.point,
+                'point': bonus.point
+            };
+        });
+
+        return bountyPoints;
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+        return [];
+    }
+}
+
+function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);  
+        timeoutId = setTimeout(() => {
+            func.apply(this, args); 
+        }, delay);
+    };
+}

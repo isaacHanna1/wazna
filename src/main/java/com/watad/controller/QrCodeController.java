@@ -108,6 +108,7 @@ public class QrCodeController {
         model.addAttribute("pageSize",pageSize);
         model.addAttribute("pageNum",pageNum);
         model.addAttribute("numOfPages",numOfPages(pageSize,from,to));
+        model.addAttribute("currentPage", pageNum);
 
     }
 

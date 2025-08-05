@@ -1,5 +1,6 @@
 package com.watad.dao;
 
+import com.watad.dto.UserCountsDto;
 import com.watad.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -76,6 +77,34 @@ public class UserDaoImp implements  UserDao{
         List<User> users =  new ArrayList<>();
         users = entityManager.createQuery(JPQL,User.class).setParameter("roleId",role_id).getResultList();
         return  users;
+
+    }
+
+    @Override
+    public UserCountsDto getCountsInMeeting(int churchId, int meetingId) {
+        String jpql  = """
+                            SELECT new com.watad.dto.UserCountsDto(
+                                COUNT(u.id),
+                                SUM(CASE WHEN u.isEnabled = true THEN 1 ELSE 0 END),
+                                SUM(CASE WHEN u.isEnabled = false THEN 1 ELSE 0 END)
+                            )
+                            FROM User u
+                            JOIN u.profile p
+                            WHERE p.meetings.id = :meetingId
+                            AND p.church.id = :churchId
+                      """;
+
+                        TypedQuery<UserCountsDto> query = entityManager.createQuery(jpql, UserCountsDto.class);
+                        query.setParameter("meetingId", meetingId);
+                        query.setParameter("churchId", churchId);
+                        return query.getSingleResult();
+    }
+
+    @Override
+    public void activeOrDisactiveUser(User user) {
+            entityManager.merge(user);
+            System.out.println("the status of user is "+user.isEnabled());
+            entityManager.flush();
 
     }
 }

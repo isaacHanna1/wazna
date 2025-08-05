@@ -31,7 +31,9 @@ public class YouthPointsController {
 
     @GetMapping("/add")
     public String showFormAddBounce(Model model){
+        int id      = userServices.logedInUser().getId();
         model.addAttribute("bonusType",bonusTypeService.findAll());
+        model.addAttribute("user_id",id);
         return "addBounce";
     }
 

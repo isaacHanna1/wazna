@@ -104,7 +104,7 @@ function handleFormSubmit(event) {
 function submitBounty() {
 
     let theProfileId  = userFullName.id
-    let theUserId     = userId.innerText ;
+    let theUserId     = document.getElementById("user_id").value ;
     let bonusTypeId   = bountyType.value; 
     let points        = addPointsInput.value
    

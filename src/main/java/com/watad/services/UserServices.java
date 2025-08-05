@@ -1,5 +1,6 @@
 package com.watad.services;
 
+import com.watad.dto.UserCountsDto;
 import com.watad.entity.*;
 
 import java.util.List;
@@ -17,5 +18,6 @@ public interface UserServices {
     Church getLogInUserChurch();
     Profile getLogedInUserProfile();
     List<User> findByRole(int role_id);
-
+    UserCountsDto getCountsInMeeting();
+    int activeOrDisactiveUser(boolean enabled ,String userName);
 }

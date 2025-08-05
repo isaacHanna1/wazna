@@ -140,6 +140,9 @@ body {
 .invalid {
     border-color: #dc3545 !important;
  }
+ .inactive {
+  color: #dc3545 !important;
+ }
 .hide{
   display: none;
 }
@@ -174,10 +177,14 @@ body {
 .main-menu {
   position: relative;
 }
+ .sub-menu{
+  width: 9em;
+ }
 .main-menu:hover .sub-menu{
   display: block;
   position: absolute;
   top: 100%;
+  right: 20px;
   background-color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
@@ -190,18 +197,25 @@ body {
 }
 .navbar-nav  .sub-menu{
   display: none;
-  position: relative;
 }
+.sub-menu .nav-item {
+    position: relative; 
+}
+
 .navbar-nav .sub-sub-menu{
   display: none;
   background-color: #fff;
+  position:  absolute;
+  top: 100%;
+  right: 20px;
 }
-.navbar-nav  .sub-menu:hover .sub-sub-menu {
+.sub-menu .nav-item:hover > .sub-sub-menu {
   position: absolute;
   display: block;
   right: 100%;
   top:20px;
 }
+
 @media (max-width: 768px) {
 .navbar-nav .nav-item .menu-name{
   display: none;
@@ -426,6 +440,9 @@ body {
 }
 .just-con-center{
     justify-content: center
+}
+.just-con-bet{
+  justify-content: space-between;
 }
 .pad-10px{
   padding:10px;
@@ -926,6 +943,10 @@ body {
 .mar-bottom-5px{
   margin-bottom: 5px;
 }
+.mar-bottom-15px{
+  margin-bottom: 15px;
+}
+
 .btn-no-width{
   display: inline-flex;
   align-items: center;
@@ -970,7 +991,18 @@ body {
 .gap-5{
   gap: 5;
 }
-
+.dis_none{
+  display: none;
+}
+.dis_blcok{
+  display: block;
+}
+.red-col {
+  background-color: var(--error-500);
+}
+.white-color-text{
+  color: #fff;
+}
 /* Show only on mobile related to tables only */
 @media (max-width: 768px) {
   
@@ -981,7 +1013,7 @@ body {
   font-size: 12px;
 }
 .table tbody td  {
-  font-size: 10px;
+  font-size: .9em;
 }
 }
 
@@ -1009,4 +1041,66 @@ body {
 
 .ul-list-style-none{
 list-style: none;
+}
+
+/*Profile Management */
+.status{
+  margin-bottom: 10px;
+}
+.status > .card {
+    background-color: var(--youth-white);
+    border-radius: var(--radius-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    width: 30%;
+    padding: 30px 0;
+    font-weight: bold;
+
+}
+.status > .card span{
+  display: block;
+  font-size: var(--space-6);
+  color: var(--youth-primary);
+  font-weight: bold;
+}
+.profile_manage .filter .searchContainer {
+position: relative;
+}
+.profile_manage .filter .profileSuggestion {
+    list-style: none;
+    box-shadow: var(--shadow-xl);
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%; 
+    background: white;  
+    z-index: 1000;  
+    margin: 0;
+    padding: 0;
+    display: none;  
+}
+.profile_manage .filter .profileSuggestion li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.profile_manage .filter .profileSuggestion li:hover {
+    background-color: var(--youth-primary);
+    color: #fff;
+}
+@media (max-width:768px) {
+  .profile_manage .profiles .enabled_btn{
+         width: 2em;
+        font-size: .5em;
+  }
+  .profile_manage .manage_filter > div select , div input{
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .profile_manage .status  > .card {
+    font-size: .9em;
+  }
+  .profile_manage .status span{
+        font-size: 1.2em;
+  }
 }

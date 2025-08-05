@@ -1,6 +1,7 @@
 package com.watad.controller;
 
 import com.watad.dto.ProfileDtlDto;
+import com.watad.dto.UserCountsDto;
 import com.watad.entity.Profile;
 import com.watad.entity.User;
 import com.watad.exceptions.PhomeNumberAlreadyException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class ProfileController {
@@ -79,6 +81,43 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
+
+
+    // profile management for active or in active users
+    @GetMapping("/profileManage")
+    public String profileManagement(Model model
+                    ,@RequestParam int pageNum, @RequestParam int pageSize
+                    ,@RequestParam String status , @RequestParam String gender , @RequestParam(required = false) Integer  searchProfileId
+                    ,@RequestParam(required = false) String keyword){
+
+        if (searchProfileId == null) {
+            searchProfileId = 0;
+        }
+        UserCountsDto dto                      = userServices.getCountsInMeeting();
+        List<ProfileDtlDto>     profileDtlDtos = profileService.findAllByFilterPaginated(searchProfileId,status,gender,pageNum,pageSize);
+        Long totalUser                         = dto.getTotalProfiles();
+        Long activeUser                        = dto.getActiveProfiles();
+        Long inactiveUser                      = dto.getInactiveProfiles();
+        int  numOfPages                        = profileService.getTotalPagesByFilter(status,gender,pageSize,searchProfileId);
+        int churchId                           = userServices.getLogInUserChurch().getId();
+        int meetingId                          = userServices.getLogInUserMeeting().getId();
+
+        model.addAttribute("totalUser",totalUser);
+        model.addAttribute("inactiveUser",inactiveUser);
+        model.addAttribute("activeUser",activeUser);
+        model.addAttribute("profiles",profileDtlDtos);
+        model.addAttribute("status",status);
+        model.addAttribute("gender",gender);
+        model.addAttribute("numOfPages",numOfPages);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("pageSize",pageSize);
+        model.addAttribute("churchId",churchId);
+        model.addAttribute("meetingId",meetingId);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("searchProfileId",searchProfileId);
+
+        return "profileManagement";
+    }
 
 
 }

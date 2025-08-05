@@ -3,10 +3,7 @@ package com.watad.controller;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.Profile;
 import com.watad.services.ProfileService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,11 @@ public class ProfileRestControl {
     )
     {
         return profileService.findByUserPhone(phone);
+    }
+
+    @GetMapping("/profile/{keyword}")
+    public  List<ProfileDtlDto> searchByNameOrPhone(@PathVariable String keyword , @RequestParam int churchId , @RequestParam int meetingId){
+        return  profileService.findProfileByNameOrPhone(keyword, churchId, meetingId);
     }
 
 

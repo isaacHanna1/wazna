@@ -49,7 +49,7 @@ public class SecurityConfig {
                         .tokenValiditySeconds(3600))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/sign-in?logout=true")
+                        .logoutSuccessUrl("/sign-in")
                         .permitAll()
                 )
                 .authorizeHttpRequests(auth ->

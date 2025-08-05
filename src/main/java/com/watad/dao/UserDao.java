@@ -1,5 +1,6 @@
 package com.watad.dao;
 
+import com.watad.dto.UserCountsDto;
 import com.watad.entity.User;
 
 import java.util.List;
@@ -12,5 +13,7 @@ public interface UserDao {
     public Optional<User> findByUserNameForLogin(String userName);
     boolean existsByPhone(String phone);
     List<User> findByRoleId(int role_id);
+    UserCountsDto getCountsInMeeting(int churchId , int meetingId);
+    void activeOrDisactiveUser(User user);
 
 }

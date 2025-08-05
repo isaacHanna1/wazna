@@ -3,6 +3,7 @@ package com.watad.services;
 import com.watad.dao.RoleDao;
 import com.watad.dao.ServiceStageDao;
 import com.watad.dao.UserDao;
+import com.watad.dto.UserCountsDto;
 import com.watad.entity.*;
 import com.watad.enumValues.Gender;
 import com.watad.security.CustomUserDetails;
@@ -11,6 +12,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -33,6 +35,8 @@ public class UserServicesImp implements UserServices{
     private final RoleDao roleDao;
 
     private final SprintDataService sprintDataService;
+
+
 
 
     public UserServicesImp(ServiceStageDao serviceStageDao, UserDao userDao , RoleDao roleDao ,SprintDataService sprintDataService) {
@@ -81,6 +85,25 @@ public class UserServicesImp implements UserServices{
     @Override
     public List<User> findByRole(int role_id) {
         return  userDao.findByRoleId(role_id);
+    }
+
+    @Override
+    public UserCountsDto getCountsInMeeting() {
+        int theMeetingId    = getLogInUserMeeting().getId();
+        int theChurchId     = getLogInUserChurch().getId();
+        return  userDao.getCountsInMeeting(theChurchId,theMeetingId);
+    }
+
+    @Override
+    @Transactional
+    public int activeOrDisactiveUser(boolean enabled, String userName) {
+
+        User user = userDao.findByUserNameForLogin(userName)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+
+        user.setEnabled(enabled);
+        userDao.activeOrDisactiveUser(user);
+        return 1;
     }
 
     public Church getLogInUserChurch(){

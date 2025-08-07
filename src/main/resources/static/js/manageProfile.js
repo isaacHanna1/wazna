@@ -46,8 +46,9 @@ filterBtn.addEventListener('click', function() {
     document.getElementById("pageNum").value = "1";
 });
 
-async function updateProfileStatus(){
-    const userName     = document.getElementById("userName").value;
+async function updateProfileStatus(element){
+    const userName     = element.getAttribute('data-phone');
+    console.log(userName)
     const isEnabled     = document.getElementById("isEnabled").value === 'true';
     const URL           = getBaseUrl();
     const fullURL       = `${URL}/api/users/${userName}/status?enabled=${!isEnabled}`;

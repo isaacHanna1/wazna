@@ -20,7 +20,6 @@ public class SprintData {
     private boolean isActive;
     @Column(name="point_price")
     private double pointPrice;
-
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "church_id")
     private Church church;

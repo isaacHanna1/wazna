@@ -78,10 +78,11 @@
                 <td class="mob-hid" th:text="${profile.address}">--</td>
                 <td class="mob-hid" th:text="${profile.serviceStage}">--</td>
                   <td>
-                        <a href="#" onclick="updateProfileStatus();"
+                        <a href="#" onclick="updateProfileStatus(this);"
                             th:class="  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text enabled_btn ' : 'btn-no-width btn-primary enabled_btn'"
-                            th:text="${profile.isEnabled} ? 'Disabled' : 'Enabled'">
-                            
+                            th:text="${profile.isEnabled} ? 'Disabled' : 'Enabled'"
+                            th:attr="data-phone=${profile.phone}"
+                            >
                         </a>                    
                   </td>
                 <input type="hidden" th:value="${profile.isEnabled}" name="enabled" id="isEnabled" />

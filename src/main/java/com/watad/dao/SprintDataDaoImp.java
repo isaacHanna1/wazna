@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+
 
 @Repository
 public class SprintDataDaoImp implements SprintDataDao{
@@ -17,12 +19,16 @@ public class SprintDataDaoImp implements SprintDataDao{
 
     @Override
     public SprintData getSprintDataByIsActive(int churchId , int meetingId) {
+        LocalDate today = LocalDate.now();
         TypedQuery<SprintData> theQuery = entityManager.createQuery(
-                "FROM SprintData WHERE isActive = :activeStatus and meetings.id =:meetingId and church.id =:churchId ",
-                SprintData.class
-        ).setParameter("activeStatus", true)
+                        "SELECT s FROM SprintData s WHERE s.isActive = :activeStatus " +
+                                "AND s.meetings.id = :meetingId AND s.church.id = :churchId " +
+                                "AND s.fromDate <= :now AND :now <= s.toDate",
+                        SprintData.class
+                ).setParameter("activeStatus", true)
                 .setParameter("meetingId",meetingId)
-                .setParameter("churchId",churchId);
+                .setParameter("churchId",churchId)
+                .setParameter("now",today);
         return theQuery.getSingleResult();
     }
 }

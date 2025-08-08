@@ -55,6 +55,7 @@ public class ProfileController {
         model.addAttribute("stages",serviceStagesService.findAll());
         model.addAttribute("church",churchService.findAll());
         model.addAttribute("meeting",meetingService.findAll());
+        model.addAttribute(("dioceses"),diocesesService.findAll());
     }
     @PostMapping("/editProfile/{id}")
     public String registerUser(

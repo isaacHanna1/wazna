@@ -92,10 +92,12 @@ public class Profile {
 
     @OneToOne
     @JoinColumn(name = "father_periest_id")
+    @NotNull(message = "Choose Father priest")
     private Priest priest;
 
     @ManyToOne
     @JoinColumn(name = "dioceses_id")
+    @NotNull(message = "Choose dioceses")
     private Dioceses dioceses ;
 
     public Profile() {

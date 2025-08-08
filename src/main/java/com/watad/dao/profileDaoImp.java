@@ -81,7 +81,7 @@ public class profileDaoImp implements ProfileDao{
         Select new com.watad.dto.ProfileDtlDto(
             p.id, p.firstName, p.lastName, p.gender,
             p.serviceStage.description, p.phone, p.birthday,
-            p.address, p.fatherPeriest, u.userName , u.isEnabled)
+            p.address, p.priest.name, u.userName , u.isEnabled)
              From Profile p JOIN p.user u
              where 1 = 1
     """);

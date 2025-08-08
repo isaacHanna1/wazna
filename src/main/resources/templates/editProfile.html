@@ -79,31 +79,49 @@
         <span id="phone-err" class="error-message"></span>
       </div>
 
-
+           <div class="form-group">
+        <label for="dioceses" class="form-label">Select dioceses (الإيبارشية)</label>
+        <select id = "dioceses" name="dioceses.id"   class="form-input">
+          <option value="" selected disabled>Select dioceses (الإيبارشية)</option>
+          <option th:each="dioceses : ${dioceses}"
+                  th:value="${dioceses.id}"
+                  th:text="${dioceses.name}">
+          </option>
+        </select>
+        <span th:if="${#fields.hasErrors('dioceses')}" th:errors="*{dioceses}" class="error-message"></span>
+        <span id="dioceses-err" class="error-message"></span>
+      </div>
+        <div class="form-group">
+          <label for="Church" class="form-label">Church</label>
+          <select id = "Church" name="church.id"   class="form-input">
+            <option value="" selected disabled>Select Church</option>
+          </select>
+          <span th:if="${#fields.hasErrors('church')}" th:errors="*{church}" class="error-message"></span>
+          <span id="church-err" class="error-message"></span>
+      </div>
       <div class="form-group">
         <label for="meeting" class="form-label">Meeting</label>
         <select id = "meeting" name="meetings.id"   class="form-input">
-          <option value=""  disabled>Select Meeting</option>
-          <option th:each="meeting : ${meeting}"
-                  th:value="${meeting.id}"
-                  th:text="${meeting.description}">
-          </option>
+          <option value="" selected disabled>Select Meeting</option>
         </select>
         <span th:if="${#fields.hasErrors('meetings')}" th:errors="*{meetings}" class="error-message"></span>
         <span id="meetings-err" class="error-message"></span>
       </div>
 
-        <div class="form-group">
-        <label for="Church" class="form-label">Church</label>
-        <select id = "Church" name="church.id"   class="form-input">
-          <option value=""  disabled>Select Church</option>
-          <option th:each="church : ${church}"
-                  th:value="${church.id}"
-                  th:text="${church.churchName}">
-          </option>
+            <div class="form-group">
+        <label for="fatherPeriest" class="form-label">
+          Father Periest</label
+        >
+        <select
+                id="fatherPeriest"
+                name="priest.id"
+                class="form-input"
+        >
+          <option value="">Select</option>
+         
         </select>
-        <span th:if="${#fields.hasErrors('church')}" th:errors="*{church}" class="error-message"></span>
-        <span id="church-err" class="error-message"></span>
+        <span th:if="${#fields.hasErrors('priest')}" th:errors="*{priest}" class="error-message"></span>
+        <span id="father-err" class="error-message"></span>
       </div>
 
         <div class="form-group">
@@ -146,35 +164,6 @@
         <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></span>
         <span id="address-err" class="error-message"></span>
 
-      </div>
-      <div class="form-group">
-        <label for="fatherPeriest" class="form-label">
-          Father Periest</label
-        >
-        <select
-                id="fatherPeriest"
-                name="fatherPeriest"
-                th:field="*{fatherPeriest}"
-                 
-                class="form-input"
-        >
-
-          <option value="">Select</option>
-          <option value ="ابونا بنيامين">ابونا بنيامين</option>
-          <option value ="ابونا سداروس">ابونا سداروس</option>
-          <option value="ابونا يسطس">ابونا يسطس</option>
-          <option value="ابونا يوسف">ابونا يوسف</option>
-          <option value="ابونا مرقوريوس">ابونا مرقوريوس</option>
-          <option value="ابونا ايساك">ابونا ايساك</option>
-          <option value="ابونا روفائيل">ابونا روفائيل</option>
-          <option value="ابونا يؤانس">ابونا يؤانس</option>
-          <option value="ابونا مرقص">ابونا مرقص</option>
-          <option value="ابونا جورجيوس">ابونا جورجيوس</option>
-          <option value="ابونا باخوميوس">ابونا باخوميوس</option>
-          <option value="اخر">اخر</option>
-        </select>
-        <span th:if="${#fields.hasErrors('fatherPeriest')}" th:errors="*{fatherPeriest}" class="error-message"></span>
-        <span id="father-err" class="error-message"></span>
       </div>
       <div class="form-group">
         <label for="image" class="form-label"> Select new image only if you want to replace the current one: </label>

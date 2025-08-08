@@ -24,13 +24,15 @@ public class ProfileController {
     private final MeetingService meetingService;
     private final ProfileService profileService;
     private final UserServices userServices;
+    private final DiocesesService diocesesService;
 
-    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices) {
+    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices , DiocesesService diocesesService) {
         this.serviceStagesService = serviceStagesService;
         this.churchService = churchService;
         this.meetingService = meetingService;
         this.profileService = profileService;
         this.userServices = userServices;
+        this.diocesesService = diocesesService;
     }
 
     @GetMapping("/profile")
@@ -44,6 +46,7 @@ public class ProfileController {
     public String editProfile(Model model , @PathVariable int id ){
         Profile profile = profileService.getProfileById(id);
         addDataToModel(model,profile);
+        model.addAttribute(("dioceses"),diocesesService.findAll());
         return "editProfile";
     }
 

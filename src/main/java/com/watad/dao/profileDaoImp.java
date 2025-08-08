@@ -33,11 +33,10 @@ public class profileDaoImp implements ProfileDao{
     @Override
     @Transactional
     public void saveProfile(Profile profile) {
-    /*
+
         if (profile !=null){
             entityManager.persist(profile);
         }
-     */
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.watad.dao;
 
+import com.watad.dto.MeetingDto;
 import com.watad.entity.Meetings;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -27,6 +29,13 @@ public class MeetingDaoImp implements  MeetingDao{
          entityManager.persist(meetings);
          entityManager.flush();
          return  meetings;
+    }
+
+    @Override
+    public List<MeetingDto> findByChurchId(int churchId) {
+        TypedQuery<MeetingDto> query = entityManager.createQuery("Select new com.watad.dto.MeetingDto(m.id , m.description) From Meetings  m  JOIN m.church c Where c.id = :id ",MeetingDto.class);
+        query.setParameter("id",churchId);
+        return query.getResultList();
     }
 
 }

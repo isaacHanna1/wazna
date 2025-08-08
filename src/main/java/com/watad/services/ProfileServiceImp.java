@@ -97,7 +97,7 @@ public class ProfileServiceImp implements ProfileService {
         dto.setPhone(profile.getPhone());
         dto.setBirthday(profile.getBirthday());
         dto.setAddress(profile.getAddress());
-        dto.setFatherPeriest(profile.getFatherPeriest());
+        dto.setFatherPeriest(profile.getPriest().getName());
         dto.setChurchName(profile.getChurch().getChurchName());
         dto.setMeetingName(profile.getMeetings().getDescription());
         dto.setServiceStage(profile.getServiceStage().getDescription());

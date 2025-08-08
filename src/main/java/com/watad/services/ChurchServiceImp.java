@@ -1,6 +1,7 @@
 package com.watad.services;
 
 import com.watad.dao.ChurchDao;
+import com.watad.dto.ChurchDto;
 import com.watad.entity.Church;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,10 @@ public class ChurchServiceImp implements ChurchService{
     @Override
     public List<Church> findAll() {
         return  churchDao.findAll();
+    }
+
+    @Override
+    public List<ChurchDto> findByDioceseId(int diocesesId) {
+        return churchDao.findByDiocesesId(diocesesId);
     }
 }

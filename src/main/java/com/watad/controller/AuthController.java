@@ -2,10 +2,7 @@ package com.watad.controller;
 
 import com.watad.entity.Profile;
 import com.watad.exceptions.PhomeNumberAlreadyException;
-import com.watad.services.ChurchService;
-import com.watad.services.MeetingService;
-import com.watad.services.ProfileService;
-import com.watad.services.ServiceStagesService;
+import com.watad.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,11 +23,13 @@ public class AuthController {
     private final ServiceStagesService serviceStagesService;
     private final ChurchService churchService;
     private final MeetingService meetingService;
-    public AuthController(ProfileService profileService , ServiceStagesService serviceStagesService , ChurchService churchService , MeetingService meetingService) {
+    private final DiocesesService diocesesService;
+    public AuthController(ProfileService profileService , ServiceStagesService serviceStagesService , ChurchService churchService , MeetingService meetingService , DiocesesService diocesesService) {
         this.profileService             = profileService;
         this.serviceStagesService       = serviceStagesService;
         this.churchService              = churchService;
         this.meetingService             = meetingService;
+        this.diocesesService            = diocesesService;
     }
 
     @GetMapping("/sign-in")
@@ -91,6 +90,7 @@ public class AuthController {
         model.addAttribute("stages",serviceStagesService.findAll());
         model.addAttribute("church",churchService.findAll());
         model.addAttribute("meeting",meetingService.findAll());
+        model.addAttribute(("dioceses"),diocesesService.findAll());
     }
 
     @InitBinder

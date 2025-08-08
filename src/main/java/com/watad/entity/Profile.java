@@ -65,9 +65,6 @@ public class Profile {
     @NotBlank(message = "Address  is mandatory")
     private String address;
 
-    @Column(name="father_periest")
-    @NotBlank(message = "Choose Father")
-    private String fatherPeriest;
 
     @Column(name ="profile_image_path_server")
     private String profileImagePath;
@@ -93,6 +90,13 @@ public class Profile {
     @NotNull(message = "Choose Church")
     private Church church;
 
+    @OneToOne
+    @JoinColumn(name = "father_periest_id")
+    private Priest priest;
+
+    @ManyToOne
+    @JoinColumn(name = "dioceses_id")
+    private Dioceses dioceses ;
 
     public Profile() {
     }
@@ -161,13 +165,6 @@ public class Profile {
         this.address = address;
     }
 
-    public String getFatherPeriest() {
-        return fatherPeriest;
-    }
-
-    public void setFatherPeriest(String fatherPeriest) {
-        this.fatherPeriest = fatherPeriest;
-    }
 
     public String getProfileImagePath() {
         return profileImagePath;
@@ -215,5 +212,21 @@ public class Profile {
 
     public void setChurch(Church church) {
         this.church = church;
+    }
+
+    public Priest getPriest() {
+        return priest;
+    }
+
+    public void setPriest(Priest priest) {
+        this.priest = priest;
+    }
+
+    public Dioceses getDioceses() {
+        return dioceses;
+    }
+
+    public void setDioceses(Dioceses dioceses) {
+        this.dioceses = dioceses;
     }
 }

@@ -61,7 +61,10 @@ public class SecurityConfig {
                                 "/register",
                                 "/css/**",
                                 "/js/**",
-                                "/api/scan/code/**"
+                                "/api/scan/code/**",
+                                "/api/church/**",
+                                "/api/meeting/**",
+                                "/api/periest/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 ).exceptionHandling(config->

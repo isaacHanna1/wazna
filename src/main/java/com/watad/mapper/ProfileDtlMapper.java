@@ -37,7 +37,7 @@ public class ProfileDtlMapper {
             dtlDto.setGender(profile.getGender().toString());
             dtlDto.setServiceStage(profile.getServiceStage().getDescription());
             dtlDto.setUserName(profile.getUser().getUserName());
-            dtlDto.setFatherPeriest(profile.getFatherPeriest());
+            dtlDto.setFatherPeriest(profile.getPriest().getName());
             profileDtlDtoList.add(dtlDto);
         }
         return profileDtlDtoList;

@@ -1,6 +1,7 @@
 package com.watad.services;
 
 import com.watad.dao.MeetingDao;
+import com.watad.dto.MeetingDto;
 import com.watad.entity.Meetings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +25,10 @@ public class MeetingServiceImp implements MeetingService{
     @Transactional
     public Meetings createMeating(Meetings meetings) {
         return meetingDao.createMeating(meetings);
+    }
+
+    @Override
+    public List<MeetingDto> findByChurchId(int churchId) {
+        return  meetingDao.findByChurchId(churchId);
     }
 }

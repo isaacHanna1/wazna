@@ -1,24 +1,26 @@
 package com.watad.entity;
 
+
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "dioceses")
-public class Dioceses {
+@Table(name = "priests")
+public class Priest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id ;
 
     @Column(name = "name")
-    private String name;
+    private String name ;
 
-    @OneToMany(mappedBy = "diocese", orphanRemoval = true)
-    private List<Church> churches;
+    @ManyToOne
+    @JoinColumn(name = "dioceses_id")
+    private Dioceses dioceses;
 
-    public Dioceses() {
+
+    public Priest() {
     }
 
     public int getId() {
@@ -37,11 +39,11 @@ public class Dioceses {
         this.name = name;
     }
 
-    public List<Church> getChurches() {
-        return churches;
+    public Dioceses getDioceses() {
+        return dioceses;
     }
 
-    public void setChurches(List<Church> churches) {
-        this.churches = churches;
+    public void setDioceses(Dioceses dioceses) {
+        this.dioceses = dioceses;
     }
 }

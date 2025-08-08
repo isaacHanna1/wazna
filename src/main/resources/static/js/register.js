@@ -179,3 +179,139 @@ function checkBeforSubmit() {
     return isValid; 
 }
 // End Submit button 
+
+// Start Load the church depend on diocese
+// Attach event listener to dioceses select
+document.getElementById('dioceses').addEventListener('change', async function() {
+  const selectedDioceseId = this.value;
+  const response = await loadChurchName(selectedDioceseId);
+   await builtTheDom(response);
+   const fatherResponse = await loadPeriestByDiocesesID(selectedDioceseId);
+   builtTheDomOfPeriest(fatherResponse);
+});
+async function loadChurchName(dioceseId) {
+  const URL = getBaseUrl();
+  const fullURL = `${URL}/api/church/${dioceseId}`; 
+
+  try {
+    const response = await fetch(fullURL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Internal Server Error");
+    }
+    return response;
+  } catch (error) {
+    console.error("Failed to load churches:", error.message);
+  }
+}
+
+async function builtTheDom(response){
+
+    const churchEle           = document.getElementById("Church");
+        // Remove all options except the first one
+    while (churchEle.options.length > 1) {
+        churchEle.remove(1);
+    }
+    const church              = await response.json();
+    church.forEach(church => {
+            const option = document.createElement('option');
+            option.value = church.id;
+            option.textContent = church.churchName;
+            churchEle.appendChild(option);
+    });
+}
+
+// End  Load the church depend on diocese
+
+//Start load Meetings 
+
+document.getElementById('Church').addEventListener('change', async function() {
+  const selectedChurch = this.value;
+  const response = await loadMeetingByChurchID(selectedChurch);
+   builtTheDomOfMeetings(response);
+});
+
+async function loadMeetingByChurchID(churchId){
+
+  const URL = getBaseUrl();
+  const fullURL = `${URL}/api/meeting/${churchId}`; 
+
+  try {
+    const response = await fetch(fullURL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Internal Server Error");
+    }
+    return response;
+  } catch (error) {
+    console.error("Failed to load churches:", error.message);
+  }
+}
+
+async function builtTheDomOfMeetings(response){
+    const meetingEle           = document.getElementById("meeting");
+     // Remove all options except the first one
+    while (meetingEle.options.length > 1) {
+        meetingEle.remove(1);
+    }
+
+    const meeting              = await response.json();
+    meeting.forEach(meeting => {
+            const option = document.createElement('option');
+            option.value = meeting.id;
+            option.textContent = meeting.description;
+            meetingEle.appendChild(option);
+    });
+}
+
+// ENd load Meetings
+
+
+// start load periest 
+async function loadPeriestByDiocesesID(diocesesID){
+
+  const URL = getBaseUrl();
+  const fullURL = `${URL}/api/periest/${diocesesID}`; 
+
+  try {
+    const response = await fetch(fullURL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Internal Server Error");
+    }
+    return response;
+  } catch (error) {
+    console.error("Failed to load churches:", error.message);
+  }
+}
+async function builtTheDomOfPeriest(response){
+    const fatherPeriestEle           = document.getElementById("fatherPeriest");
+     // Remove all options except the first one
+    while (fatherPeriestEle.options.length > 1) {
+        fatherPeriestEle.remove(1);
+    }
+
+    const fatherPeriest              = await response.json();
+    fatherPeriest.forEach(fatherPeriest => {
+            const option = document.createElement('option');
+            option.value = fatherPeriest.id;
+            option.textContent = fatherPeriest.name;
+            fatherPeriestEle.appendChild(option);
+    });
+}
+// end 

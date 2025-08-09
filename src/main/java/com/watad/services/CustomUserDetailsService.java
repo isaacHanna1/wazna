@@ -19,18 +19,18 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
 
 
-    private final UserDao userDao;
+    private final UserServices userServices;
 
-    public CustomUserDetailsService(UserDao userDao) {
-        this.userDao = userDao;
+    public CustomUserDetailsService(UserServices userServices) {
+        this.userServices = userServices;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userDao.findByUserNameForLogin(username).orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
+        User user = userServices.findByUserNameForLogin(username).orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
         user.setLastLogin(LocalDateTime.now());
-        userDao.saveUser(user);
+        userServices.saveUser(user);
         return new CustomUserDetails(user);
 
     }

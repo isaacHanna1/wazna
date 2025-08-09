@@ -78,7 +78,7 @@ public class Profile {
     private LocalDateTime joinDate;
 
 
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private User user;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH} , fetch = FetchType.LAZY)
@@ -95,7 +95,7 @@ public class Profile {
     @NotNull(message = "Choose Father priest")
     private Priest priest;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH} ,fetch = FetchType.LAZY)
     @JoinColumn(name = "dioceses_id")
     @NotNull(message = "Choose dioceses")
     private Dioceses dioceses ;

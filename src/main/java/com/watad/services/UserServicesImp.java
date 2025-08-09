@@ -47,6 +47,7 @@ public class UserServicesImp implements UserServices{
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void saveUser(User user) {
         userDao.saveUser(user);
     }

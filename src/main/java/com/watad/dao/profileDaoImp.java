@@ -31,7 +31,6 @@ public class profileDaoImp implements ProfileDao{
     }
 
     @Override
-    @Transactional
     public void saveProfile(Profile profile) {
 
         if (profile !=null){
@@ -49,7 +48,6 @@ public class profileDaoImp implements ProfileDao{
     }
 
     @Override
-    @Transactional
     public void editprofile(Profile profile) {
         entityManager.merge(profile);
     }

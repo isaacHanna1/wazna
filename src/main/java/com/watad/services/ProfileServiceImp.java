@@ -10,6 +10,7 @@ import com.watad.exceptions.PhomeNumberAlreadyException;
 import com.watad.mapper.ProfileDtlMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -53,8 +54,8 @@ public class ProfileServiceImp implements ProfileService {
         return ProfileDtlMapper.convertProfileToDtlDto(profileDao.findAll());
     }
     @Override
+    @Transactional(readOnly = false , rollbackFor = Exception.class)
     public void saveProfile(Profile profile , MultipartFile image) throws IOException{
-
 
         if(userDao.existsByPhone(profile.getPhone())){
             throw new PhomeNumberAlreadyException("Oops! It looks like this phone number is already saved. ");
@@ -62,7 +63,6 @@ public class ProfileServiceImp implements ProfileService {
 
         User user = profile.getUser();
         user.setUserName(profile.getPhone());
-
         String rawPassword          = profile.getUser().getPassword();
         String encodedPassword      = passwordEncoder.encode(rawPassword);
         user.setPassword(encodedPassword);
@@ -70,17 +70,17 @@ public class ProfileServiceImp implements ProfileService {
         user.setLocked(false);
         user.setEnabled(false);
         user.setLastLogin(LocalDateTime.now());
-        user.setProfile(profile);
+        // userDao.saveUser(user);
 
+        user.setProfile(profile);
         // The logic for save file
         if(image !=null && !image.isEmpty()) {
             String fileName = saveProfileImage(image);
             profile.setProfileImagePath(fileName);
         }
-        profile.setUser(user);
         profile.setJoinDate(LocalDateTime.now());
         profile.setImageUrl("");
-        userDao.saveUser(user);
+        profile.setUser(user);
         profileDao.saveProfile(profile);
     }
 
@@ -128,6 +128,7 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     @Override
+    @Transactional
     public void editPrfofile(Profile profile , MultipartFile image , int id ) throws IOException {
         Profile existsOne = profileDao.getProfileById(id);
         String old_image = UPLOAD_DIR +"/"+existsOne.getProfileImagePath();

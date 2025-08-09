@@ -26,7 +26,6 @@ public class UserDaoImp implements  UserDao{
     }
 
     @Override
-    @Transactional
     public void saveUser(User user) {
         entityManager.merge(user);
     }
@@ -43,7 +42,7 @@ public class UserDaoImp implements  UserDao{
     @Override
     public Optional<User> findByUserNameForLogin(String userName) {
 
-        TypedQuery<User> theQuery = entityManager.createQuery(" FROM User where userName =: data",User.class);
+        TypedQuery<User> theQuery = entityManager.createQuery(" FROM User u JOIN FETCH u.roles where userName =: data",User.class);
                 theQuery.setParameter("data",userName);
 
                 try {

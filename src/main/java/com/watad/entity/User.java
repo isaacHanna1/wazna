@@ -34,7 +34,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
 
-    @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_role"
     ,joinColumns = @JoinColumn( name = "user_id")

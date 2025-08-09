@@ -2,6 +2,7 @@ package com.watad.security.events;
 
 import com.watad.dao.UserDao;
 import com.watad.entity.User;
+import com.watad.services.UserServices;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,10 +20,10 @@ import java.time.LocalDateTime;
 public class LoginSuccessHandler  extends SimpleUrlAuthenticationSuccessHandler {
 
 
-    private final UserDao userDao;
+    private final UserServices userServices;
 
-    public LoginSuccessHandler(UserDao userDao) {
-        this.userDao = userDao;
+    public LoginSuccessHandler(UserServices userServices) {
+        this.userServices = userServices;
     }
 
     @Override
@@ -32,9 +33,9 @@ public class LoginSuccessHandler  extends SimpleUrlAuthenticationSuccessHandler 
             throws IOException, ServletException {
 
         String userName             = authentication.getName();
-        userDao.findByUserNameForLogin(userName).ifPresent(user->{
+        userServices.findByUserNameForLogin(userName).ifPresent(user->{
             user.setLastLogin(LocalDateTime.now());
-            userDao.saveUser(user);
+            userServices.saveUser(user);
         });
         super.onAuthenticationSuccess(request,response,authentication);
     }

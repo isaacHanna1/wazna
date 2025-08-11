@@ -48,7 +48,7 @@ filterBtn.addEventListener('click', function() {
 
 async function updateProfileStatus(element){
     const userName      = element.getAttribute('data-phone');
-    const isEnabled     = document.getElementById("isEnabled").value === 'true';
+    const isEnabled     = document.getElementById("data-isEnabled");
     const URL           = getBaseUrl();
     const fullURL       = `${URL}/api/users/${userName}/status?enabled=${!isEnabled}`;
      try {
@@ -167,8 +167,8 @@ async function save(element){
     let message         = "Role Updated..... ";
     
     try{
-        const userName      = document.getElementById("userName").value;
-        const roleId        = document.querySelector('input[name="roleId"]:checked').value;
+        const userName       = document.getElementById("userName").value;
+        const roleId         = document.querySelector('input[name="roleId"]:checked').value;
         const loadingMessage = document.getElementById('loadingMessage');
         loadingMessage.textContent="Loading.....";
         element.disabled = true;

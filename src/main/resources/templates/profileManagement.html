@@ -87,10 +87,10 @@
                         </button>    
                 </td>
                 <td>
-                        <button href="#" onclick="updateProfileStatus(this);"
-                            th:class="  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text table_btn ' : 'btn-no-width btn-primary table_btn'"
-                            th:text="${profile.isEnabled} ? 'Disabled' : 'Enabled'"
-                            th:attr="data-phone=${profile.phone}"
+                        <button href ="#" onclick="updateProfileStatus(this);"
+                            th:class = "  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text table_btn ' : 'btn-no-width btn-primary table_btn'"
+                            th:text  = "${profile.isEnabled} ? 'Disabled' : 'Enabled'"
+                            th:attr="data-phone=${profile.phone},data-isEnabled=${profile.isEnabled}">
                             >
                         </button>                    
                 </td>

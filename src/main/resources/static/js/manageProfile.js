@@ -73,6 +73,9 @@ async function updateProfileStatus(element){
 
 // Start of Pop Up Model 
 async function openRolePopup(element) {
+    const loadingMessage = document.getElementById('loadingMessage');
+    loadingMessage.textContent="Loading.....";
+    loadingMessage.style.display = 'none';
 
     const fullName     = element.getAttribute('data-fullName');
     const userName     = element.getAttribute('data-phone');

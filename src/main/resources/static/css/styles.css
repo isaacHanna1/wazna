@@ -1134,7 +1134,7 @@ position: relative;
 /* Modal dialog box */
 .modal-dialog {
     background: white;
-    margin: 10% auto;
+    margin: 30% auto;
     padding: 0;
     width: 400px;
     border-radius: 8px;

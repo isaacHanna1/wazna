@@ -1,12 +1,16 @@
 package com.watad.controller;
 
 
+import com.watad.dto.RoleDto;
+import com.watad.entity.Role;
 import com.watad.services.UserServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users/")
@@ -37,4 +41,21 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Internal Error ");
         }
     }
+
+    @GetMapping("/roles/{userName}")
+    public List<RoleDto> getUserRoles(@PathVariable String userName){
+        return  userServices.getUserRoles(userName);
+    }
+
+    @PutMapping("/{userName}/{roleId}")
+    public ResponseEntity<String> updateUserRole(@PathVariable String userName , @PathVariable int roleId){
+        try {
+            userServices.updateUserRole(userName, roleId);
+            return  ResponseEntity.ok("Role Updated");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Internal Error Update Role");
+        }
+    }
+
+
 }

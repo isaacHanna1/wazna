@@ -66,6 +66,7 @@
                         <th class="mob-hid">Gender</th>
                         <th class="mob-hid">Address</th>
                         <th class="mob-hid">State</th>
+                        <th>Role</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -77,16 +78,22 @@
                 <td class="mob-hid" th:text="${profile.gender}">--</td>
                 <td class="mob-hid" th:text="${profile.address}">--</td>
                 <td class="mob-hid" th:text="${profile.serviceStage}">--</td>
-                  <td>
-                        <a href="#" onclick="updateProfileStatus(this);"
-                            th:class="  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text enabled_btn ' : 'btn-no-width btn-primary enabled_btn'"
+                <td>
+                        <button class=" btn-no-width btn-primary table_btn"
+                                onclick="openRolePopup(this)"
+                                th:data-fullName="${profile.firstName + ' ' + profile.lastName}"
+                                th:data-phone="${profile.phone}">
+                                Role
+                        </button>    
+                </td>
+                <td>
+                        <button href="#" onclick="updateProfileStatus(this);"
+                            th:class="  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text table_btn ' : 'btn-no-width btn-primary table_btn'"
                             th:text="${profile.isEnabled} ? 'Disabled' : 'Enabled'"
                             th:attr="data-phone=${profile.phone}"
                             >
-                        </a>                    
-                  </td>
-                <input type="hidden" th:value="${profile.isEnabled}" name="enabled" id="isEnabled" />
-                <input type="hidden" th:value="${profile.userName}"       name="profileId" id="userName" />
+                        </button>                    
+                </td>
             </tr>
                 </tbody>
             </table>
@@ -104,6 +111,34 @@
             </ul>
         </div>
     </div>
+                <!-- Change Role Modal -->
+                <div id="roleModal" class="modal">
+                    <div class="modal-dialog">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title">Change User Roles</h5>
+                            <span class="btn-close" onclick="closeModal()">&times;</span>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            <p><strong>User:</strong> <span id="popup-profile-name"></span></p>
+                            <div id="role-list">
+                                <!-- Roles checkboxes will be loaded here via JS -->
+                            </div>
+                            <input type="hidden" name="userName" id="userName"/>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button id="save-role-btn" class="btn btn-primary btn-no-width" onclick="save(this)">Save Changes</button>
+                            <button onclick="closeModal()" class="btn red-col btn-no-width white-color-text">Cancel</button>
+                            <div id="loadingMessage" style="display:none; color: blue;">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
     <script th:src="@{/js/nav.js}"></script>
     <script th:src="@{/js/jCommon/Common.js}"></script>
     <script th:src="@{/js/manageProfile.js}"></script>

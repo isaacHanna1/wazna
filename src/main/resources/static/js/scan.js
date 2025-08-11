@@ -11,7 +11,7 @@ function startScan() {
       document.getElementById("result").value = qrCodeMessage;
       let userId   = document.getElementById("user_Id") ;
       if(userId){
-      userId = userId.value;
+      userId = userId.value ;
       }
       stopScan(); // auto stop after successful scan
       sendQrCode(qrCodeMessage,userId);

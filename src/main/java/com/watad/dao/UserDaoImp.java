@@ -1,6 +1,8 @@
 package com.watad.dao;
 
+import com.watad.dto.RoleDto;
 import com.watad.dto.UserCountsDto;
+import com.watad.entity.Role;
 import com.watad.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -9,9 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class UserDaoImp implements  UserDao{
@@ -106,4 +106,28 @@ public class UserDaoImp implements  UserDao{
             entityManager.flush();
 
     }
+
+    @Override
+    public List<RoleDto> getUserRole(String userName) {
+        TypedQuery<RoleDto> query = entityManager.createQuery("SELECT NEW  " +
+                " com.watad.dto.RoleDto(r.id , r.roleName) FROM  User u  Join u.roles r " +
+                " where u.userName =:userName", RoleDto.class);
+        query.setParameter("userName",userName);
+        return query.getResultList();
+    }
+
+    @Override
+    public void updateUserRole(User user, Role role) {
+        if (user == null || role == null) {
+            throw new IllegalArgumentException("User and Role must not be null");
+        }
+        System.out.println("the user  "+user.getUserName());
+        System.out.println("the role  "+role.getRoleName());
+        Set<Role> newRoles = new HashSet<>();
+        newRoles.add(role);
+        user.setRoles(newRoles);
+        entityManager.merge(user);
+    }
+
+
 }

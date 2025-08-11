@@ -3,6 +3,7 @@ package com.watad.services;
 import com.watad.dao.RoleDao;
 import com.watad.dao.ServiceStageDao;
 import com.watad.dao.UserDao;
+import com.watad.dto.RoleDto;
 import com.watad.dto.UserCountsDto;
 import com.watad.entity.*;
 import com.watad.enumValues.Gender;
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -107,6 +109,12 @@ public class UserServicesImp implements UserServices{
         return 1;
     }
 
+    @Override
+    public List<RoleDto> getUserRoles(String userName) {
+        return userDao.getUserRole(userName);
+    }
+
+
     public Church getLogInUserChurch(){
         return  getLogedInUserProfile().getChurch();
     }
@@ -118,6 +126,14 @@ public class UserServicesImp implements UserServices{
        int theMeetingId    = getLogInUserMeeting().getId();
        int theChurchId     = getLogInUserChurch().getId();
        return sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId);
+    }
+    @Override
+    @Transactional
+    public void updateUserRole(String userName, int role_id) {
+        User user = userDao.findByUserNameForLogin(userName)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        Role role = roleDao.findById(role_id);
+        userDao.updateUserRole(user,role);
     }
 
 

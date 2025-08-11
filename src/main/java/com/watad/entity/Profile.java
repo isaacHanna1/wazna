@@ -50,7 +50,7 @@ public class Profile {
 
     @Column(name="phone")
     @NotBlank(message = "Phone Number Is Mandatory")
-    @Pattern(regexp = "^(\\+201|01)[0-2,5]{1}[0-9]{8}$", message = "Invalid Egyptian number")
+    @Pattern(regexp = "^(01)[0-2,5]{1}[0-9]{8}$", message = "Invalid Egyptian number")
   //  @UniquePhone(message = "Phone Number already exists")
     private String phone;
     
@@ -102,6 +102,8 @@ public class Profile {
 
     public Profile() {
     }
+
+
 
     public int getId() {
         return id;

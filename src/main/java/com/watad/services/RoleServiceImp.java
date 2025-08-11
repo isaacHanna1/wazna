@@ -1,10 +1,12 @@
 package com.watad.services;
 
 import com.watad.dao.RoleDao;
+import com.watad.dto.RoleDto;
 import com.watad.entity.Role;
 import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,5 +45,10 @@ public class RoleServiceImp implements RoleService{
            role.setRoleName(roleName);
            roleDao.save(role);
        }
+    }
+
+    @Override
+    public List<RoleDto> findRoles() {
+        return  roleDao.findRoles();
     }
 }

@@ -47,8 +47,7 @@ filterBtn.addEventListener('click', function() {
 });
 
 async function updateProfileStatus(element){
-    const userName     = element.getAttribute('data-phone');
-    console.log(userName)
+    const userName      = element.getAttribute('data-phone');
     const isEnabled     = document.getElementById("isEnabled").value === 'true';
     const URL           = getBaseUrl();
     const fullURL       = `${URL}/api/users/${userName}/status?enabled=${!isEnabled}`;
@@ -69,3 +68,116 @@ async function updateProfileStatus(element){
     throw error;
   }
 }
+
+
+
+// Start of Pop Up Model 
+async function openRolePopup(element) {
+
+    const fullName     = element.getAttribute('data-fullName');
+    const userName     = element.getAttribute('data-phone');
+    const currentRoles = await getCurrentRole(userName);
+    console.log(fullName);
+    const userSpan           = document.getElementById('roleModal').querySelector('#popup-profile-name');
+    userSpan.textContent     = fullName;
+    document.getElementById("userName").value=userName;
+    // dispay the popup 
+    document.getElementById("roleModal").style.display = "block";
+  
+    let current_role     = currentRoles.length > 0 
+    ? currentRoles.map(role => role.name).join(", ") 
+    : "";
+    const URL          = getBaseUrl();
+    const fullURL      = `${URL}/api/role`;
+
+    const response         = await fetch(fullURL,{
+    method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    if(!response.ok){
+        const data = response.json();
+         throw new Error(errorData.message || 'Failed to fetch roles');
+    }
+    const roles = await response.json();
+        let rolesHtml = "";
+        roles.forEach(role => {
+            let checked = (current_role == role.name) ? "checked" : "";
+            rolesHtml += `
+                <div class="form-check">
+                    <label class="form-check-label" for="role-${role.id}">
+                        ${role.name}
+                    </label>
+                    <input class="form-check-input" type="radio" value="${role.id}" name ="roleId" id="role-${role.id}" ${checked}>
+                </div>
+            `;
+        });
+            document.getElementById("role-list").innerHTML = rolesHtml;
+
+}
+
+async function getCurrentRole(userName) {
+        const URL          = getBaseUrl();
+        const fullURL      = `${URL}/api/users/roles/${userName}`;
+        const response     = await fetch(fullURL,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+        });
+        if(!response.ok){
+            const data = response.json();
+            throw new Error(errorData.message || 'Failed to fetch roles');
+        }
+        const roles = await response.json();
+        return roles;
+}
+
+function closeModal() {
+    document.getElementById("roleModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById("roleModal");
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+async function changeRole(userName , roleId) {
+         const URL          = getBaseUrl();
+        const fullURL      = `${URL}/api/users/${userName}/${roleId}`;
+        const response     = await fetch(fullURL,{
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+        });
+        if(!response.ok){
+             throw new Error('Failed to update role');
+        }
+          const message = await response.text();
+        }
+
+async function save(element){
+    let message         = "Role Updated..... ";
+    
+    try{
+        const userName      = document.getElementById("userName").value;
+        const roleId        = document.querySelector('input[name="roleId"]:checked').value;
+        const loadingMessage = document.getElementById('loadingMessage');
+        loadingMessage.textContent="Loading.....";
+        element.disabled = true;
+        loadingMessage.style.display = 'block';
+       await changeRole(userName,roleId);
+    }catch(error){
+         console.log('Error: ' + error.message);
+         message  = "Internal Error "
+    }finally {
+            element.disabled = false;
+            loadingMessage.textContent = message;
+            closeModal();
+    }
+}
+// End of Pop up 

@@ -1,6 +1,8 @@
 package com.watad.dao;
 
+import com.watad.dto.RoleDto;
 import com.watad.dto.UserCountsDto;
+import com.watad.entity.Role;
 import com.watad.entity.User;
 
 import java.util.List;
@@ -15,5 +17,6 @@ public interface UserDao {
     List<User> findByRoleId(int role_id);
     UserCountsDto getCountsInMeeting(int churchId , int meetingId);
     void activeOrDisactiveUser(User user);
-
+    List<RoleDto> getUserRole(String userName);
+    void updateUserRole(User user , Role role);
 }

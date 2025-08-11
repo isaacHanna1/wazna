@@ -1,5 +1,6 @@
 package com.watad.dao;
 
+import com.watad.dto.RoleDto;
 import com.watad.entity.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -37,5 +38,10 @@ public class RoleDaoImp implements  RoleDao{
     }
     public Role findById(int id ){
         return entityManger.find(Role.class,id);
+    }
+
+    @Override
+    public List<RoleDto> findRoles() {
+       return entityManger.createQuery("SELECT NEW com.watad.dto.RoleDto(r.id , r.roleName) FROM Role r ", RoleDto.class).getResultList();
     }
 }

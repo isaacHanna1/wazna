@@ -47,10 +47,11 @@ filterBtn.addEventListener('click', function() {
 });
 
 async function updateProfileStatus(element){
-    const userName      = element.getAttribute('data-phone');
-    const isEnabled     = document.getElementById("data-isEnabled");
-    const URL           = getBaseUrl();
-    const fullURL       = `${URL}/api/users/${userName}/status?enabled=${!isEnabled}`;
+    const userName          = element.getAttribute('data-phone');
+    let isEnabled           = element.getAttribute("data-isenabled") 
+    const URL               = getBaseUrl();
+     const isEnabledBool    = isEnabled === "true";
+    const fullURL           = `${URL}/api/users/${userName}/status?enabled=${!isEnabledBool}`;
      try {
     const response = await fetch(fullURL, {
       method: 'PUT',

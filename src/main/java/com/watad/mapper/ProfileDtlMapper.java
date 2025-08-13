@@ -2,6 +2,7 @@ package com.watad.mapper;
 
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,5 +42,13 @@ public class ProfileDtlMapper {
             profileDtlDtoList.add(dtlDto);
         }
         return profileDtlDtoList;
+    }
+
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String rawPassword = "123123";
+        String encodedPassword = encoder.encode(rawPassword);
+        System.out.println(encodedPassword);
     }
 }

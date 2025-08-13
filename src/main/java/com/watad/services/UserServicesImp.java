@@ -101,9 +101,8 @@ public class UserServicesImp implements UserServices{
     @Transactional
     public int activeOrDisactiveUser(boolean enabled, String userName) {
 
-        User user = userDao.findByUserNameForLogin(userName)
-                .orElseThrow(() -> new RuntimeException("User Not Found"));
-
+        System.out.println("the isEnabled =  "+enabled);
+        User user = userDao.findByUserNameForLogin(userName).orElseThrow(() -> new RuntimeException("User Not Found"));
         user.setEnabled(enabled);
         userDao.activeOrDisactiveUser(user);
         return 1;

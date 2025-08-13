@@ -104,7 +104,6 @@ public class UserDaoImp implements  UserDao{
             entityManager.merge(user);
             System.out.println("the status of user is "+user.isEnabled());
             entityManager.flush();
-
     }
 
     @Override

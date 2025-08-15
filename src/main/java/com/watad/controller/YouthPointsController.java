@@ -6,6 +6,7 @@ import com.watad.exceptions.NotEnoughPointsException;
 import com.watad.services.BonusTypeService;
 import com.watad.services.UserPointTransactionService;
 import com.watad.services.UserServices;
+import com.watad.services.YouthRankService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,15 @@ public class YouthPointsController {
     private final BonusTypeService bonusTypeService;
     private  final UserPointTransactionService upts;
     private final UserServices userServices;
+    private final YouthRankService youthRankService;
+    private final UserPointTransactionService  userPointTransactionService;
 
-    public YouthPointsController(BonusTypeService bonusTypeService, UserPointTransactionService upts, UserServices userServices) {
+    public YouthPointsController(BonusTypeService bonusTypeService, UserPointTransactionService upts, UserServices userServices, YouthRankService youthRankService, UserPointTransactionService userPointTransactionService) {
         this.bonusTypeService = bonusTypeService;
         this.upts = upts;
         this.userServices = userServices;
+        this.youthRankService = youthRankService;
+        this.userPointTransactionService = userPointTransactionService;
     }
 
     @GetMapping("/add")
@@ -65,5 +70,17 @@ public class YouthPointsController {
         redirectAttributes.addFlashAttribute("type", type);
         return "redirect:/youth/point/transfer";
     }
+
+    // Start view for point transaction summary
+    @GetMapping("/details")
+    public String transactionSummary(Model model){
+        double youthPoint = youthRankService.getYouthPoint();
+        String first_name = userServices.getLogedInUserProfile().getFirstName();
+        model.addAttribute("balance",youthPoint);
+        model.addAttribute("fName",first_name +"`s Transaction Details");
+        model.addAttribute("transactionList",userPointTransactionService.getSummaryOfPoints());
+        return "transactionHistory";
+    }
+    // End view for point transaction summary
 
 }

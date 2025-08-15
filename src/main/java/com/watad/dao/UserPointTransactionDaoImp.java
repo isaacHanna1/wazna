@@ -1,5 +1,7 @@
 package com.watad.dao;
 
+import com.watad.dto.PointTransactionSummaryDto;
+import com.watad.dto.PointsSummaryDTO;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.UserPointTransaction;
 import jakarta.persistence.EntityManager;
@@ -7,6 +9,9 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +42,6 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
 
     @Override
     public List<ProfileDtlDto> findProfileBuUserName(int church_id, int meeting_id, int sprint_id, String userPhone , int userRole) {
-        System.out.println("the church id "+church_id +"the meeting_id "+meeting_id+" the sprint id "+sprint_id +" the user phone :"+userPhone);
         List <ProfileDtlDto> listOfProfile = new ArrayList<>();
         String sql = """
                                SELECT
@@ -98,4 +102,55 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
         return listOfProfile;
 
     }
+
+    @Override
+    public List<PointTransactionSummaryDto> getSummaryOfPoints(int profileId, int sprintId, int churchId, int meetingId) {
+        List <PointTransactionSummaryDto> listOfTranactions= new ArrayList<>();
+            String sql = """
+                    SELECT
+                        t.transaction_date,
+                        t.transaction_type,
+                        t.used_for,
+                        t.points AS s,
+                        SUM(t.points) OVER (
+                            ORDER BY t.transaction_date, t.transaction_id
+                            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                        ) AS current_sum,
+                        SUM(t.points) OVER (
+                            ORDER BY t.transaction_date, t.transaction_id
+                            ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
+                        ) AS 'before'
+                    FROM wazna.user_point_transaction t
+                    WHERE t.profile_id = :profileId
+                      AND t.sprint_id =  :sprintId
+                      AND t.church_id = :churchId
+                      AND t.meeting_id = :meetingId
+                    ORDER BY t.transaction_date, t.transaction_id;
+                    
+                                """;
+
+        System.out.println("profileId = " + profileId);
+        System.out.println("sprintId = " + sprintId);
+        System.out.println("churchId = " + churchId);
+        System.out.println("meetingId = " + meetingId);
+            List<Object[]> result = entityManager.createNativeQuery(sql)
+                    .setParameter("profileId",profileId)
+                    .setParameter("sprintId",sprintId)
+                    .setParameter("churchId",churchId)
+                    .setParameter("meetingId",meetingId).getResultList();
+
+            System.out.println("the result size is "+result.size());
+            for (Object[] row : result) {
+                LocalDateTime transactionTime     =   ((Timestamp) row[0]).toLocalDateTime();
+                String transactionType  =   (String) row[1];
+                String usedFor          =   (String) row[2];
+                double point                  = row[3] == null ? 0 : ((Double) row[3]).doubleValue();
+                double currentSum             = row[4] == null ? 0 : ((Double) row[4]).doubleValue();
+                double before                 = row[5] == null ? 0 : ((Double) row[5]).doubleValue();
+                PointTransactionSummaryDto p   = new PointTransactionSummaryDto(transactionTime,transactionType,usedFor,point,currentSum,before);
+                listOfTranactions.add(p);
+            }
+            return listOfTranactions;
+    }
+
 }

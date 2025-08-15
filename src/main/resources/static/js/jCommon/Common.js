@@ -64,6 +64,7 @@ function validateRequiredSelect(selectElement, msgErrId, message) {
 
 
 function showModal(message) {
+    console.log("called");
     const modal = document.createElement('div');
     const modalContent = document.createElement('div');
     const closeButton = document.createElement('span');
@@ -72,7 +73,7 @@ function showModal(message) {
    
     modal.className = 'modal'; 
     modalContent.className = 'modal-content'; 
-    
+    console.log(modal);
   
     closeButton.innerHTML = '&times;';
     closeButton.className = 'close'; 

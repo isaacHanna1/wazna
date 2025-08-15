@@ -37,4 +37,7 @@ public class YouthPointsRestController {
     public void addPoints(@PathVariable int profileId , @PathVariable int userId , @PathVariable int bonusTypeId){
         bonusAddingService.addNewBonus(profileId,userId,bonusTypeId);
     }
+
+
+
 }

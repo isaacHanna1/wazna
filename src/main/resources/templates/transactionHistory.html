@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+    <link th:href="@{../../css/transactionDetails.css}" rel="stylesheet" />
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Point History</title>
+</head>
+<body>
+    <!-- Include the navbar fragment -->
+    <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+    <div class="container point-summary"> 
+        <div class="header ">
+                <h2>Point History</h2>
+                <P th:text="${fName}">Isaac`s Transaction Details</P>
+        </div>
+    
+        <div class="balance hero">
+            <h3>Current Balance</h3>
+            <span th:text="${balance}">500</span>
+        </div>
+
+        <div th:each="tx : ${transactionList}" class="transaction-details">
+              <div class="icon">
+                    <i th:class="${tx.transactionType == 'Earn' ? 'fa fa-plus-circle text-green' 
+                                    : (tx.transactionType == 'TRANSFER_OUT' ? 'fa fa-arrow-up text-red'
+                                    : (tx.transactionType == 'TRANSFER_IN' ? 'fa fa-arrow-down text-blue' 
+                                    : 'fa fa-question-circle text-gray'))}"></i>
+               </div>
+            <div class="details">
+                <h3 class="transaction-title" th:text="${tx.usedFor}"></h3>
+                <p class="transaction-date" th:text="${#temporals.format(tx.transactionTime, 'dd-MM-yyyy')}"></p>
+            </div>
+            <div class="points">
+                <span class="commingPoint" th:text="${tx.points > 0 ? '+' + tx.points : tx.points}"></span>
+                <p>Before : <span class="pointBefore" th:text="${tx.point_before}"></span></p>
+                <p>After  : <span class="pointBefore" th:text="${tx.current_sum}"></span></p>
+            </div>
+        </div>
+
+
+
+        
+    </div>
+
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.watad.services;
 
 import com.watad.dao.UserPointTransactionDao;
+import com.watad.dto.PointTransactionSummaryDto;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.*;
 import com.watad.exceptions.NotEnoughPointsException;
@@ -81,12 +82,24 @@ public class UserPointTransactionServiceImp implements UserPointTransactionServi
             fromTransaction.setProfile(profileFrom);
             fromTransaction.setTransferTo(profileTo); // who received the points
             fromTransaction.setActive(true);
-            fromTransaction.setUsedFor("Trasfer Out");
+            fromTransaction.setUsedFor("Trasfer Out To "+profileTo.getFirstName()+" "+profileTo.getLastName()+" " +" For : "+ reason);
             save(fromTransaction);
         }
         else{
             throw new NotEnoughPointsException("You don't have enough wazna points to complete this transfer.");
         }
         return true;
+    }
+
+    @Override
+    public List<PointTransactionSummaryDto> getSummaryOfPoints() {
+
+        SprintData sprint       = userServices.getActiveSprint();
+        Church church           = userServices.getLogInUserChurch();
+        Meetings meeting        = userServices.getLogInUserMeeting();
+        Profile  profile        = userServices.getLogedInUserProfile();
+        List<PointTransactionSummaryDto> summaryOfPoints = userPointTransactionDao.getSummaryOfPoints(profile.getId(), sprint.getId(), church.getId(), meeting.getId());
+        System.out.println("the total point is :-> "+summaryOfPoints.size());
+        return  summaryOfPoints;
     }
 }

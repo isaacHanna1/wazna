@@ -1,4 +1,6 @@
 package com.watad.dao;
+import com.watad.dto.PointTransactionSummaryDto;
+import com.watad.dto.PointsSummaryDTO;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.UserPointTransaction;
 
@@ -12,4 +14,9 @@ public interface UserPointTransactionDao {
 
     // find users by search by userName (phone)
     List<ProfileDtlDto> findProfileBuUserName(int chuch_id , int meeting_id , int sprint_id , String userPhone ,int userRole);
+
+    // start summary of Points
+
+    List<PointTransactionSummaryDto> getSummaryOfPoints(int profileId , int sprintId , int churchId , int meetingId);
+    // end Summary of points
 }

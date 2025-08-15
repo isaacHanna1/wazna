@@ -9,7 +9,8 @@
   <body>
   <!-- Include the navbar fragment -->
   <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
-
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
     <div class="container protected-content">
       <div style="max-width: 32rem; margin: 0 auto">
         <div class="scan-container">
@@ -194,8 +195,8 @@
     <input type="hidden" id="result" name="result" value=""/>
     <input type="hidden" id="user_Id" name="user_Id" th:value="${userId}"/>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script th:src="@{/js/scan.js}"></script>
     <script th:src="@{/js/nav.js}"></script>
     <script th:src="@{./js/jCommon/Common.js}"></script>
-    <script th:src="@{/js/scan.js}"></script>
   </body>
 </html>

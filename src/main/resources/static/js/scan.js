@@ -21,7 +21,7 @@ function startScan() {
     }
   ).catch(err => {
      console.error("Scan start error:", err);
-     showModal("Camera access failed. Please allow Browser to access the camera in Phone settings.");
+     showToast("Error","Camera access failed. Please allow Browser to access the camera in Phone settings.", "error");
    });
 }
 
@@ -59,6 +59,6 @@ async function sendQrCode(code, id) {
 
   } catch (error) {
     console.error('Error:', error.message);
-    showModal(error.message);
+    showToast("Error", error.message, "error");
   }
 }

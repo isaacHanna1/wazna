@@ -26,6 +26,18 @@ public class MarketItem {
     @JoinColumn(name = "category_id", nullable = false)
     private MarketCategory category;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "church_id", nullable = false)
+    private Church  church;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meeting_id", nullable = false)
+    private Meetings meeting;
+
+
+
     public MarketItem() {
     }
 
@@ -84,5 +96,21 @@ public class MarketItem {
 
     public void setCategory(MarketCategory category) {
         this.category = category;
+    }
+
+    public Meetings getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(Meetings meeting) {
+        this.meeting = meeting;
+    }
+
+    public Church getChurch() {
+        return church;
+    }
+
+    public void setChurch(Church church) {
+        this.church = church;
     }
 }

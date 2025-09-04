@@ -37,6 +37,7 @@ public class ProfileServiceImp implements ProfileService {
     private final UserServices userServices;
     private final SprintDataService sprintDataService;
     private final YouthRankService youthRankService;
+
     public ProfileServiceImp(ProfileDao profileDao , RoleService roleService , UserDao userDao , PasswordEncoder passwordEncoder , UserServices userServices , UserPointTransactionService userPointTransactionService , SprintDataService sprintDataService , YouthRankService youthRankService) {
         this.profileDao         = profileDao;
         this.roleService        = roleService;

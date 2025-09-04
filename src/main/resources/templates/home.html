@@ -117,10 +117,10 @@
     </div>
     <div>
      <div class="events-container">
-    <div th:each="event : ${eventList}" class="event-card">
-      <div class="event-img">
+      <div th:each="event : ${eventList}" class="event-card">
+       <div class="event-img">
         <img th:src="@{../uploads/events/{img}(img=${event.imageUrl})}" alt="Event Image" class="event-image" />
-      </div>
+       </div>
         <div class="event-header">
             <h4 class="event-title" th:text="${event.title}">Event Title</h4>
             <span class="event-points" 

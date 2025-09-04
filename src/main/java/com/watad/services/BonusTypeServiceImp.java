@@ -10,14 +10,18 @@ import java.util.List;
 public class BonusTypeServiceImp implements  BonusTypeService{
 
     private final BonusTypeDao bonusTypeDao;
+    private final UserServices userServices;
 
-    public BonusTypeServiceImp(BonusTypeDao bonusTypeDao) {
+    public BonusTypeServiceImp(BonusTypeDao bonusTypeDao, UserServices userServices) {
         this.bonusTypeDao = bonusTypeDao;
+        this.userServices = userServices;
     }
 
     @Override
     public BonusType getBonusTypeByDescription(String description) {
-        return bonusTypeDao.getBonusTypeByDescription(description);
+        int churchId        = userServices.getLogInUserChurch().getId();
+        int meetingId       = userServices.getLogInUserMeeting().getId();
+        return bonusTypeDao.getBonusTypeByDescription(description,churchId,meetingId);
     }
 
     @Override

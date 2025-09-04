@@ -26,19 +26,19 @@ public  class EventServiceImp implements EventService{
     @Override
     public List<EventDetail> findAllActiveEvent() {
 
-        User user = userServices.logedInUser();
-        Profile theProfile = user.getProfile();
+        User user           = userServices.logedInUser();
+        Profile theProfile  = user.getProfile();
         Meetings theMeeting = theProfile.getMeetings();
-        int theMeetingId = theMeeting.getId();
+        int theMeetingId    = theMeeting.getId();
         int theChurchId     = theProfile.getChurch().getId();
         int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
-      List<EventDetail> events =  eventDao.findAllActiveEvent(theChurchId ,theChurchId ,theSprintId);
+        List<EventDetail> events =  eventDao.findAllActiveEvent(theChurchId ,theChurchId ,theSprintId);
         if (events.isEmpty()) {
             if (events == null || events.isEmpty()) {
                 EventDetail defaultEvent = new EventDetail();
                 defaultEvent.setTitle("NO Event Till Now");
                 defaultEvent.setDescription("Wait Us For Coming Event");
-                defaultEvent.setImageUrl("comingSoon.jpg");
+                defaultEvent.setImageUrl("commingSoon.jpg");
                 defaultEvent.setPrice(0);
                 return List.of(defaultEvent);
             }

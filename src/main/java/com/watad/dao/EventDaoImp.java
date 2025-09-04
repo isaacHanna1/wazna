@@ -23,7 +23,6 @@ public class EventDaoImp implements EventDao{
     public List<EventDetail> findAllActiveEvent(int churchId, int meetingId, int sprintId) {
         LocalDate currentDate = LocalDate.now();
 
-        // Create lightweight objects with only ID set
         Church church = new Church();
         church.setId(churchId);
 
@@ -49,8 +48,6 @@ public class EventDaoImp implements EventDao{
                 .setParameter("meeting", meeting)
                 .setParameter("sprint", sprint)
                 .getResultList();
-
-
 
         return events;
     }

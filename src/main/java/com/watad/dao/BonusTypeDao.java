@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BonusTypeDao {
 
-    BonusType getBonusTypeByDescription(String description);
+    BonusType getBonusTypeByDescription(String description, int churchId ,int meetingId  );
     List<BonusType> findAll();
     BonusType findById(int id);
 }

@@ -28,9 +28,33 @@ public class BonusType {
     @Column(name = "active_to")
     private LocalDateTime activeTo;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meeting_id")
+    private Meetings meetings;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "church_id")
+    private Church church;
+
     public BonusType() {
     }
 
+
+    public Meetings getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(Meetings meetings) {
+        this.meetings = meetings;
+    }
+
+    public Church getChurch() {
+        return church;
+    }
+
+    public void setChurch(Church church) {
+        this.church = church;
+    }
 
     public int getId() {
         return id;

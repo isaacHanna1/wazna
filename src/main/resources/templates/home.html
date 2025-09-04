@@ -118,9 +118,9 @@
     <div>
      <div class="events-container">
     <div th:each="event : ${eventList}" class="event-card">
-       <img th:src="${event.imageUrl != null} ? @{../uploads/events/{img}(img=${event.imageUrl})} : @{../uploads/events/commingSoon.jpg}"
-     alt="Event Image" class="event-image" />
-
+      <div class="event-img">
+        <img th:src="@{../uploads/events/{img}(img=${event.imageUrl})}" alt="Event Image" class="event-image" />
+      </div>
         <div class="event-header">
             <h4 class="event-title" th:text="${event.title}">Event Title</h4>
             <span class="event-points" 

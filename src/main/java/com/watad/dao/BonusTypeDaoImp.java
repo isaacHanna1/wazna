@@ -19,16 +19,18 @@ public class BonusTypeDaoImp implements BonusTypeDao {
     }
 
     @Override
-    public BonusType getBonusTypeByDescription(String description) {
+    public BonusType getBonusTypeByDescription(String description ,  int churchId  , int meetingId ) {
         try {
             TypedQuery<BonusType> query = entityManager.createQuery(
                     "FROM BonusType WHERE description = :description " +
                             "AND activeFrom <= :now " +
-                            "AND (activeTo IS NULL OR :now <= activeTo)", BonusType.class);
+                            "AND (activeTo IS NULL OR :now <= activeTo) AND" +
+                            " meeting_id = :meetindId AND  church_id = :churchId  ", BonusType.class);
 
             query.setParameter("description", description);
             query.setParameter("now", LocalDateTime.now());
-
+            query.setParameter("meetindId",meetingId);
+            query.setParameter("churchId",churchId);
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null; // or throw a custom exception if preferred

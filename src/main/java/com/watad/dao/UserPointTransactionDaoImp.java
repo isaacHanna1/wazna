@@ -107,25 +107,25 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
     public List<PointTransactionSummaryDto> getSummaryOfPoints(int profileId, int sprintId, int churchId, int meetingId) {
         List <PointTransactionSummaryDto> listOfTranactions= new ArrayList<>();
             String sql = """
-                    SELECT
-                        t.transaction_date,
-                        t.transaction_type,
-                        t.used_for,
-                        t.points AS s,
-                        SUM(t.points) OVER (
-                            ORDER BY t.transaction_date, t.transaction_id
-                            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-                        ) AS current_sum,
-                        SUM(t.points) OVER (
-                            ORDER BY t.transaction_date, t.transaction_id
-                            ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
-                        ) AS 'before'
-                    FROM wazna.user_point_transaction t
-                    WHERE t.profile_id = :profileId
-                      AND t.sprint_id =  :sprintId
-                      AND t.church_id = :churchId
-                      AND t.meeting_id = :meetingId
-                    ORDER BY t.transaction_date, t.transaction_id;
+                        SELECT
+                            t.transaction_date,
+                            t.transaction_type,
+                            t.used_for,
+                            t.points AS s,
+                            SUM(t.points) OVER (
+                                ORDER BY t.transaction_date, t.transaction_id
+                                ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                            ) AS current_sum,
+                            SUM(t.points) OVER (
+                                ORDER BY t.transaction_date, t.transaction_id
+                                ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
+                            ) AS 'before'
+                        FROM wazna.user_point_transaction t
+                        WHERE t.profile_id = :profileId
+                          AND t.sprint_id =  :sprintId
+                          AND t.church_id = :churchId
+                          AND t.meeting_id = :meetingId
+                        ORDER BY t.transaction_date, t.transaction_id;
                     
                                 """;
 

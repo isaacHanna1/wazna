@@ -1,5 +1,6 @@
 package com.watad.dao;
 
+import com.watad.dto.MarketItemDto;
 import com.watad.entity.MarketItem;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public class marketItemDaoImp implements MarketItemDao {
 
     @Override
     public long countByCategory(int categoryId) {
-        String jpql = "SELECT COUNT(m) FROM MarketItem m WHERE m.category.id = :categoryId";
+        String jpql = "SELECT COUNT(m) FROM MarketItem m WHERE m.category.id = :categoryId and m.status = true ";
 
         Long count = entityManager.createQuery(jpql, Long.class)
                 .setParameter("categoryId", categoryId)
@@ -32,14 +33,16 @@ public class marketItemDaoImp implements MarketItemDao {
                 SELECT m FROM MarketItem m WHERE m.category.id = :categoryId 
                 AND m.church.id   = :church_id
                 AND m.meeting.id  = :meeting_id
+                AND m.status      = true
                 order by id
                 """ ;
+        int offset = page*size;
 
         return entityManager.createQuery(jpql, MarketItem.class)
                 .setParameter("categoryId", categoryId)
                 .setParameter("church_id",church_id)
                 .setParameter("meeting_id",meeting_id)
-                .setFirstResult(page * size)
+                .setFirstResult(offset)
                 .setMaxResults(size)
                 .getResultList();
     }
@@ -47,6 +50,54 @@ public class marketItemDaoImp implements MarketItemDao {
     @Override
     public void saveItem(MarketItem marketItem) {
         entityManager.persist(marketItem);
+    }
+
+    @Override
+    public List<MarketItemDto> getMarketItem(int churchId , int meetingId , int pageNum , int pageSize) {
+        String sql = """
+                SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status) FROM MarketItem m WHERE 
+                       m.church.id       = :church_id
+                   AND m.meeting.id      = :meeting_id
+                order by m.id desc
+                """;
+        int offset = (pageNum-1)*pageSize;
+        List<MarketItemDto> items = entityManager.createQuery(sql,MarketItemDto.class).setParameter("church_id",churchId)
+                .setParameter("meeting_id",meetingId).setFirstResult(offset).setMaxResults(pageSize).getResultList();
+        return items;
+    }
+
+    @Override
+    public List<MarketItemDto> searchByItemNameOrDesc(String keyword, int churchId , int meetingId ) {
+        String sql = """
+                  SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status) FROM MarketItem m WHERE 
+                   m.church.id       = :church_id
+                   AND m.meeting.id  = :meeting_id
+                   And m.status      = true    
+                   AND (m.itemDesc   LIKE :keyword OR m.itemName LIKE :keyword)
+                """;
+        List<MarketItemDto> items = entityManager.createQuery(sql,MarketItemDto.class).setParameter("church_id",churchId)
+                .setParameter("meeting_id",meetingId)
+                .setParameter("keyword","%" + keyword + "%").setMaxResults(5).getResultList();
+        return  items;
+    }
+
+    @Override
+    public MarketItemDto getElementById(int itemId) {
+        String sql = """
+                    SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status) FROM MarketItem m WHERE 
+                    m.id = :id 
+                """;
+        return  entityManager.createQuery(sql,MarketItemDto.class).setParameter("id",itemId).getSingleResult();
+    }
+
+    @Override
+    public MarketItem getitemById(int itemId) {
+        return entityManager.find(MarketItem.class , itemId);
+    }
+
+    @Override
+    public void updateItem(MarketItem item) {
+        entityManager.merge(item);
     }
 
 

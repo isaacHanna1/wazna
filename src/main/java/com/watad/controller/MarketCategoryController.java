@@ -26,8 +26,7 @@ public class MarketCategoryController {
         this.marketItemService     = marketItemService;
     }
 
-
-    @GetMapping("market")
+     @GetMapping("market")
     public String getMarketHome(Model model){
         model.addAttribute("category" , marketCategoryService.allActiveCategory());
         // by default send the category one

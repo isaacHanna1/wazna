@@ -146,6 +146,48 @@ body {
 .hide{
   display: none;
 }
+.width-250{
+max-width: 250px;
+}
+.hiddenList{
+    list-style: none;
+    box-shadow: var(--shadow-xl);
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%; 
+    background: white;  
+    z-index: 1000;  
+    margin: -10px 0 0 0;
+    padding: 0;
+    font-size: .8em;
+}
+.hiddenList li:hover{
+  background-color: var(--youth-primary);
+  color: #fff;
+
+}
+.pos-relative{
+  position: relative;
+}
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* Navigation */
 .navbar {
   background-color: white;

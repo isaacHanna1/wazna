@@ -36,6 +36,8 @@ public class MarketItem {
     @JoinColumn(name = "meeting_id", nullable = false)
     private Meetings meeting;
 
+    @Column(name = "status")
+    private Boolean status;
 
 
     public MarketItem() {
@@ -112,5 +114,28 @@ public class MarketItem {
 
     public void setChurch(Church church) {
         this.church = church;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "MarketItem{" +
+                "id=" + id +
+                ", itemName='" + itemName + '\'' +
+                ", itemDesc='" + itemDesc + '\'' +
+                ", points=" + points +
+                ", imageName='" + imageName + '\'' +
+                ", category=" + category +
+                ", church=" + church +
+                ", meeting=" + meeting +
+                ", status=" + status +
+                '}';
     }
 }

@@ -6,6 +6,14 @@
   <title>Create Item</title>
   <link th:href="@{../../css/styles.css}" rel="stylesheet" />
 
+    <style>
+      /* Start Market Item adding item view */
+        .check-photo{
+          margin-left: 80%;
+          font-size: 12px;
+        }    
+      /* End Market Item */
+    </style>
 </head>
 <body>
 
@@ -17,38 +25,46 @@
 
 <div class="auth-container">
   <div class="auth-form">
-    <h2 class="auth-title">Create Item</h2>
+    <h2 class="auth-title">Market Items</h2>
        <form th:action="@{/market/add}"  method="POST" th:object="${item}" enctype="multipart/form-data" >
+        <input type="hidden" name="id"  th:value="${item.id}"/>
       <div class="form-group">
         <label class="form-label" for="itemName">Item Name :</label>
-        <input class="form-input" type="text" id="itemName" name="itemName" th:field = "*{itemName}" required>
+        <input class="form-input" type="text" id="itemName" name="itemName" th:field = "*{itemName}" th:value="${item.itemName}" required>
       </div>
 
        <div class="form-group">
         <label class="form-label" for="itemDescription">Item Description :</label>
-        <input class="form-input" type="text" id="itemDescription" name="itemDescription" th:field="*{itemDesc}" required>
+        <input class="form-input" type="text" id="itemDescription" name="itemDescription" th:field="*{itemDesc}" th:value="${item.itemDesc}" required>
       </div>
 
       <div class="form-group">
         <label  class = "form-label" for="waznaNum" >Wazna Point :</label>
-        <input  class = "form-input" type="number" id="waznaNum" name="waznaNum" required th:field="*{points}">
+        <input  class = "form-input" type="number" id="waznaNum" name="waznaNum" required th:value="${points}" th:field="*{points}">
       </div>
 
       <div class="form-group">
         <label  class = "form-label" for="category">Category :</label>
         <select class = "form-input" id ="category" name="category.id"  required>
-            <option value="" disabled selected>Select</option>
-            <option th:each="cat:${category}"
-                    th:value="${cat.id}"
-                    th:text="${cat.description}"></option>
+            <option value="" disabled th:selected="${item.category == null}">Select</option>
+               <option th:each="cat : ${category}"
+                th:value="${cat.id}"
+               th:text="${cat.description}">
+      </option>
         </select>
       </div>
 
       <div class="form-group">
-        <label  class = "form-label" for="imgeName">Image : </label>
-        <input  class = "form-input" type="file" id="image" name="image" required >
-      </div>
-      <button type="submit" class="btn btn-primary">Create</button>
+          <label  class = "form-label" for="imgeName">Image : </label>
+          <input  class = "form-input" type="file" id="image" name="image"  >
+          <input type="hidden" name="imageName" th:value="${imageName}" th:field="*{imageName}"/>
+          <input type="hidden" name="status"        th:value="${item.status}" />
+          <div class="check-photo" th:if="${item.id != 0}">
+              <a href="#" onclick="viewImage();">view Photo</a>
+              <input type="hidden" id="URL" th:value="@{/market/item/image/{img}(img=${item.imageName})}"/>
+          </div>
+        </div>
+      <button type="submit" class="btn btn-primary">Execute</button>
 
     </form>
   </div>

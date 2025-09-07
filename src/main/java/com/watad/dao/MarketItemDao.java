@@ -16,4 +16,5 @@ public interface MarketItemDao {
     public MarketItemDto getElementById(int itemId );
     public MarketItem getitemById(int itemId );
     public void updateItem(MarketItem item);
+    public int getMarketItemSize(int churchId , int meetingId);
 }

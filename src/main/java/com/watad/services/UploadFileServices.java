@@ -9,4 +9,5 @@ public interface UploadFileServices {
 
     public String uploadFile(MultipartFile file , String folderPath) throws IOException;
     public String generateFileName(MultipartFile file);
+    public boolean deleteFile(String path , String fileName);
 }

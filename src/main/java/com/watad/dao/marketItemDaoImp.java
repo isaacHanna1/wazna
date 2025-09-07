@@ -49,7 +49,7 @@ public class marketItemDaoImp implements MarketItemDao {
 
     @Override
     public void saveItem(MarketItem marketItem) {
-        entityManager.persist(marketItem);
+        entityManager.merge(marketItem);
     }
 
     @Override
@@ -72,7 +72,6 @@ public class marketItemDaoImp implements MarketItemDao {
                   SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status) FROM MarketItem m WHERE 
                    m.church.id       = :church_id
                    AND m.meeting.id  = :meeting_id
-                   And m.status      = true    
                    AND (m.itemDesc   LIKE :keyword OR m.itemName LIKE :keyword)
                 """;
         List<MarketItemDto> items = entityManager.createQuery(sql,MarketItemDto.class).setParameter("church_id",churchId)
@@ -98,6 +97,19 @@ public class marketItemDaoImp implements MarketItemDao {
     @Override
     public void updateItem(MarketItem item) {
         entityManager.merge(item);
+    }
+
+    @Override
+    public int getMarketItemSize(int churchId , int meetingId) {
+        String sql = """
+                        Select count(*) from MarketItem  m where
+                        m.church.id       = :church_id
+                        AND m.meeting.id  = :meeting_id
+                """;
+               Long count =  (Long)entityManager.createQuery(sql).setParameter("church_id",churchId)
+                       .setParameter("meeting_id",meetingId).getSingleResult();
+                return count.intValue();
+
     }
 
 

@@ -187,7 +187,33 @@ max-width: 250px;
     transform: rotate(360deg);
   }
 }
-
+.overlay{
+  display: flex;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.img-overlay{
+  max-width: 350px;
+  height: 350px;
+}
+.img-overlay-close{
+    position: absolute;
+    top:50px;
+    right: 50px;
+    width: 36px; 
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--error-500);
+    cursor: pointer;
+    font-size: 20px; 
+    line-height: 36px;
+    text-align: center; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    color: #fff;
+}
 /* Navigation */
 .navbar {
   background-color: white;

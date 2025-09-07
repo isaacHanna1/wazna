@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Items Market</title>
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+
+    <style>
+      /* Start Market Item adding item view */
+        .chec      
+      /* End Market Item */
+    </style>
 </head>
 <body>
    <!-- Toast Container -->
@@ -46,7 +52,7 @@
           <tbody>
            <tr th:each="item, iterStat : ${items}">
               <td th:text="${iterStat.index + 1}" class="mob-hid">1</td>
-              <td th:text="${item.itemName}"></td>
+              <td><a th:href="@{/market/item/{id}(id=${item.id})}" th:text="${item.itemName}"></a></td>
               <td th:text="${item.itemDesc}"></td>
               <td th:text="${item.points}"></td>
               <td>

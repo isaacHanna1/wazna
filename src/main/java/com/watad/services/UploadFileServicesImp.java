@@ -3,6 +3,7 @@ package com.watad.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,6 +26,17 @@ public class UploadFileServicesImp implements UploadFileServices{
     @Override
     public String generateFileName(MultipartFile file) {
         return UUID.randomUUID()+"_"+file.getOriginalFilename();
+    }
+
+    @Override
+    public boolean deleteFile(String path, String fileName) {
+        String fullPath = path+fileName;
+        File fileToDelete  = new File(fullPath);
+        if(fileToDelete.exists()){
+            fileToDelete.delete();
+            return true;
+        }
+        return  false;
     }
 
 }

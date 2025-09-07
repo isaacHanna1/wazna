@@ -43,22 +43,35 @@ public class MarketItemServiceImp implements MarketItemService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveItem(MarketItem item, MultipartFile file) {
+    public void saveItem(MarketItem item, MultipartFile file) throws IOException {
         String fileName = null;
-
-        try {
-            fileName = uploadFileServices.uploadFile(file,uploadDir);
-        if(!fileName.equals("")){
-            Church church = userServices.getLogInUserChurch();
-            Meetings meetings = userServices.getLogInUserMeeting();
+        if ( item.getId() !=0) {
+            MarketItem existsOne = marketItemDao.getitemById(item.getId());
+            Church   church         = existsOne.getChurch();
+            Meetings meetings       = existsOne.getMeeting();
             item.setChurch(church);
             item.setMeeting(meetings);
-            item.setImageName(fileName);
-            item.setStatus(true);
-            marketItemDao.saveItem(item);
-        }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            if (file != null && !file.isEmpty()) {
+                System.out.println("I`m here in delete file ");
+                uploadFileServices.deleteFile(uploadDir, item.getImageName());
+                fileName = uploadFileServices.uploadFile(file, uploadDir);
+                item.setImageName(fileName);
+                marketItemDao.saveItem(item);
+            } else {
+                marketItemDao.saveItem(item);
+            }
+
+        } else {
+            fileName = uploadFileServices.uploadFile(file, uploadDir);
+            if (!fileName.equals("")) {
+                Church church = userServices.getLogInUserChurch();
+                Meetings meetings = userServices.getLogInUserMeeting();
+                item.setChurch(church);
+                item.setMeeting(meetings);
+                item.setImageName(fileName);
+                item.setStatus(true);
+                marketItemDao.saveItem(item);
+            }
         }
     }
 
@@ -103,6 +116,13 @@ public class MarketItemServiceImp implements MarketItemService {
     @Transactional
     public void upadteItem(MarketItem marketItem) {
         marketItemDao.updateItem(marketItem);
+    }
+
+    @Override
+    public int getMarketItemCount() {
+        int church_id  = userServices.getLogInUserChurch().getId();
+        int meeting_id = userServices.getLogInUserMeeting().getId();
+        return marketItemDao.getMarketItemSize(church_id,meeting_id);
     }
 
 

@@ -133,6 +133,7 @@ public class ProfileServiceImp implements ProfileService {
     public void editPrfofile(Profile profile , MultipartFile image , int id ) throws IOException {
         Profile existsOne = profileDao.getProfileById(id);
         String old_image = UPLOAD_DIR +"/"+existsOne.getProfileImagePath();
+        LocalDateTime localDateTime = existsOne.getJoinDate();
         if (image != null && !image.isEmpty()){
             System.out.println("New image uploaded. Replacing old image.");
             System.out.println("the old image path is "+old_image);
@@ -144,12 +145,11 @@ public class ProfileServiceImp implements ProfileService {
             System.out.println("No new image uploaded. Keeping old image.");
             profile.setProfileImagePath(getProfileImageName(profile.getId()));
         }
-        User user = existsOne.getUser();
-        user.setUserName(profile.getPhone());
-        profile.setUser(user);
-        profile.setJoinDate(existsOne.getJoinDate());
+//        User user = existsOne.getUser();
+//        user.setUserName(profile.getPhone());
+//        profile.setUser(user);
+        profile.setJoinDate(localDateTime);
         profileDao.editprofile(profile);
-
     }
 
     @Override

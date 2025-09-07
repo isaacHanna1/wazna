@@ -201,3 +201,44 @@ function debounce(func, delay) {
         }, delay);
     };
 }
+
+// function is used when click a hyperlink to view a containt
+ function viewImage() {
+    const URL          = getBaseUrl();
+    const url = URL+""+document.getElementById("URL").value;
+    let alt   ="view";
+    // create overlay
+    const overlay     = document.createElement('div');
+    overlay.className = 'overlay';
+    const img         = document.createElement('img');
+     img.src          = url
+     img.alt          = alt;
+     overlay.appendChild(img);
+     img.className    = 'img-overlay';
+
+     const btn = document.createElement('button');
+     
+     btn.classList ="img-overlay-close";
+     btn.innerHTML = '&times;';
+
+ // close handlers
+    function closeOverlay() {
+      document.body.classList.remove('no-scroll');
+      window.removeEventListener('keydown', onKey);
+      overlay.remove();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') closeOverlay();
+    }
+
+    // click outside image to close
+    overlay.addEventListener('click', closeOverlay);
+    // stop closing when clicking inside content
+    btn.addEventListener('click', closeOverlay);
+    window.addEventListener('keydown', onKey);
+
+     overlay.appendChild(btn);
+
+
+     document.body.appendChild(overlay);
+  }

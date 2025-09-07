@@ -6,11 +6,6 @@
      <title>Items Market</title>
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
 
-    <style>
-      /* Start Market Item adding item view */
-        .chec      
-      /* End Market Item */
-    </style>
 </head>
 <body>
    <!-- Toast Container -->
@@ -70,8 +65,7 @@
           <button type="button" onclick="exceute(this)" class="btn-no-width btn-primary">Execute</button>
         </div>
   </form>
-</div>
-<div class="pagination pad-10px flex just-con-center"   th:if="${numOfPages > 1}">
+  <div class="pagination pad-10px flex just-con-center"   th:if="${numOfPages > 1}">
   <ul class="pagination-list flex gap-5 ul-list-style-none ">
     <li th:each="pageNum : ${#numbers.sequence(1, numOfPages)}">
       <a th:href="@{/market/item/all(pageNum=${pageNum},pageSize=${pageSize})}"
@@ -82,6 +76,10 @@
     </li>
   </ul>
 </div>
+</div>
+
+ <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 <script th:src="@{/js/nav.js}"></script>
 <script th:src="@{/js/jCommon/Common.js}"></script>
 <script th:src="@{/js/allItemView.js}"></script>

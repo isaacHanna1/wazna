@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event</title>
+  <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+
+    <style>
+      /* Start Market Item adding item view */
+        .check-photo{
+          margin-left: 70%;
+          font-size: 12px;
+        }    
+      /* End Market Item */
+    </style>
+</head>
+<body>
+
+<!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+
+
+<div class="auth-container">
+  <div class="auth-form">
+    <h2 class="auth-title">Events</h2>
+       <form th:action="@{/market/add}"  method="POST" th:object="${event}" enctype="multipart/form-data" >
+        <input type="hidden" name="id"  th:value="${event.id}"/>
+      
+      <div class="form-group">
+        <label class="form-label" for="eventTitle">Event Title :</label>
+        <input class="form-input" type="text" id="eventTitle" name="eventTitle" th:field = "*{title}" th:value="${event.title}" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="eventDescription">Event Description :</label>
+        <input class="form-input" type="text" id="eventDescription" name="eventDescription" th:field = "*{description}" th:value="${event.title}" required>
+      </div>
+      <div class="form-group">
+      <label  class = "form-label" for="isPaied">Is Paid :</label>
+        <select class = "form-input" id ="isPaied" name="isPaied"  required>
+            <option value="" disabled>Select</option>
+               <option value="true" >Yes</option>
+               <option value="false">No</option>
+        </select>
+      </div>
+       <div class="form-group">
+        <label class="form-label" for="eventPrice">Event Price :</label>
+        <input class="form-input" type="number" id="eventPrice" name="eventPrice" th:field = "*{price}" th:value="${event.price}" required>
+      </div>
+        <div class="form-group">
+        <label class="form-label" for="maxSpendPoint">Max Spent Wazana (اقصي حد من الوزنات):</label>
+        <input class="form-input" type="number" id="maxSpendPoint" name="maxSpendPoint" th:field = "*{maxSpendPoint}" th:value="${event.maxSpendPoint}" required>
+      </div>
+
+      <div class="form-group">
+        <label  class = "form-label" for="eventType">Event Type :</label>
+          <select class = "form-input" id ="eventType" name="eventType.id"  required>
+              <option value="" disabled th:selected="${event.eventType == null}">Select</option>
+                <option th:each="event : ${EventsType}"
+                  th:value="${event.id}"
+                th:text="${event.name}">
+              </option>
+          </select>
+      </div>
+
+      <div class="form-group">
+        <label  class = "form-label" for="from_date">Event From :</label>
+        <input  class = "form-input" type="date" id="from_date" name="from_date" th:field ="*{from_date}" >
+      </div>
+
+      <div class="form-group">
+        <label  class = "form-label" for="to_date">Event To :</label>
+        <input  class = "form-input" type="date" id="to_date" name="to_date" th:field ="*{to_date}" >
+      </div>
+      <div class="form-group">
+          <label  class = "form-label" for="imgeName">Image : </label>
+          <input  class = "form-input" type="file" id="image" name="image"  >
+          <input type="hidden" name="imageName" th:value="${imageUrl}" th:field="*{imageUrl}"/>
+          <div class="check-photo" th:if="${event.id != 0}">
+              <a href="#" onclick="viewImage();">view Photo</a>
+              <input type="hidden" id="URL" th:value="@{/market/item/image/{img}(img=${item.imageName})}"/>
+          </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Execute</button>
+
+    </form>
+  </div>
+</div>
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+<script>
+
+</script>
+</body>
+</html>

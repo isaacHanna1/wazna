@@ -17,6 +17,32 @@ public class EventType {
     @Column(name = "active")
     private Boolean active;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "church_id", nullable = false)
+    private Church  church;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meeting_id", nullable = false)
+    private Meetings meeting;
+
+
+    public Church getChurch() {
+        return church;
+    }
+
+    public void setChurch(Church church) {
+        this.church = church;
+    }
+
+    public Meetings getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(Meetings meeting) {
+        this.meeting = meeting;
+    }
+
     // Constructors
     public EventType() {}
 

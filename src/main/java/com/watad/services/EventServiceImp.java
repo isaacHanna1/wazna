@@ -24,6 +24,11 @@ public  class EventServiceImp implements EventService{
     }
 
     @Override
+    public void createEvent(EventDetail eventDetail) {
+        eventDao.createEvent(eventDetail);
+    }
+
+    @Override
     public List<EventDetail> findAllActiveEvent() {
 
         User user           = userServices.logedInUser();

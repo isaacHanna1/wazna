@@ -13,7 +13,7 @@ public class EventDetail {
     private Integer id;
 
     @Column(length = 150, nullable = false)
-    private String title;
+        private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -33,8 +33,11 @@ public class EventDetail {
     @Column(name = "max_spen_point")
     private Integer maxSpendPoint;
 
-    @Column(name = "event_type_id")
-    private Integer eventTypeId;
+    @ManyToOne
+    @JoinColumn(name = "event_type_id")
+    private EventType eventType;
+
+
     @Column(name = "from_date")
     private LocalDate from_date;
     @Column(name = "to_date")
@@ -121,12 +124,12 @@ public class EventDetail {
         this.maxSpendPoint = maxSpendPoint;
     }
 
-    public Integer getEventTypeId() {
-        return eventTypeId;
+    public EventType getEventType() {
+        return eventType;
     }
 
-    public void setEventTypeId(Integer eventTypeId) {
-        this.eventTypeId = eventTypeId;
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
     }
 
     public Boolean getPaid() {

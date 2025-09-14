@@ -20,6 +20,11 @@ public class EventDaoImp implements EventDao{
     }
 
     @Override
+    public void createEvent(EventDetail eventDetail) {
+        entityManager.persist(eventDetail);
+    }
+
+    @Override
     public List<EventDetail> findAllActiveEvent(int churchId, int meetingId, int sprintId) {
         LocalDate currentDate = LocalDate.now();
 

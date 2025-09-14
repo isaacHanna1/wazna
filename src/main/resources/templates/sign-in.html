@@ -8,7 +8,10 @@
     <link th:href="@{./css/styles.css}" rel="stylesheet" />
   </head>
   <body>
-    <div class="auth-container">
+    <div class="auth-container sign-in">
+          <div class="logo">
+            <img th:src="@{/uploads/sitePic/logo.png}" alt="Logo">
+          </div>
       <div class="auth-form">
         <h2 class="auth-title">Sign In</h2>
         <form th:action="@{/login}"  method="post" id="login-form" class="space-y-4">

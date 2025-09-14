@@ -64,7 +64,8 @@ public class SecurityConfig {
                                 "/api/scan/code/**",
                                 "/api/church/**",
                                 "/api/meeting/**",
-                                "/api/periest/**"
+                                "/api/periest/**",
+                                "/uploads/sitePic/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 ).exceptionHandling(config->

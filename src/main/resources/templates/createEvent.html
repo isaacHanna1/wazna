@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Event</title>
-  <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+  <link th:href="@{/css/styles.css}" rel="stylesheet" />
 
     <style>
       /* Start Market Item adding item view */
@@ -20,26 +20,24 @@
 <!-- Include the navbar fragment -->
 <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
 
-
-
 <div class="auth-container">
   <div class="auth-form">
     <h2 class="auth-title">Events</h2>
-       <form th:action="@{/market/add}"  method="POST" th:object="${event}" enctype="multipart/form-data" >
+       <form th:action="@{/event/add}"  method="POST" th:object="${event}" enctype="multipart/form-data" >
         <input type="hidden" name="id"  th:value="${event.id}"/>
       
       <div class="form-group">
         <label class="form-label" for="eventTitle">Event Title :</label>
-        <input class="form-input" type="text" id="eventTitle" name="eventTitle" th:field = "*{title}" th:value="${event.title}" required>
+        <input class="form-input" type="text" id="eventTitle" name="title"  th:value="${event.title}" required>
       </div>
 
       <div class="form-group">
         <label class="form-label" for="eventDescription">Event Description :</label>
-        <input class="form-input" type="text" id="eventDescription" name="eventDescription" th:field = "*{description}" th:value="${event.title}" required>
+        <input class="form-input" type="text" id="eventDescription" name="description"  th:value="${event.description}" required>
       </div>
       <div class="form-group">
       <label  class = "form-label" for="isPaied">Is Paid :</label>
-        <select class = "form-input" id ="isPaied" name="isPaied"  required>
+        <select class = "form-input" id ="isPaied" name="isPaid"  required>
             <option value="" disabled>Select</option>
                <option value="true" >Yes</option>
                <option value="false">No</option>
@@ -47,11 +45,11 @@
       </div>
        <div class="form-group">
         <label class="form-label" for="eventPrice">Event Price :</label>
-        <input class="form-input" type="number" id="eventPrice" name="eventPrice" th:field = "*{price}" th:value="${event.price}" required>
+        <input class="form-input" type="number" id="eventPrice" name="price"  th:value="${event.price}" required>
       </div>
         <div class="form-group">
         <label class="form-label" for="maxSpendPoint">Max Spent Wazana (اقصي حد من الوزنات):</label>
-        <input class="form-input" type="number" id="maxSpendPoint" name="maxSpendPoint" th:field = "*{maxSpendPoint}" th:value="${event.maxSpendPoint}" required>
+        <input class="form-input" type="number" id="maxSpendPoint" name="maxSpendPoint"   th:value="${event.maxSpendPoint}" required>
       </div>
 
       <div class="form-group">
@@ -67,20 +65,20 @@
 
       <div class="form-group">
         <label  class = "form-label" for="from_date">Event From :</label>
-        <input  class = "form-input" type="date" id="from_date" name="from_date" th:field ="*{from_date}" >
+        <input  class = "form-input" type="date" id="from_date" name="from_date"   >
       </div>
 
       <div class="form-group">
         <label  class = "form-label" for="to_date">Event To :</label>
-        <input  class = "form-input" type="date" id="to_date" name="to_date" th:field ="*{to_date}" >
+        <input  class = "form-input" type="date" id="to_date" name="to_date"   >
       </div>
       <div class="form-group">
           <label  class = "form-label" for="imgeName">Image : </label>
           <input  class = "form-input" type="file" id="image" name="image"  >
-          <input type="hidden" name="imageName" th:value="${imageUrl}" th:field="*{imageUrl}"/>
+          <input type="hidden" id="imageUrl" th:value="${imageUrl}"  />
           <div class="check-photo" th:if="${event.id != 0}">
               <a href="#" onclick="viewImage();">view Photo</a>
-              <input type="hidden" id="URL" th:value="@{/market/item/image/{img}(img=${item.imageName})}"/>
+              <input type="hidden" id="URL" th:value="@{/market/item/image/{img}(img=${event.imageUrl})}"/>
           </div>
       </div>
 

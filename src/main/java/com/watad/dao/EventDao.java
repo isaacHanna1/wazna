@@ -1,6 +1,7 @@
 package com.watad.dao;
 
 import com.watad.entity.EventDetail;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

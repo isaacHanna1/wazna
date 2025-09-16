@@ -1,12 +1,13 @@
 package com.watad.services;
 
 import com.watad.dao.EventDao;
-import com.watad.entity.EventDetail;
-import com.watad.entity.Meetings;
-import com.watad.entity.Profile;
-import com.watad.entity.User;
+import com.watad.entity.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -16,16 +17,33 @@ public  class EventServiceImp implements EventService{
     private final EventDao eventDao;
     private final UserServices userServices;
     private final SprintDataService sprintDataService;
-
-    public EventServiceImp(EventDao eventDao, UserServices userServices, SprintDataService sprintDataService) {
+    private final UploadFileServices uploadFileServices;
+    @Value("${file.uploadEvent-dir}")
+    private String uploadDir;
+    public EventServiceImp(EventDao eventDao, UserServices userServices, SprintDataService sprintDataService, UploadFileServices uploadFileServices) {
         this.eventDao = eventDao;
         this.userServices = userServices;
         this.sprintDataService = sprintDataService;
+        this.uploadFileServices = uploadFileServices;
     }
 
     @Override
-    public void createEvent(EventDetail eventDetail) {
-        eventDao.createEvent(eventDetail);
+    @Transactional
+    public void createEvent(EventDetail eventDetail , MultipartFile file) {
+        try {
+            String fileName               = uploadFileServices.uploadFile(file, uploadDir);
+            Church church                 = userServices.getLogInUserChurch();
+            Meetings meetings             = userServices.getLogInUserMeeting();
+            SprintData  sprintData        = userServices.getActiveSprint();
+            eventDetail.setCurch(church);
+            eventDetail.setMeetings(meetings);
+            eventDetail.setSprintData(sprintData);
+            eventDetail.setImageUrl(fileName);
+            eventDao.createEvent(eventDetail);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override

@@ -24,10 +24,8 @@ public class EventDetail {
     @Column(name="price")
     private int price;
 
-    @Lob
-    private byte[] image;
 
-    @Column(length = 500)
+    @Column(length = 500 ,name="image_url")
     private String imageUrl;
 
     @Column(name = "max_spen_point")
@@ -98,14 +96,6 @@ public class EventDetail {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public String getImageUrl() {

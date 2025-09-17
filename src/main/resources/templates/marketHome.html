@@ -26,7 +26,7 @@
 <div class="items-grid" id="itemsGrid" >
     <div class="item-card" th:each="item : ${itemMarket}" th:attr="data-category=${item.category.description}">
       <div class="item-image">
-        <img th:src="@{/market/{imageUrl}(imageUrl=${item.imageUrl})}" alt="Item Image"/>
+        <img th:src="@{/market/{imageUrl}(imageUrl=${item.imageName})}" alt="Item Image"/>
         <div class="item-category" th:text="${item.category.description}">Category</div>
       </div>
       <div class="item-content">

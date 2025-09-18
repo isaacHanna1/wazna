@@ -107,7 +107,12 @@ function submitBounty() {
     let theUserId     = document.getElementById("user_id").value ;
     let bonusTypeId   = bountyType.value; 
     let points        = addPointsInput.value
-   
+
+    console.log("theProfileId",theProfileId);   
+    console.log("theUserId",theUserId);   
+    console.log("bonusTypeId",bonusTypeId);   
+    console.log("points",points);   
+
     addPoints(theProfileId , theUserId , bonusTypeId);
     setTimeout(() => {
         handleSubmissionSuccess(points);
@@ -280,7 +285,7 @@ async function fetchUserDate(phone) {
         }
 
         const data = await response.json();
-
+        console.log(data);
         // Convert each user into a clean object
         const users = data.map(user => {
             const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
@@ -310,13 +315,14 @@ async function loadBonusType() {
                 'Content-Type': 'application/json'
             },
         });
-
+        
         if (!response.ok) {
             throw new Error("Error when fetching the user data");
         }
 
         const data     = await response.json();
-
+        console.log("hello-< ");
+        console.log(data);
         // Convert each user into a clean object
        const  bountyPoints = data.map(bonus => {
             let bonusDesc = [bonus.description]

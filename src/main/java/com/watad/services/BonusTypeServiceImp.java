@@ -1,6 +1,7 @@
 package com.watad.services;
 
 import com.watad.dao.BonusTypeDao;
+import com.watad.dto.BonusTypeDto;
 import com.watad.entity.BonusType;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,7 @@ public class BonusTypeServiceImp implements  BonusTypeService{
     }
 
     @Override
-    public List<BonusType> findAll() {
+    public List<BonusTypeDto> findAll() {
         return bonusTypeDao.findAll();
     }
 

@@ -72,6 +72,22 @@ public class profileDaoImp implements ProfileDao{
          if(result.isEmpty()) return new ArrayList<>();
          return  result;
     }
+
+    @Override
+    public List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword, int churchId, int meetingId) {
+        String  jpql = " select new com.watad.dto.ProfileDtlDto(p.id, p.firstName, p.lastName , p.meetings.id , p.church.id  , p.user.id , p.phone , p.profileImagePath)  from Profile " +
+                " p where p.meetings.id = :meetingId and p.church.id = :churchId and  p.phone like :keyword OR  LOWER(CONCAT(p.firstName, ' ', p.lastName)) LIKE LOWER(CONCAT('%', :keyword, '%'))";
+        List<ProfileDtlDto>  result     =
+                entityManager.createQuery(jpql,ProfileDtlDto.class)
+                        .setParameter("meetingId",meetingId)
+                        .setParameter("churchId",meetingId)
+                        .setMaxResults(5)
+                        .setParameter("keyword", "%" + keyword + "%").getResultList();
+
+        if(result.isEmpty()) return new ArrayList<>();
+        return  result;
+    }
+
     @Override
     public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status , String gender ,
                                                   int pageNum , int pageSize){
@@ -153,7 +169,7 @@ public class profileDaoImp implements ProfileDao{
     public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword , int churchId , int meetingId) {
         String jpql = """
                             Select new com.watad.dto.ProfileDtlDto(
-                            p.id, p.firstName, p.lastName)
+                            p.id, p.firstName, p.lastName , p.phone)
                             From Profile p
                             Where p.meetings.id = :meetingId
                             and p.church.id = :churchId
@@ -163,6 +179,7 @@ public class profileDaoImp implements ProfileDao{
         TypedQuery<ProfileDtlDto> query = entityManager.createQuery(jpql, ProfileDtlDto.class);
         query.setParameter("meetingId",meetingId);
         query.setParameter("churchId",churchId);
+        query.setMaxResults(5);
         query.setParameter("keyword","%"+keyword+"%");
         query.setMaxResults(5);
         return  query.getResultList();

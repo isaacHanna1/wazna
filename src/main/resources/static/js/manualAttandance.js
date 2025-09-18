@@ -401,6 +401,7 @@ searchInput.addEventListener("keyup", debouncedSearch);
         li.textContent = `${user.firstName} ${user.lastName}`;
         userList.appendChild(li);
         li.addEventListener("click",async ()=>{
+            console.log(user);
             displayUser(user);
             userList.style.display = "none";
             btn_attendance.classList.toggle("disabled");
@@ -413,7 +414,6 @@ searchInput.addEventListener("keyup", debouncedSearch);
         const userDisplay          = document.getElementById("user-display");
         searchInput.value          = `${user.phone}`;
         userDisplay.className      = "user-display filled";
-        console.log(`${user.userId}`);
         userDisplay.innerHTML      = `
                 <div class="user_info">
                     <img src ="${baseURL}/images/${user.imagePath}" class="user-avatar" />

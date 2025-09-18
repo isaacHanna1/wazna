@@ -198,6 +198,18 @@ public class ProfileServiceImp implements ProfileService {
         return  listOfProfile;
     }
 
+    @Override
+    public List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword) {
+        List<ProfileDtlDto> listOfProfile = new ArrayList<>();
+        if(!keyword.isEmpty()) {
+            int churchId = userServices.getLogInUserChurch().getId();
+            int meetingId = userServices.getLogInUserMeeting().getId();
+            listOfProfile = profileDao.findByUserPhoneOrUserName (keyword, churchId, meetingId);
+        }
+        return  listOfProfile;
+    }
+
+
 
     private void deleteOldFile(String filePath) {
         File file = new File(filePath);

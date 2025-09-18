@@ -1,5 +1,6 @@
 package com.watad.dao;
 
+import com.watad.dto.BonusTypeDto;
 import com.watad.entity.BonusType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -25,7 +26,7 @@ public class BonusTypeDaoImp implements BonusTypeDao {
                     "FROM BonusType WHERE description = :description " +
                             "AND activeFrom <= :now " +
                             "AND (activeTo IS NULL OR :now <= activeTo) AND" +
-                            " meeting_id = :meetindId AND  church_id = :churchId  ", BonusType.class);
+                            " meetings.id = :meetindId AND  church.id = :churchId  ", BonusType.class);
 
             query.setParameter("description", description);
             query.setParameter("now", LocalDateTime.now());
@@ -38,16 +39,15 @@ public class BonusTypeDaoImp implements BonusTypeDao {
     }
 
     @Override
-    public List<BonusType> findAll() {
-        LocalDateTime now = LocalDateTime.now();
-
-        TypedQuery<BonusType> query = entityManager.createQuery(
-                "FROM BonusType " +
-                        "WHERE activeFrom <= :now " +
-                        "AND (activeTo IS NULL OR :now <= activeTo)",
-                BonusType.class);
-
-        query.setParameter("now", now);
+    public List<BonusTypeDto> findAll() {
+        LocalDateTime now               = LocalDateTime.now();
+        TypedQuery<BonusTypeDto> query = entityManager.createQuery(
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description ,b.point)  FROM BonusType b " +
+                        "WHERE b.activeFrom <= :now " +
+                        "AND (b.activeTo IS NULL OR :now <= b.activeTo)",
+                BonusTypeDto.class
+        );
+        query.setParameter("now",now);
         return query.getResultList();
     }
     @Override

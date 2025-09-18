@@ -25,7 +25,7 @@ public class ProfileRestControl {
             @RequestParam String phone
     )
     {
-        return profileService.findByUserPhone(phone);
+        return profileService.findByUserPhoneOrUserName(phone);
     }
 
     @GetMapping("/profile/{keyword}")

@@ -64,7 +64,10 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                                WHERE
                                    p.church_id      = :church_id
                                    AND p.meeting_id = :meeting_id
-                                   AND p.phone LIKE CONCAT('%', :userPhone, '%')
+                                    AND (
+                                        p.phone LIKE CONCAT('%', :userPhone, '%')
+                                        OR LOWER(CONCAT(p.first_name, ' ', p.last_name)) LIKE LOWER(CONCAT('%', :userPhone, '%'))
+                                    )
                                    AND u.id IN (
                        					 SELECT ur.user_id
                        					 FROM user_role ur
@@ -83,6 +86,7 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                 .setParameter("church_id",church_id)
                 .setParameter("userPhone",userPhone)
                 .setParameter("userRole",userRole)
+                .setMaxResults(5)
                 .setParameter("meeting_id",meeting_id).getResultList();
 
         for (Object[] row : result) {

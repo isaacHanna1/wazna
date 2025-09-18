@@ -44,6 +44,13 @@ public class ProfileDtlDto {
         this.lastName = lastName;
     }
 
+    public ProfileDtlDto(int id, String firstName, String lastName,String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+    }
+
     public ProfileDtlDto(int id, String firstName, String lastName , int meetingId , int churchId , int userId , String phone , String imagePath) {
         this.id = id;
         this.firstName = firstName;

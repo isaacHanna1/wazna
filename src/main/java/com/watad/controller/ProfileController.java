@@ -39,6 +39,15 @@ public class ProfileController {
     public String viewProfile(Model model){
         ProfileDtlDto dto = profileService.getProfileById();
         model.addAttribute("profileDto",dto);
+        int logedInProfileId = userServices.getLogedInUserProfile().getId();
+        model.addAttribute("logedInProfileId" , logedInProfileId);
+        return "profile";
+    }
+    @GetMapping("/profile/{userId}")
+    public String viewSpecificProfile(Model model , @PathVariable int userId){
+        ProfileDtlDto dto = profileService.getProfileData(userId);
+        model.addAttribute("profileDto",dto);
+
         return "profile";
     }
 

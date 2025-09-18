@@ -72,7 +72,7 @@ public class ProfileDtlDto {
 
     public ProfileDtlDto(int id, String firstName, String lastName, Gender gender,
                          String serviceStage, String phone, LocalDate birthday,
-                         String address, String fatherPeriest, String userName  , boolean isEnabled) {
+                         String address, String fatherPeriest, String userName  , boolean isEnabled , int userId) {
         this.id = id;
         this.firstName  = firstName;
         this.lastName         = lastName;
@@ -84,6 +84,7 @@ public class ProfileDtlDto {
         this.fatherPeriest = fatherPeriest;
         this.userName = userName;
         this.isEnabled = isEnabled;
+        this.userId   = userId;
     }
 
 

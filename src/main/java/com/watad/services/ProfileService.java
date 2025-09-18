@@ -14,6 +14,7 @@ public interface ProfileService {
     List<ProfileDtlDto> findAll();
     public void saveProfile(Profile profile , MultipartFile image) throws IOException;
     public ProfileDtlDto getProfileById();
+    public ProfileDtlDto getProfileData(int id ); // when i need to view the data of user i will use this
     public  Profile getProfileById(int id );
     public  void editPrfofile(Profile profile , MultipartFile image , int id )  throws IOException;
     public String getProfileImageName(int profile_id);

@@ -112,6 +112,33 @@ public class ProfileServiceImp implements ProfileService {
         return dto;
     }
 
+    @Override
+    public ProfileDtlDto getProfileData(int userId) {
+        User user         = userServices.findUserById(userId);
+        int theId         = user.getProfile().getId();
+        Profile profile   =  profileDao.getProfileById(theId);
+        ProfileDtlDto dto = new ProfileDtlDto();
+        dto.setId(theId);
+        dto.setFirstName(profile.getFirstName());
+        dto.setLastName(profile.getLastName());
+        dto.setGender(profile.getGender().toString());
+        dto.setPhone(profile.getPhone());
+        dto.setBirthday(profile.getBirthday());
+        dto.setAddress(profile.getAddress());
+        dto.setFatherPeriest(profile.getPriest().getName());
+        dto.setChurchName(profile.getChurch().getChurchName());
+        dto.setMeetingName(profile.getMeetings().getDescription());
+        dto.setServiceStage(profile.getServiceStage().getDescription());
+        dto.setImagePath(profile.getProfileImagePath());
+        int age = Util.calculateAge(profile.getBirthday());
+        int theSprintId = sprintDataService.getSprintDataByIsActive(profile.getChurch().getId(),profile.getMeetings().getId()).getId();
+        double points = userPointTransactionService.getTotalPointsByProfileIdAndSprintId(theId,theSprintId);
+        dto.setPoints(points);
+        dto.setAge(age);
+        dto.setRank(youthRankService.getSpecificYouthRank());
+        return dto;
+    }
+
     private String saveProfileImage(MultipartFile file) throws IOException {
 
         if (!file.getContentType().startsWith("image/")) {

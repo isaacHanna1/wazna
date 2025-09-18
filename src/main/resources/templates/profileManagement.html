@@ -73,7 +73,11 @@
                 <tbody>
             <tr th:each="profile, iterStat : ${profiles}">
                 <td th:text="${iterStat.index + 1}">1</td>
-                <td th:text="${profile.firstName} + ' ' + ${profile.lastName}">--</td>
+                <td>
+                    <a th:href="@{/profile/{id}(id=${profile.userId})}"
+                       th:text="${profile.firstName} + ' ' + ${profile.lastName}">
+                    </a>
+                </td>
                 <td th:text="${profile.phone}">--</td>
                 <td class="mob-hid" th:text="${profile.gender}">--</td>
                 <td class="mob-hid" th:text="${profile.address}">--</td>

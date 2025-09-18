@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Youth Profile</title>
-  <link th:href="@{./css/profile.css}" rel="stylesheet" />
-  <link th:href="@{./css/styles.css}" rel="stylesheet" />
+  <link th:href="@{/css/profile.css}" rel="stylesheet" />
+  <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
     <!-- Include the navbar fragment -->
@@ -19,9 +19,11 @@
          <h1 th:text="${profileDto.firstName + ' ' + profileDto.lastName}">Alex Johnson</h1>
         <p class="profile-tag" th:text="${profileDto.serviceStage}"> High School</p>
       </div>
-      <div class="edit-profile">
-        <a th:href="@{'/editProfile/' + ${profileDto.id}}" class="edit-button">Edit Profile</a>
-      </div>
+    <div class="edit-profile" th:if="${profileDto.id == logedInProfileId}">
+        <a th:href="@{/editProfile/{id}(id=${profileDto.id})}" class="edit-button">Edit Profile</a>
+    </div>
+    <input type="hidden" th:value="${profileDto.id}"/>
+    <input type="hidden" th:value="${logedInProfileId}"/>
     </div>
     
     <div class="profile-stats">

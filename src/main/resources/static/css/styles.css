@@ -140,7 +140,7 @@ body {
 .invalid {
     border-color: #dc3545 !important;
  }
- .inactive {
+ .inactive , .red-font {
   color: #dc3545 !important;
  }
 .hide{

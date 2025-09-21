@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Events</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+
+</head>
+<body>
+   <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+  <!-- Include the navbar fragment -->
+  <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+  <div class="container">
+      <h2 class="el-messiri heading text-center color-primary" >All Current Event </h2>
+        <table class="table mar-bottom-5px">
+          <thead>
+            <tr>
+              <th class="mob-hid" >SNo</th>
+              <th>Event Name</th>
+              <th class="mob-hid" >Event Description</th>
+              <th class="mob-hid">Is Paied</th>
+              <th>Price</th>
+              <th class="mob-hid" >Max Wazna</th>
+              <th>From Date</th>
+              <th class="mob-hid" >To Date</th>
+              <th>Active</th>
+              <th>Action</th    >
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="event, iterStat : ${events}">
+                    <td class="mob-hid" th:text="${iterStat.index + 1}"></td>
+                    <td>
+                        <a th:href="@{/event/find/{id}(id=${event.id})}" th:text="${event.title}"></a>
+                    </td>
+                    <td class="mob-hid"  th:text="${event.description}"></td>
+                    <td class="mob-hid" th:text="${event.isPaid ? 'Yes' : 'No'}"></td>
+                    <td th:text="${event.price}"></td>
+                    <td class="mob-hid" th:text="${event.maxSpendPoint}"></td>
+                    <td th:text="${event.from_date}"></td>
+                    <td class="mob-hid"  th:text="${event.to_date}"></td>
+                    <td th:text="${event.eventActive ? 'Yes' : 'No'}"
+                        th:classappend="${!event.eventActive} ? 'red-font' : ''">
+                    </td>
+                    <td>
+                        <!-- Separate Form for each event -->
+                        <form th:action="@{/event/changeStatus}" th:method="POST">
+                        <!-- Hidden inputs to pass event ID and current status -->
+                        <input type="hidden" name="eventId" th:value="${event.id}" />
+                        <input type="hidden" name="currentStatus" th:value="${event.eventActive}" />
+                        
+                        <!-- Button to submit the form for changing the status -->
+                        <button class="btn-primary btn" type="submit">Change Status</button>
+                        </form>
+                    </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+</body>
+</html>

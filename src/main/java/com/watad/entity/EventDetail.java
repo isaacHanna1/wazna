@@ -51,6 +51,8 @@ public class EventDetail {
     @JoinColumn(name = "sprint_id")
     private SprintData sprintData;
 
+    @Column(name="active")
+        private boolean eventActive ;
 
     // Constructors
     public EventDetail() {}
@@ -168,5 +170,13 @@ public class EventDetail {
 
     public void setSprintData(SprintData sprintData) {
         this.sprintData = sprintData;
+    }
+
+    public boolean isEventActive() {
+        return eventActive;
+    }
+
+    public void setEventActive(boolean eventActive) {
+        this.eventActive = eventActive;
     }
 }

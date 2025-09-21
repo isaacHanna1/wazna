@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Event</title>
+  <title>Edit Event</title>
   <link th:href="@{/css/styles.css}" rel="stylesheet" />
 
     <style>
@@ -23,7 +23,7 @@
 <div class="auth-container">
   <div class="auth-form">
     <h2 class="auth-title">Events</h2>
-       <form th:action="@{/event/add}"  method="POST" th:object="${event}" enctype="multipart/form-data" >
+       <form th:action="@{/event/edit}"  method="POST" th:object="${event}" enctype="multipart/form-data" >
         <input type="hidden" name="id"  th:value="${event.id}"/>
       
       <div class="form-group">
@@ -58,32 +58,32 @@
               <option value="" disabled th:selected="${event.eventType == null}">Select</option>
                 <option th:each="event : ${EventsType}"
                   th:value="${event.id}"
-                th:text="${event.name}">
+                  th:text="${event.name}">
               </option>
           </select>
       </div>
 
       <div class="form-group">
         <label  class = "form-label" for="from_date">Event From :</label>
-        <input  class = "form-input" type="date" id="from_date" name="from_date"   >
+        <input  class = "form-input" type="date" id="from_date" name="from_date"  th:value="${event.from_date}" >
       </div>
 
       <div class="form-group">
         <label  class = "form-label" for="to_date">Event To :</label>
-        <input  class = "form-input" type="date" id="to_date" name="to_date"   >
+        <input  class = "form-input" type="date" id="to_date" name="to_date"  th:value="${event.to_date}">
       </div>
       <div class="form-group">
           <label  class = "form-label" for="imgeName">Image : </label>
-          <input  class = "form-input" type="file" id="image" name="image"  >
+          <input  class = "form-input" type="file" id="image" name="image" />
           <input type="hidden" id="imageUrl" th:value="${imageUrl}"  />
           <div class="check-photo" th:if="${event.id != 0}">
               <a href="#" onclick="viewImage();">view Photo</a>
-              <input type="hidden" id="URL" th:value="@{/market/item/image/{img}(img=${event.imageUrl})}"/>
+              <input type="hidden" id="URL" th:value="@{/event/image/{img}(img=${event.imageUrl})}"/>
           </div>
       </div>
-
-      <button type="submit" class="btn btn-primary">Create</button>
-
+        <!--Hidden value-->
+        <input type="hidden" name="eventActive" th:value="${event.eventActive}"/>
+        <button type="submit" class="btn btn-primary">Edit</button>
     </form>
   </div>
 </div>

@@ -18,7 +18,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public  String showHome(Model model){
-        model.addAttribute("eventList",eventService.findAllActiveEvent());
+        model.addAttribute("eventList",eventService.findAllActiveEvent(1));
         return "home";
     }
 }

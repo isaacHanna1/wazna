@@ -35,21 +35,7 @@ public class SignInControllerAdvice {
             model.addAttribute("points" , youthRankService.getYouthPoint());
         }
     }
-    @ExceptionHandler(ProfileException.class)
-    public String handleProfileException(ProfileException ex, Model model) {
-        System.out.println(">>> ProfileException handler called!");
-        model.addAttribute("errorMessage", ex.getMessage());
-        return "error";
-    }
 
-    @ExceptionHandler(Exception.class)
-    public String handleGeneralException(Exception ex, Model model) {
-        System.out.println(">>> handleGeneralException handler called!");
-
-        model.addAttribute("errorMessage",
-                "Sorry, something went wrong. Our team has been notified.");
-        return "error";
-    }
 
 
 }

@@ -34,6 +34,9 @@ public class SignInControllerAdvice {
             model.addAttribute("userId", user.getId());
             model.addAttribute("points" , youthRankService.getYouthPoint());
         }
+
+
+
     }
 
 

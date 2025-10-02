@@ -2,6 +2,7 @@ package com.watad.controller.globalController;
 
 
 import com.watad.entity.User;
+import com.watad.exceptions.ProfileException;
 import com.watad.security.CustomUserDetails;
 import com.watad.services.CustomUserDetailsService;
 import com.watad.services.YouthRankService;
@@ -10,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
@@ -33,7 +35,21 @@ public class SignInControllerAdvice {
             model.addAttribute("points" , youthRankService.getYouthPoint());
         }
     }
+    @ExceptionHandler(ProfileException.class)
+    public String handleProfileException(ProfileException ex, Model model) {
+        System.out.println(">>> ProfileException handler called!");
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
+    }
 
+    @ExceptionHandler(Exception.class)
+    public String handleGeneralException(Exception ex, Model model) {
+        System.out.println(">>> handleGeneralException handler called!");
+
+        model.addAttribute("errorMessage",
+                "Sorry, something went wrong. Our team has been notified.");
+        return "error";
+    }
 
 
 }

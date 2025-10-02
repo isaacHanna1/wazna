@@ -61,6 +61,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/sign-in",
                                 "/register",
+                                "/awaitingApprove",
+                                "/editProfile/**",
                                 "/css/**",
                                 "/js/**",
                                 "/api/scan/code/**",

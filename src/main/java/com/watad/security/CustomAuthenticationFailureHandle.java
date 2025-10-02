@@ -33,7 +33,8 @@ public class CustomAuthenticationFailureHandle extends SimpleUrlAuthenticationFa
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
             if (userDetails != null && !userDetails.isEnabled()) {
-                response.sendRedirect("/sign-in?error=disabled");
+                request.getSession().setAttribute("userName",userName);
+                response.sendRedirect("/awaitingApprove");
                 return;
             } else {
                 response.sendRedirect("/sign-in?error=invalid");
@@ -41,7 +42,7 @@ public class CustomAuthenticationFailureHandle extends SimpleUrlAuthenticationFa
         } catch (UsernameNotFoundException e) {
             response.sendRedirect("/sign-in?error=invalid");
         }catch (Exception ex){
-            System.out.println("in faluire what happend 3"+ex.getMessage());
+            System.out.println("in faluire what happend :"+ex.getMessage());
 
         }
     }

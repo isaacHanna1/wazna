@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error</title>
+  <link th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+  <div class="auth-container await">
+    <div class="logo">
+      <img th:src="@{/uploads/sitePic/logo.png}" alt="Logo">
+    </div>
+    
+    <div class="auth-form error-page-card">
+      <h2 class="auth-title error-title">Oops! Something Went Wrong</h2>
+      <div class="text-center pad-10px">
+        <p class="red-font error-code-text">
+          Error Code: 500
+        </p>
+        
+        <p class="mar-bottom-15px">
+          <span th:text="${errorMessage}"></span>
+        </p>
+
+    </div>
+  </div>
+</body>
+</html>

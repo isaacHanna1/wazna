@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WAZNA</title>
+  <title>WAZNA - Edit Profile</title>
   <link th:href="@{../css/styles.css}" rel="stylesheet" />
 
 </head>
@@ -79,14 +79,15 @@
         <span id="phone-err" class="error-message"></span>
       </div>
 
-           <div class="form-group">
+      <div class="form-group">
         <label for="dioceses" class="form-label">Select dioceses (الإيبارشية)</label>
         <select id = "dioceses" name="dioceses.id"   class="form-input">
-          <option value="" selected disabled>Select dioceses (الإيبارشية)</option>
-          <option th:each="dioceses : ${dioceses}"
-                  th:value="${dioceses.id}"
-                  th:text="${dioceses.name}">
-          </option>
+              <option value="" disabled>Select dioceses (الإيبارشية)</option>
+            <option th:each="d : ${dioceses}"
+                    th:value="${d.id}"
+                    th:text="${d.name}"
+                    th:selected="${profile.dioceses != null} ? ${profile.dioceses.id} == ${d.id} : false">
+            </option>
         </select>
         <span th:if="${#fields.hasErrors('dioceses')}" th:errors="*{dioceses}" class="error-message"></span>
         <span id="dioceses-err" class="error-message"></span>
@@ -94,31 +95,37 @@
         <div class="form-group">
           <label for="Church" class="form-label">Church</label>
           <select id = "Church" name="church.id"   class="form-input">
-            <option value="" selected disabled>Select Church</option>
+             <option th:each="c : ${church}"
+                  th:value    = "${c.id}"
+                  th:text     = "${c.churchName}"
+                  th:selected = "${profile.church != null and profile.church.id == c.id}">
+          </option>
           </select>
           <span th:if="${#fields.hasErrors('church')}" th:errors="*{church}" class="error-message"></span>
           <span id="church-err" class="error-message"></span>
-      </div>
+       </div>
       <div class="form-group">
         <label for="meeting" class="form-label">Meeting</label>
-        <select id = "meeting" name="meetings.id"   class="form-input">
-          <option value="" selected disabled>Select Meeting</option>
+        <select id="meeting" name="meetings.id" class="form-input" >
+            <option th:each="m : ${meeting}"
+                  th:value="${m.id}"
+                  th:text="${m.description}"
+                  th:selected="${profile.meetings != null and profile.meetings.id == m.id}">
+          </option>
         </select>
         <span th:if="${#fields.hasErrors('meetings')}" th:errors="*{meetings}" class="error-message"></span>
         <span id="meetings-err" class="error-message"></span>
       </div>
 
-            <div class="form-group">
+      <div class="form-group">
         <label for="fatherPeriest" class="form-label">
           Father Periest</label
         >
-        <select
-                id="fatherPeriest"
-                name="priest.id"
-                class="form-input"
-        >
-          <option value="">Select</option>
-         
+        <select id="fatherPeriest" name="priest.id" class="form-input">
+          <option  th:each="p :${priests}" th:value="${p.id}"
+                  th:text="${p.name}"
+                   th:selected="${p != null and profile.priest.id == p.id}">
+          </option>
         </select>
         <span th:if="${#fields.hasErrors('priest')}" th:errors="*{priest}" class="error-message"></span>
         <span id="father-err" class="error-message"></span>

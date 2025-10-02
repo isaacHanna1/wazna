@@ -7,7 +7,10 @@ import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.Profile;
 import com.watad.entity.User;
 import com.watad.exceptions.PhomeNumberAlreadyException;
+import com.watad.exceptions.ProfileException;
 import com.watad.mapper.ProfileDtlMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -231,6 +234,27 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword, int churchId, int meetingId) {
         return  profileDao.findProfileByNameOrPhone(keyword,churchId,meetingId);
+    }
+
+    public Profile getEditableProfile(int profileId , HttpServletRequest request){
+        int CurrentProfileId   = 0;
+        Profile profile        = null;
+        String  userName = (String)request.getSession().getAttribute("userName");
+        System.out.println("The user name is "+userName);
+        if(userName != null && !userName.isEmpty()){
+            System.out.println("I`m in the session ");
+            User user = userServices.findByUserNameForLogin(userName).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + userName));
+            CurrentProfileId = user.getProfile().getId();
+            profile            = user.getProfile();
+        }else {
+            System.out.println("I`m in normal flow  ");
+            profile           = getProfileById(profileId);
+            CurrentProfileId = profile.getId();
+        }
+        if(CurrentProfileId != profileId){
+            throw new ProfileException("Nice try, but you can only edit your own account.");
+        }
+        return profile;
     }
 
 }

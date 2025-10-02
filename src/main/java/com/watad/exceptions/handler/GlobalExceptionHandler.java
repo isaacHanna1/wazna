@@ -1,9 +1,11 @@
 package com.watad.exceptions.handler;
 
 import com.watad.dto.response.ApiErrorResponse;
+import com.watad.exceptions.ProfileException;
 import com.watad.exceptions.QrCodeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -48,7 +50,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return "Check Isaac this Exception not handled "+ex.getMessage();
     }
 
-
+    @ExceptionHandler(ProfileException.class)
+    public String handleProfileException(ProfileException ex, Model model) {
+        model.addAttribute("errorMessage", "Profile Error: " + ex.getMessage());
+        return "error";
+    }
 
 }
 

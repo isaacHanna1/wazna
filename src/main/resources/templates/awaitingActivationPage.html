@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awaiting Activation - Youth QR Connect</title>
+  <link th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="auth-container await">
+  <div class="logo">
+    <img th:src="@{/uploads/sitePic/logo.png}" alt="Logo">
+  </div>
+  <div class="auth-form">
+    <h2 class="auth-title">Registration Successful</h2>
+
+    <div class="text-center mar-bottom-15px" >
+       <p>Your account has been created and is waiting for admin approval.</p>
+    </div>
+    <div class="text-center mar-bottom-15px">
+  
+      <a th:href="@{/editProfile/{id}(id=${profileId})}" class="btn btn-primary btn-no-width mar-auto" >
+        Edit Profile
+      </a>
+    </div>
+
+    <div class="text-center mar-bottom-15px" >
+      <p>
+        Back to login?
+        <a th:href="@{/sign-in}" class="link"> Sign In </a>
+      </p>
+    </div>
+  </div>
+</div>
+<!--Hidden values-->
+<input type="hidden" name="profileId" th:value="${profileId}"/>
+</body>
+</html>

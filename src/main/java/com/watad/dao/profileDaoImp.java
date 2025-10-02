@@ -3,6 +3,7 @@ package com.watad.dao;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.Profile;
 import com.watad.enumValues.Gender;
+import com.watad.services.UserServices;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
@@ -17,10 +18,14 @@ import java.util.List;
 public class profileDaoImp implements ProfileDao{
 
     private final EntityManager entityManager;
+    private final UserServices userServices;
 
-    public profileDaoImp(EntityManager entityManager) {
+    public profileDaoImp(EntityManager entityManager, UserServices userServices) {
         this.entityManager = entityManager;
+        this.userServices = userServices;
     }
+
+
 
     @Override
     public List<Profile> findAll() {
@@ -91,13 +96,19 @@ public class profileDaoImp implements ProfileDao{
     @Override
     public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status , String gender ,
                                                   int pageNum , int pageSize){
+
+
+        int churchId  = userServices.getLogInUserChurch().getId();
+        int meetingId = userServices.getLogInUserMeeting().getId();
+
+
         StringBuilder jpql = new StringBuilder("""
         Select new com.watad.dto.ProfileDtlDto(
             p.id, p.firstName, p.lastName, p.gender,
             p.serviceStage.description, p.phone, p.birthday,
             p.address, p.priest.name, u.userName , u.isEnabled,u.id )
              From Profile p JOIN p.user u
-             where 1 = 1
+             where p.church.id = :churchId and p.meetings.id = :meetingId 
     """);
         if (!gender.equalsIgnoreCase("All")) {
             jpql.append(" and p.gender = :gender");
@@ -122,6 +133,8 @@ public class profileDaoImp implements ProfileDao{
         if (profileId != 0) {
             query.setParameter("profileId", profileId);
         }
+        query.setParameter("meetingId",meetingId);
+        query.setParameter("churchId",churchId);
         query.setFirstResult((pageNum - 1) * pageSize);
         query.setMaxResults(pageSize);
         List<ProfileDtlDto> resultList = query.getResultList();

@@ -5,8 +5,11 @@ import com.watad.dto.UserCountsDto;
 import com.watad.entity.Profile;
 import com.watad.entity.User;
 import com.watad.exceptions.PhomeNumberAlreadyException;
+import com.watad.exceptions.ProfileException;
 import com.watad.services.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,14 +28,16 @@ public class ProfileController {
     private final ProfileService profileService;
     private final UserServices userServices;
     private final DiocesesService diocesesService;
+    private final PriestService priestService;
 
-    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices , DiocesesService diocesesService) {
+    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices, DiocesesService diocesesService, PriestService priestService) {
         this.serviceStagesService = serviceStagesService;
         this.churchService = churchService;
         this.meetingService = meetingService;
         this.profileService = profileService;
         this.userServices = userServices;
         this.diocesesService = diocesesService;
+        this.priestService = priestService;
     }
 
     @GetMapping("/profile")
@@ -52,10 +57,9 @@ public class ProfileController {
     }
 
     @GetMapping("/editProfile/{id}")
-    public String editProfile(Model model , @PathVariable int id ){
-        Profile profile = profileService.getProfileById(id);
+    public String editProfile(Model model , @PathVariable int id , HttpServletRequest request) throws ProfileException {
+        Profile profile = profileService.getEditableProfile(id,request);
         addDataToModel(model,profile);
-        model.addAttribute(("dioceses"),diocesesService.findAll());
         return "editProfile";
     }
 
@@ -65,6 +69,7 @@ public class ProfileController {
         model.addAttribute("church",churchService.findAll());
         model.addAttribute("meeting",meetingService.findAll());
         model.addAttribute(("dioceses"),diocesesService.findAll());
+            model.addAttribute("priests",priestService.findByDioceses(profile.getDioceses().getId()));
     }
     @PostMapping("/editProfile/{id}")
     public String registerUser(

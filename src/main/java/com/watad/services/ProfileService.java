@@ -2,6 +2,7 @@ package com.watad.services;
 
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.Profile;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,4 +24,5 @@ public interface ProfileService {
     List<ProfileDtlDto> findAllByFilterPaginated(int profileId,String status , String gender , int pageNum , int pageSize);
     public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId);
     public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword , int churchId , int meetingId);
+    public Profile getEditableProfile(int profileId , HttpServletRequest request);
 }

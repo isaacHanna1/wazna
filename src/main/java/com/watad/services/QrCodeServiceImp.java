@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,13 @@ public class QrCodeServiceImp implements  QrCodeService{
 
     @Override
     public boolean isValid(String code) {
-        QrCode      qrCode              = findByCode(code);
-        LocalDateTime now               = LocalDateTime.now();
+
+        QrCode qrCode       = findByCode(code);
+        // The server is hosted in Korea, but the application runs in Egypt.
+        // We use the Egypt time zone to ensure correct date and time handling.
+        ZoneId egyptZone    = ZoneId.of("Africa/Cairo");
+        LocalDateTime now   = LocalDateTime.now(egyptZone);
+
         LocalDate theTakenDate          = now.toLocalDate();
         LocalTime theTakenTime          = now.toLocalTime();
         boolean   isValidDate           = qrCode.getValidDate().equals(theTakenDate);

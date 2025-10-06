@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(name = "attendance")
@@ -14,7 +15,7 @@ public class Attendance {
     private AttendanceId attendanceId;
 
     @Column(name = "scanned_at")
-    private LocalTime scannedAt = LocalTime.now();
+    private LocalTime scannedAt = LocalTime.now(ZoneId.of("Africa/Cairo"));
 
 
     public Attendance() {

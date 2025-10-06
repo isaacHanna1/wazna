@@ -32,7 +32,10 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PointsSummaryDTO attendanceProcessing(User user , String code) {
-            boolean isvalid = qrCodeService.isValid(code);
+        // Validation is based on Egypt local time.
+        // The ZoneId is applied in the isValid() method,
+        // and the Attendance class also checks the scannedAt time accordingly.
+        boolean isvalid = qrCodeService.isValid(code);
                if(isvalid){
                 QrCode qrCode = qrCodeService.findByCode(code);
                 if(qrCode.getMeetings().getId() != user.getProfile().getMeetings().getId()){

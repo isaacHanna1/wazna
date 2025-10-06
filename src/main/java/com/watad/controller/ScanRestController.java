@@ -28,11 +28,17 @@ public class ScanRestController {
         this.processingService = processingService;
         this.userServices = userServices;
     }
-    @GetMapping("/scanner/{code}/{userId}")
-    public PointsSummaryDTO checkCode(@PathVariable String code , @PathVariable int userId){
-        User user = userServices.findUserById(userId);
+    @GetMapping({"/scanner/{code}", "/scanner/{code}/{userId}"})
+    public PointsSummaryDTO checkCode(@PathVariable String code , @PathVariable(required = false) Integer userId){
+        User user ;
+        if(userId != null){
+             user = userServices.findUserById(userId);
+        }else {
+            user  = userServices.logedInUser();
+        }
         PointsSummaryDTO pointsSummaryDTO =  processingService.attendanceProcessing(user,code);
         pointsSummaryDTO.setRedirectURl("/notifyWithPoints");
         return pointsSummaryDTO;
     }
+
 }

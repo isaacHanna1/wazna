@@ -41,7 +41,6 @@ public class SecurityConfig {
                         .loginPage("/sign-in")
                         .successHandler(loginSuccessHandler)
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home", true)
                         .failureHandler(new CustomAuthenticationFailureHandle(userDetailsService))
                         .permitAll()
 

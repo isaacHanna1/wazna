@@ -90,11 +90,11 @@
     
     <li class="main-menu nav-item " sec:authorize="hasRole('YOUTH')">
         <ul class="sub-menu">
-            <li class="nav-item protected-content" >
+           <!-- <li class="nav-item protected-content" >
                         <a th:href="@{/scan}" class="nav-link logout-button">
                         <span class="menu-name">    Scan QR Code </span>
                         </a>
-            </li>
+            </li> -->
             <li class="nav-item protected-content" >
                 <a th:href="@{/youth/point/transfer}" class="nav-link logout-button d-flex align-items-center gap-2">
                         <span class="menu-name">   Transfer Wazna </span>

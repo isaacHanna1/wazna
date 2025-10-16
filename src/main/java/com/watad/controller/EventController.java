@@ -49,7 +49,7 @@ public class EventController {
         EventDetail event = new EventDetail();
         model.addAttribute("event",event);
         model.addAttribute("EventsType",eventTypeServices.findAll());
-        return    "createEvent";
+        return    "redirect:/event/view";
     }
 
     @GetMapping("/view")

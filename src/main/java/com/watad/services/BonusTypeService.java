@@ -10,4 +10,7 @@ public interface BonusTypeService {
     BonusType getBonusTypeByDescription(String description);
     public List<BonusTypeDto> findAll();
     public BonusType findById(int id);
+    void createBonusType(BonusType bonusType);
+    List<BonusTypeDto> findByDesc(String desc);
+    void updateBonusType(BonusType bonusType);
 }

@@ -23,7 +23,7 @@
 <div class="auth-container">
   <div class="auth-form">
     <h2 class="auth-title">Events</h2>
-       <form th:action="@{/event/add}"  method="POST" th:object="${event}" enctype="multipart/form-data" >
+       <form th:action="@{/event/add}"  method="POST" th:object="${event}" enctype="multipart/form-data"  name="event-form" id="event-form">
         <input type="hidden" name="id"  th:value="${event.id}"/>
       
       <div class="form-group">
@@ -89,6 +89,8 @@
 </div>
 <script th:src="@{/js/nav.js}"></script>
 <script th:src="@{/js/jCommon/Common.js}"></script>
+<script th:src="@{/js/event.js}"></script>
+
 <script>
 
 </script>

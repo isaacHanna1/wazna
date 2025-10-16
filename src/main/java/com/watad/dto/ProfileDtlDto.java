@@ -35,6 +35,7 @@ public class ProfileDtlDto {
     private int meetingId;
     private int userId;
     private boolean isEnabled ; // staus of account in user table is enabled or not
+    private String email;
     public ProfileDtlDto() {
     }
 
@@ -64,7 +65,7 @@ public class ProfileDtlDto {
 
     public ProfileDtlDto(int id, String firstName, String lastName, String gender,
                          String serviceStage, String phone, LocalDate birthday,
-                         String address, String fatherPeriest, String userName) {
+                         String address, String fatherPeriest, String userName , String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -75,6 +76,7 @@ public class ProfileDtlDto {
         this.address = address;
         this.fatherPeriest = fatherPeriest;
         this.userName = userName;
+        this.email = email;
     }
 
     public ProfileDtlDto(int id, String firstName, String lastName, Gender gender,
@@ -296,5 +298,13 @@ public class ProfileDtlDto {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

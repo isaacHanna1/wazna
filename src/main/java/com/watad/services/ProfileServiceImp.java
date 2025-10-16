@@ -85,6 +85,8 @@ public class ProfileServiceImp implements ProfileService {
         profile.setJoinDate(LocalDateTime.now());
         profile.setImageUrl("");
         profile.setUser(user);
+        profile.getFirstName().trim();
+        profile.getLastName().trim();
         profileDao.saveProfile(profile);
     }
 
@@ -112,6 +114,7 @@ public class ProfileServiceImp implements ProfileService {
         dto.setPoints(points);
         dto.setAge(age);
         dto.setRank(youthRankService.getSpecificYouthRank());
+        dto.setEmail(profile.getEmail());
         return dto;
     }
 
@@ -139,6 +142,8 @@ public class ProfileServiceImp implements ProfileService {
         dto.setPoints(points);
         dto.setAge(age);
         dto.setRank(youthRankService.getSpecificYouthRank());
+        System.out.println("get the email data -> "+dto.getEmail());
+        dto.setEmail(profile.getEmail());
         return dto;
     }
 

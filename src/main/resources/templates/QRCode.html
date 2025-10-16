@@ -44,6 +44,18 @@
         <input  class = "form-input" type="time" id="endTime" name="validEnd" th:field ="*{validEnd}" >
       </div>
       
+ <div class="form-group">
+        <label  class = "form-label" for="bounceType">Bounce Type :</label>
+        <select class = "form-input" id ="bounceType" name="bonusType.id"  required>
+               <option value="" disabled th:selected="${qrCode.bonusType == null}">Select</option>
+              <option th:each="bonusType : ${bonusType}"
+                      th:value="${bonusType.id}"
+                      th:text="${bonusType.description}"
+                      th:selected="${qrCode.bonusType != null and bonusType.id == qrCode.bonusType.id}">
+              </option>
+        </select>
+      </div>
+
       <div class="form-group">
         <label  class = "form-label" for="active">Active :</label>
         <input   type="checkbox" id="active" name="active" th:field ="*{active}" >

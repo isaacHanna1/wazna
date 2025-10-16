@@ -1,6 +1,7 @@
 package com.watad.youth;
 
 import com.watad.security.CustomAuthenticationFailureHandle;
+import com.watad.security.JpaPersistentTokenRepository;
 import com.watad.security.events.LoginSuccessHandler;
 import com.watad.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class SecurityConfig {
     private LoginSuccessHandler loginSuccessHandler;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JpaPersistentTokenRepository tokenRepo) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form
@@ -44,19 +45,29 @@ public class SecurityConfig {
                         .failureHandler(new CustomAuthenticationFailureHandle(userDetailsService))
                         .permitAll()
 
-                ).rememberMe(config->config.key("IsaacHanna1@2022")
-                        .tokenValiditySeconds(3600))
+                ).rememberMe(remember ->remember
+                        .tokenRepository(tokenRepo)
+                        .tokenValiditySeconds(60*60*24*365).key("wazna@2022")
+                        .userDetailsService(userDetailsService)
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/sign-in")
                         .permitAll()
                 )
+
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/youth/point/add").hasAnyRole("SERVER","SUPER")
+                        auth
+                                .requestMatchers("/youth/point/transfer").hasAnyRole("YOUTH")
+                                .requestMatchers("/youth/point/**").hasAnyRole("SERVER","SUPER")
                                 .requestMatchers("/profile").authenticated()
                                 .requestMatchers("/profile/**").hasAnyRole("SERVER","SUPER")
                                 .requestMatchers("/youth/point/transfer").hasAnyRole("YOUTH","SERVER")
                                 .requestMatchers("/manualAttandance").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/bonus/**").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/event/**").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/qr/**").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/api/role").hasAnyRole("SERVER","SUPER")
                         .requestMatchers(
                                 "/sign-in",
                                 "/register",

@@ -2,6 +2,8 @@ package com.watad.controller;
 
 import com.watad.dto.QRCodeDto;
 import com.watad.entity.QrCode;
+import com.watad.services.BonusAddingService;
+import com.watad.services.BonusTypeService;
 import com.watad.services.QrCodeService;
 import com.watad.wrapper.QrCodeWrapper;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,9 +22,11 @@ import java.util.List;
 public class QrCodeController {
 
     private final QrCodeService qrCodeService;
+    private final BonusTypeService bonusTypeService;
 
-    public QrCodeController(QrCodeService qrCodeService) {
+    public QrCodeController(QrCodeService qrCodeService, BonusTypeService bonusTypeService) {
         this.qrCodeService = qrCodeService;
+        this.bonusTypeService = bonusTypeService;
     }
 
     @PostMapping("/code")
@@ -50,6 +54,7 @@ public class QrCodeController {
     @GetMapping("/code")
     public String qrCodeView(Model model){
         model.addAttribute("qrCode",new QrCode());
+        model.addAttribute("bonusType",bonusTypeService.findAll());
         return  "QRCode";
     }
 

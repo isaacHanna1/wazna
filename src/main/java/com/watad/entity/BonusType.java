@@ -1,7 +1,9 @@
 package com.watad.entity;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,10 +25,12 @@ public class BonusType {
     private boolean isActive;
 
     @Column(name = "active_from")
-    private LocalDateTime activeFrom;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate activeFrom;
 
     @Column(name = "active_to")
-    private LocalDateTime activeTo;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate activeTo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
@@ -36,8 +40,10 @@ public class BonusType {
     @JoinColumn(name = "church_id")
     private Church church;
 
-    public BonusType() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="bonus_head_id")
+    private BonusHead bonusHead;
+
 
 
     public Meetings getMeetings() {
@@ -88,19 +94,27 @@ public class BonusType {
         isActive = active;
     }
 
-    public LocalDateTime getActiveFrom() {
+    public LocalDate getActiveFrom() {
         return activeFrom;
     }
 
-    public void setActiveFrom(LocalDateTime activeFrom) {
+    public void setActiveFrom(LocalDate activeFrom) {
         this.activeFrom = activeFrom;
     }
 
-    public LocalDateTime getActiveTo() {
+    public LocalDate getActiveTo() {
         return activeTo;
     }
 
-    public void setActiveTo(LocalDateTime activeTo) {
+    public void setActiveTo(LocalDate activeTo) {
         this.activeTo = activeTo;
+    }
+
+    public BonusHead getBonusHead() {
+        return bonusHead;
+    }
+
+    public void setBonusHead(BonusHead bonusHead) {
+        this.bonusHead = bonusHead;
     }
 }

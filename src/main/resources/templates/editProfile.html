@@ -75,6 +75,17 @@
                 class="form-input"
                 placeholder="Enter Your Phone"
         />
+        <div class="form-group">
+        <label for="email" class="form-label"> Email </label>
+        <input
+                id="email"
+                name="email"
+                th:field="*{email}"
+                type="email"
+                 
+                class="form-input"
+                placeholder="Ex:isaac.hanna1@gmail.com"
+        />
         <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
         <span id="phone-err" class="error-message"></span>
       </div>

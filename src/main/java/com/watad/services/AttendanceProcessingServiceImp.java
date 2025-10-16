@@ -44,11 +44,11 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
                 Attendance attendance = new Attendance();
                 handleAttendanceService(attendance,user,qrCode);
                 double addPoint = handleUserBounsService(qrCode,attendance,user);
-                handleUserPointTran(user , addPoint);
-                Profile profile = user.getProfile();
-                int curchId    = profile.getChurch().getId();
-                int meetingID  = profile.getChurch().getId();
-                double totalPoint = userPointTransactionService.getTotalPointsByProfileIdAndSprintId(user.getProfile().getId(),sprintDataService.getSprintDataByIsActive(curchId,meetingID).getId());
+                handleUserPointTran(user , addPoint ,qrCode.getBonusType());
+                Profile profile         = user.getProfile();
+                int curchId             = profile.getChurch().getId();
+                int meetingID           = profile.getChurch().getId();
+                double totalPoint       = userPointTransactionService.getTotalPointsByProfileIdAndSprintId(user.getProfile().getId(),sprintDataService.getSprintDataByIsActive(curchId,meetingID).getId());
                 return new PointsSummaryDTO(addPoint,totalPoint,user.getId(),profile.getFirstName(), profile.getLastName(), profile.getPhone());
             }
         return new PointsSummaryDTO(0.0 ,0.0);
@@ -64,7 +64,8 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
 
     private double handleUserBounsService(QrCode qrCode,Attendance attendance ,User user){
 
-        BonusType bonusType = bonusTypeService.getBonusTypeByDescription("Attendance");
+        int bonusTypeId = qrCode.getBonusType().getId();
+        BonusType bonusType = bonusTypeService.findById(bonusTypeId);
         Profile profile     = user.getProfile();
         int curchId         = profile.getChurch().getId();
         int meetingID       = profile.getMeetings().getId();
@@ -82,7 +83,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         }
 
 
-    private void handleUserPointTran(User user , double addPoint) {
+    private void handleUserPointTran(User user , double addPoint,BonusType bonusType) {
         UserPointTransaction pointTransaction = new UserPointTransaction();
         pointTransaction.setProfile(user.getProfile());
         pointTransaction.setTransferTo(null);
@@ -93,7 +94,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         pointTransaction.setPoints(addPoint);
         pointTransaction.setActive(true);
         pointTransaction.setTransactionDate(LocalDateTime.now());
-        pointTransaction.setUsedFor("Attendance Point");
+        pointTransaction.setUsedFor(bonusType.getDescription());
         pointTransaction.setTransactionType("Earn");
         pointTransaction.setChurch(profile.getChurch());
         pointTransaction.setMeetings(profile.getMeetings());

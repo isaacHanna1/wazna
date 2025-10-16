@@ -100,6 +100,9 @@ public class Profile {
     @NotNull(message = "Choose dioceses")
     private Dioceses dioceses ;
 
+    @Column(name = "email")
+    private String email;
+
     public Profile() {
     }
 
@@ -232,5 +235,13 @@ public class Profile {
 
     public void setDioceses(Dioceses dioceses) {
         this.dioceses = dioceses;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -61,7 +61,6 @@ public class AuthController {
             @Valid @ModelAttribute("profile") Profile profile,
             BindingResult result,
             Model model, @RequestParam("image") MultipartFile image
-
             ) {
         if (result.hasErrors()) {
             addDataToModel(model,profile);

@@ -3,7 +3,10 @@ package com.watad.services;
 import com.watad.dao.BonusTypeDao;
 import com.watad.dto.BonusTypeDto;
 import com.watad.entity.BonusType;
+import com.watad.entity.Church;
+import com.watad.entity.Meetings;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,10 +30,39 @@ public class BonusTypeServiceImp implements  BonusTypeService{
 
     @Override
     public List<BonusTypeDto> findAll() {
-        return bonusTypeDao.findAll();
+        int churchId        = userServices.getLogInUserChurch().getId();
+        int meetingId       = userServices.getLogInUserMeeting().getId();
+        return bonusTypeDao.findAll(churchId,meetingId);
     }
 
     public BonusType findById(int id){
         return bonusTypeDao.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public void createBonusType(BonusType bonusType) {
+        Church church           = userServices.getLogInUserChurch();
+        Meetings meetings       = userServices.getLogInUserMeeting();
+        bonusType.setChurch(church);
+        bonusType.setMeetings(meetings);
+        bonusTypeDao.createBonus(bonusType);
+    }
+
+    @Override
+    public List<BonusTypeDto> findByDesc(String desc) {
+        Church church           = userServices.getLogInUserChurch();
+        Meetings meetings       = userServices.getLogInUserMeeting();
+        return bonusTypeDao.findByDesc(church.getId(),meetings.getId(),desc);
+    }
+
+    @Override
+    @Transactional
+    public void updateBonusType(BonusType bonusType) {
+        Church church           = userServices.getLogInUserChurch();
+        Meetings meetings       = userServices.getLogInUserMeeting();
+        bonusType.setChurch(church);
+        bonusType.setMeetings(meetings);
+        bonusTypeDao.updateBonusType(bonusType);
     }
 }

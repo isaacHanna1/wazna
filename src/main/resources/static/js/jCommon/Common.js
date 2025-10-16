@@ -215,11 +215,9 @@ function debounce(func, delay) {
      img.alt          = alt;
      overlay.appendChild(img);
      img.className    = 'img-overlay';
-
-     const btn = document.createElement('button');
-     
-     btn.classList ="img-overlay-close";
-     btn.innerHTML = '&times;';
+     const btn        = document.createElement('button');
+     btn.classList    ="img-overlay-close";
+     btn.innerHTML    = '&times;';
 
  // close handlers
     function closeOverlay() {
@@ -242,3 +240,36 @@ function debounce(func, delay) {
 
      document.body.appendChild(overlay);
   }
+
+  // compress function 
+  async function compressImage(file, maxWidth, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    const img = new Image();
+
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const scale = Math.min(1, maxWidth / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(
+        (blob) => resolve(blob),
+        "image/jpeg",
+        quality
+      );
+    };
+
+    img.onerror = reject;
+    reader.onerror = reject;
+
+    reader.readAsDataURL(file);
+  });
+}

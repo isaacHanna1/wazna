@@ -25,7 +25,7 @@
 <div class="auth-container">
   <div class="auth-form">
     <h2 class="auth-title">Market Items</h2>
-       <form th:action="@{/market/add}"  method="POST" th:object="${item}" enctype="multipart/form-data" >
+       <form th:action="@{/market/add}"  method="POST" th:object="${item}" enctype="multipart/form-data" id="item-form">
         <input type="hidden" name="id"  th:value="${item.id}"/>
       <div class="form-group">
         <label class="form-label" for="itemName">Item Name :</label>
@@ -45,11 +45,12 @@
       <div class="form-group">
         <label  class = "form-label" for="category">Category :</label>
         <select class = "form-input" id ="category" name="category.id"  required>
-            <option value="" disabled th:selected="${item.category == null}">Select</option>
-               <option th:each="cat : ${category}"
-                th:value="${cat.id}"
-               th:text="${cat.description}">
-      </option>
+               <option value="" disabled th:selected="${item.category == null}">Select</option>
+              <option th:each="cat : ${category}"
+                      th:value="${cat.id}"
+                      th:text="${cat.description}"
+                      th:selected="${item.category != null and cat.id == item.category.id}">
+              </option>
         </select>
       </div>
 
@@ -70,6 +71,8 @@
 </div>
 <script th:src="@{/js/nav.js}"></script>
 <script th:src="@{/js/jCommon/Common.js}"></script>
+<script th:src="@{/js/item.js}"></script>
+
 <script>
         let msg      = document.getElementById("msg");
         let msg_type = document.getElementById("msg_type");

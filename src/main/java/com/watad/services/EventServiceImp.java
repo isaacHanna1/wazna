@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,14 +60,14 @@ public  class EventServiceImp implements EventService{
         int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
         List<EventDetail> events =  eventDao.findAllActiveEvent(theChurchId ,theChurchId ,theSprintId , status);
         if (events.isEmpty()) {
-            if (events == null || events.isEmpty()) {
-                EventDetail defaultEvent = new EventDetail();
-                defaultEvent.setTitle("NO Event Till Now");
-                defaultEvent.setDescription("Wait Us For Coming Event");
-                defaultEvent.setImageUrl("commingSoon.jpg");
-                defaultEvent.setPrice(0);
-                return List.of(defaultEvent);
-            }
+            EventDetail defaultEvent = new EventDetail();
+            defaultEvent.setTitle("NO Event Till Now");
+            defaultEvent.setDescription("Wait Us For Coming Event");
+            defaultEvent.setImageUrl("commingSoon.jpg");
+            defaultEvent.setPrice(0);
+            List<EventDetail> list= new ArrayList();
+            list.add(defaultEvent);
+            return list;
         }
         return events;
     }

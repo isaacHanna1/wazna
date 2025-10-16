@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>All Bonus</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+
+</head>
+<body>
+   <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+  <!-- Include the navbar fragment -->
+  <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+  <div class="container">
+      <h2 class="el-messiri heading text-center color-primary" >All Items </h2>
+      <form th:action="@{/bonus/find}" th:method="GET" class="form-element flex flex-mob   flx-wrap space-between">
+        <div class="mar-bottom-5px flex ">
+          <div>
+            <label for="bonusDescription" class="width-120px label">Item Name: </label>
+          </div>
+          <div class="pos-relative  ">
+            <input type="Text" id="desc" name="desc" autocomplete="off" placeholder="Bonus Description" class="input width-250 " required />
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="btn-no-width btn-primary">Filter</button>
+        </div>
+      </form>
+      <form >
+        <table class="table mar-bottom-5px">
+          <h3 class="color-primary pad-10px">Bonus</h3>
+          <thead>
+            <tr>
+              <th class="mob-hid" >SNo</th>
+              <th>Description</th>
+              <th>Wazna Point</th>
+              <th>Active From</th>
+              <th>Active To</th>
+              <th>Active </th>
+            </tr>
+          </thead>
+          <tbody>
+           <tr th:each="bonus, iterStat : ${bonus}">
+              <td th:text="${iterStat.index + 1}" class="mob-hid">1</td>
+              <td>
+                  <a th:href="@{/bonus/find/{id}(id=${bonus.id})}" th:text="${bonus.description}"></a>
+              </td>              <td th:text="${bonus.point}"></td>
+              <td th:text="${bonus.activeFrom}"></td>
+              <td th:text="${bonus.activeTo}"></td>
+              <td>
+                <input th:if="${bonus.isActive == true}" checked type="checkbox" th:name = "'status-'+${iterStat.index}" th:id = "'status-'+${iterStat.index}" th:value="${bonus.isActive}" disabled >
+                <input th:unless="${bonus.isActive == true}"     type="checkbox" th:name = "'status-'+${iterStat.index}" th:id = "'status-'+${iterStat.index}" th:value="${bonus.isActive}" disabled>
+              </td>
+              <input type="hidden"        th:name = "'id-'+${iterStat.index}"     th:id = "'id-'+${iterStat.index}" th:value="${bonus.id}"/>
+            </tr>
+          </tbody>
+        </table>
+  </form>
+ <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+</div>
+
+
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+</body>
+</html>

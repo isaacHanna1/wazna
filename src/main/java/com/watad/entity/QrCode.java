@@ -41,7 +41,12 @@
         private Church church ;
 
         @Column(name = "is_active")
-            private boolean active;
+        private boolean active;
+
+
+        @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+        @JoinColumn(name = "bonus_type_id")
+        private BonusType bonusType ;
 
 
         public QrCode() {
@@ -125,5 +130,14 @@
 
         public void setActive(boolean active) {
             this.active = active;
+        }
+
+
+        public BonusType getBonusType() {
+            return bonusType;
+        }
+
+        public void setBonusType(BonusType bonusType) {
+            this.bonusType = bonusType;
         }
     }

@@ -58,6 +58,8 @@ public class MarketItemServiceImp implements MarketItemService {
                 item.setImageName(fileName);
                 marketItemDao.saveItem(item);
             } else {
+                System.out.println("-----------------------");
+                System.out.println("the item data :-> "+item.toString());
                 marketItemDao.saveItem(item);
             }
 

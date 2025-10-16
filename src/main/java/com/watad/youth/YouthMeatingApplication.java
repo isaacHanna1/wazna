@@ -15,6 +15,10 @@ import org.springframework.context.annotation.ComponentScan;
 public class YouthMeatingApplication {
 
 	public static void main(String[] args) {
+
+
+		System.out.println("java version -> "+System.getProperty("java.version"));
+
 		SpringApplication.run(YouthMeatingApplication.class, args);
 	}
 
@@ -24,7 +28,6 @@ public class YouthMeatingApplication {
 			roleService.findOrCreate("ROLE_YOUTH");
 			roleService.findOrCreate("ROLE_SERVER");
 			roleService.findOrCreate("ROLE_SUPER");
-
 		};
 	}
 }

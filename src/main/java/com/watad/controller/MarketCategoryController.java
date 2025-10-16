@@ -19,7 +19,7 @@ public class MarketCategoryController {
 
 
     private static final int DEFAULT_CATEGORY_ID = 1;
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE           = 12;
 
     public MarketCategoryController(MarketCategoryService marketCategoryService , MarketItemService marketItemService) {
         this.marketCategoryService = marketCategoryService;

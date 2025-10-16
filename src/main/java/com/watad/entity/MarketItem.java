@@ -132,8 +132,9 @@ public class MarketItem {
                 ", itemDesc='" + itemDesc + '\'' +
                 ", points=" + points +
                 ", imageName='" + imageName + '\'' +
-                ", category=" + category +
-                ", church=" + church +
+                ", category id =" + category.getId() +
+                ", category desc =" + category.getDescription() +
+                ", church name =" + church.getChurchName() +
                 ", meeting=" + meeting +
                 ", status=" + status +
                 '}';

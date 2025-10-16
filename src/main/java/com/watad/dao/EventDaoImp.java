@@ -40,8 +40,8 @@ public class EventDaoImp implements EventDao{
         // JPQL query
         String jpql = """
             SELECT e FROM EventDetail e 
-            WHERE e.from_date > :currentDate
-              AND e.curch = :church
+            WHERE 
+               e.curch = :church
               AND e.meetings = :meeting
               AND e.sprintData = :sprint
 
@@ -55,7 +55,6 @@ public class EventDaoImp implements EventDao{
 
         sql.append(" ORDER BY e.from_date ");
         List<EventDetail> events = entityManager.createQuery(sql.toString(), EventDetail.class)
-                .setParameter("currentDate", currentDate)
                 .setParameter("church", church)
                 .setParameter("meeting", meeting)
                 .setParameter("sprint", sprint)

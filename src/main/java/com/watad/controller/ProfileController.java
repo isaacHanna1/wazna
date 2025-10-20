@@ -65,10 +65,12 @@ public class ProfileController {
     private void addDataToModel(Model model,Profile profile){
         model.addAttribute("profile",profile);
         model.addAttribute("stages",serviceStagesService.findAll());
-        model.addAttribute("church",churchService.findAll());
-        model.addAttribute("meeting",meetingService.findAll());
         model.addAttribute(("dioceses"),diocesesService.findAll());
-            model.addAttribute("priests",priestService.findByDioceses(profile.getDioceses().getId()));
+        int diocesesId = profile.getDioceses().getId();
+        int churchId  = profile.getChurch().getId();
+        model.addAttribute("church",churchService.findByDioceseId(diocesesId));
+        model.addAttribute("meeting",meetingService.findByChurchId(churchId));
+        model.addAttribute("priests",priestService.findByDioceses(profile.getDioceses().getId()));
     }
     @PostMapping("/editProfile/{id}")
     public String registerUser(

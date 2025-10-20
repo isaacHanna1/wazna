@@ -213,6 +213,8 @@ async function loadChurchName(dioceseId) {
 async function builtTheDom(response){
 
     const churchEle           = document.getElementById("Church");
+    churchEle.innerHTML = "";
+
         // Remove all options except the first one
     while (churchEle.options.length > 1) {
         churchEle.remove(1);
@@ -260,6 +262,8 @@ async function loadMeetingByChurchID(churchId){
 
 async function builtTheDomOfMeetings(response){
     const meetingEle           = document.getElementById("meeting");
+        meetingEle.innerHTML = "";
+
      // Remove all options except the first one
     while (meetingEle.options.length > 1) {
         meetingEle.remove(1);
@@ -301,6 +305,8 @@ async function loadPeriestByDiocesesID(diocesesID){
 }
 async function builtTheDomOfPeriest(response){
     const fatherPeriestEle           = document.getElementById("fatherPeriest");
+          fatherPeriestEle.innerHTML = "";
+
      // Remove all options except the first one
     while (fatherPeriestEle.options.length > 1) {
         fatherPeriestEle.remove(1);

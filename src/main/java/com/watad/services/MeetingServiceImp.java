@@ -12,13 +12,17 @@ import java.util.List;
 public class MeetingServiceImp implements MeetingService{
 
     private  final MeetingDao  meetingDao;
+    private final  UserServices userServices;
 
-    public MeetingServiceImp(MeetingDao meetingDao) {
+    public MeetingServiceImp(MeetingDao meetingDao, UserServices userServices) {
         this.meetingDao = meetingDao;
+        this.userServices = userServices;
     }
+
     @Override
     public List<Meetings> findAll() {
-        return meetingDao.findAll();
+        int churchId = userServices.getLogInUserChurch().getId();
+        return meetingDao.findAll(churchId);
     }
 
     @Override

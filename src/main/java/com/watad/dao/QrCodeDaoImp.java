@@ -98,11 +98,14 @@ public class QrCodeDaoImp  implements QrCodeDao{
     }
 
     @Override
-    public List<QrCode> findAll(LocalDate from , LocalDate to) {
+    public List<QrCode> findAll(LocalDate from , LocalDate to ,int churchId , int meetingId) {
         List <QrCode> qrCodeList ;
-        TypedQuery<QrCode> query = entityManager.createQuery("From QrCode Where validDate >= :from AND  validDate <= :to ", QrCode.class);
+        TypedQuery<QrCode> query = entityManager.createQuery("From QrCode q Where validDate >= :from AND  validDate <= :to " +
+                "AND q.church.id =:churchId And q.meetings.id =:meetingId ", QrCode.class);
         query.setParameter("from",from);
         query.setParameter("to",to);
+        query.setParameter("churchId",churchId);
+        query.setParameter("meetingId",meetingId);
         qrCodeList              =   query.getResultList();
         if(qrCodeList == null){
             qrCodeList = new ArrayList<>();

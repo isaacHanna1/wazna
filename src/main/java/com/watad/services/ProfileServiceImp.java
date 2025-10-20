@@ -9,6 +9,7 @@ import com.watad.entity.User;
 import com.watad.exceptions.PhomeNumberAlreadyException;
 import com.watad.exceptions.ProfileException;
 import com.watad.mapper.ProfileDtlMapper;
+import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -120,7 +121,17 @@ public class ProfileServiceImp implements ProfileService {
 
     @Override
     public ProfileDtlDto getProfileData(int userId) {
-        User user         = userServices.findUserById(userId);
+        User user         = null;
+        try{
+         user         = userServices.findUserById(userId);
+        }catch (NoResultException ex){
+            throw new ProfileException("User not found or no longer exists in the system.");
+        }
+        Profile searchProfile = user.getProfile();
+        int CurrentMeetingId     = userServices.getLogInUserMeeting().getId();
+        if(searchProfile.getMeetings().getId() != CurrentMeetingId){
+            throw new ProfileException("Sorry, you don’t have permission to view this profile. It belongs to another meeting.");
+        }
         int theId         = user.getProfile().getId();
         Profile profile   =  profileDao.getProfileById(theId);
         ProfileDtlDto dto = new ProfileDtlDto();

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MarketItemDao {
 
-    public long countByCategory(int categoryId) ;
+    public long countByCategory(int categoryId , int churchId , int meetingId) ;
     public List<MarketItem> findByCategoryWithPagination(int categoryId, int church_id , int meeting_id , int page, int size);
     public void saveItem(MarketItem marketItem );
     public List<MarketItemDto> getMarketItem(int churchId , int meetingId , int pageNum , int pageSize);

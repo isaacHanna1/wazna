@@ -19,7 +19,7 @@ public class EventTypeServicesImp implements EventTypeServices{
     @Override
     public List<EventType> findAll() {
             int churchId    = userServices.getLogInUserChurch().getId();
-            int meetingId   = userServices.getLogInUserChurch().getId();
+            int meetingId   = userServices.getLogInUserMeeting().getId();
             return eventTypeDao.findAll(churchId,meetingId);
     }
 }

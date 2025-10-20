@@ -55,6 +55,7 @@ public class ScanController {
             model.addAttribute("errorMessage", "You have already scanned this QR .");
             return "error";
         } catch (Exception ex) {
+            System.out.println("the exception is isaac -> "+ex.getMessage());
             model.addAttribute("errorMessage", "Unexpected error: " + "The Development Team will Check");
             return "error";
         }

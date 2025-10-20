@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MeetingDao {
 
-    List<Meetings> findAll();
+    List<Meetings> findAll(int churchId);
     Meetings createMeating(Meetings meetings);
     List<MeetingDto> findByChurchId(int churchId);
 }

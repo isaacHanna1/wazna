@@ -30,7 +30,7 @@ public class BonusController {
     @PostMapping("/create")
     public String createBonus(Model model,@ModelAttribute("bonus") BonusType bonusType){
         bonusTypeService.createBonusType(bonusType);
-        return "allBonus";
+        return "redirect:/bonus/all";
     }
 
     @GetMapping("/all")

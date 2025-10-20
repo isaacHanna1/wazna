@@ -11,6 +11,7 @@ import com.watad.security.CustomUserDetails;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,6 +134,17 @@ public class UserServicesImp implements UserServices{
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
         Role role = roleDao.findById(role_id);
         userDao.updateUserRole(user,role);
+    }
+    @Override
+    public String getCurrentUserRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role                   = "";
+        if (authentication != null && authentication.isAuthenticated()) {
+            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                role                     =  authority.getAuthority();
+            }
+        }
+        return role;
     }
 
 

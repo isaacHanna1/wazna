@@ -252,9 +252,9 @@ function debounce(func, delay) {
     };
 
     img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const scale = Math.min(1, maxWidth / img.width);
-      canvas.width = img.width * scale;
+      const canvas  = document.createElement("canvas");
+      const scale   = Math.min(1, maxWidth / img.width);
+      canvas.width  = img.width * scale;
       canvas.height = img.height * scale;
 
       const ctx = canvas.getContext("2d");

@@ -52,7 +52,6 @@ public class ProfileController {
     public String viewSpecificProfile(Model model , @PathVariable int userId){
         ProfileDtlDto dto = profileService.getProfileData(userId);
         model.addAttribute("profileDto",dto);
-
         return "profile";
     }
 

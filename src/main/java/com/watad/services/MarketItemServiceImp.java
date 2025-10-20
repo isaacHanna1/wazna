@@ -31,7 +31,9 @@ public class MarketItemServiceImp implements MarketItemService {
 
     @Override
     public long countByCategory(int categoryId) {
-        return  marketItemDao.countByCategory(categoryId);
+        int church_id  = userServices.getLogInUserChurch().getId();
+        int meeting_id = userServices.getLogInUserMeeting().getId();
+        return  marketItemDao.countByCategory(categoryId,church_id,meeting_id);
     }
 
     @Override

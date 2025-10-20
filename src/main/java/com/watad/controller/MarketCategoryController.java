@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/")
 public class MarketCategoryController {
@@ -18,7 +20,6 @@ public class MarketCategoryController {
     private final MarketItemService marketItemService;
 
 
-    private static final int DEFAULT_CATEGORY_ID = 1;
     private static final int PAGE_SIZE           = 12;
 
     public MarketCategoryController(MarketCategoryService marketCategoryService , MarketItemService marketItemService) {
@@ -28,11 +29,14 @@ public class MarketCategoryController {
 
      @GetMapping("market")
     public String getMarketHome(Model model){
-        model.addAttribute("category" , marketCategoryService.allActiveCategory());
+         List<MarketCategory> allActiveCategory  = marketCategoryService.allActiveCategory();
+        model.addAttribute("category" , allActiveCategory);
+        int defaultCatNum = allActiveCategory.get(0).getId();
+        System.out.println("the default cat is -> "+defaultCatNum);
         // by default send the category one
-        model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(DEFAULT_CATEGORY_ID,0,PAGE_SIZE));
-        model.addAttribute("catCount",marketItemService.countByCategory(1));
-        model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(DEFAULT_CATEGORY_ID) / PAGE_SIZE));
+        model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(defaultCatNum,0,PAGE_SIZE));
+        model.addAttribute("catCount",allActiveCategory.get(1));
+        model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(defaultCatNum) / PAGE_SIZE));
         model.addAttribute("categoryId","1");
         return "marketHome";
     }

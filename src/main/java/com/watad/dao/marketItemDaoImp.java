@@ -17,13 +17,15 @@ public class marketItemDaoImp implements MarketItemDao {
     }
 
     @Override
-    public long countByCategory(int categoryId) {
-        String jpql = "SELECT COUNT(m) FROM MarketItem m WHERE m.category.id = :categoryId and m.status = true ";
+    public long countByCategory(int categoryId , int churchId , int meetingId) {
+        String jpql = "SELECT COUNT(m) FROM MarketItem m WHERE m.category.id = :categoryId and m.status = true " +
+                      " AND m.church.id =:churchId   AND m.meeting.id =:meetingId";
 
         Long count = entityManager.createQuery(jpql, Long.class)
                 .setParameter("categoryId", categoryId)
+                .setParameter("churchId",churchId)
+                .setParameter("meetingId",meetingId)
                 .getSingleResult();
-
         return (count != null) ? count : 0L;
     }
 

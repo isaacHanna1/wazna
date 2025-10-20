@@ -22,7 +22,7 @@ public class MarketCategoryDaoImp implements MarketCategoryDao{
     public List<MarketCategory> allActiveCategory(int meeting_id , int church_id) {
         String nativeQuery = """
                 SELECT id, description  FROM wazna.market_category 
-                where meeting_id = :meeting_id and church_id = :church_id and active = 1 ;
+                where meeting_id = :meeting_id and church_id = :church_id and active = 1 order by id ;
                 """;
         List<Object[]> results = entityManager.createNativeQuery(nativeQuery)
                 .setParameter("meeting_id", meeting_id)

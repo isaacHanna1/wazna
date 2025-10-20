@@ -23,6 +23,6 @@ public interface UserServices {
     UserCountsDto getCountsInMeeting();
     int activeOrDisactiveUser(boolean enabled ,String userName);
     List<RoleDto> getUserRoles(String userName);
-
     void updateUserRole(String userName , int role_id);
+    String getCurrentUserRole();
 }

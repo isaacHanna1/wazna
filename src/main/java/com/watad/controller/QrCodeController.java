@@ -47,7 +47,7 @@ public class QrCodeController {
 
         redirectAttributes.addFlashAttribute("msg",msg);
         redirectAttributes.addFlashAttribute("type",type);
-        return  "redirect:/qr/code";
+        return  "redirect:/qr/viewEditQrCode";
     }
 
 

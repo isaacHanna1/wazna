@@ -112,7 +112,9 @@ public class QrCodeServiceImp implements  QrCodeService{
 
     @Override
     public List<QrCode> findAll(LocalDate from , LocalDate to) {
-        return  qrCodeDao.findAll(from , to);
+        int churchId            = userServices.getLogInUserChurch().getId();
+        int meetingID           = userServices.getLogInUserMeeting().getId();
+        return  qrCodeDao.findAll(from , to,churchId,meetingID);
     }
 
 

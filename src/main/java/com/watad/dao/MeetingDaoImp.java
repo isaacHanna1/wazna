@@ -20,8 +20,10 @@ public class MeetingDaoImp implements  MeetingDao{
 
 
     @Override
-    public List<Meetings> findAll() {
-        return entityManager.createQuery("FROM Meetings", Meetings.class).getResultList();
+    public List<Meetings> findAll(int churchId) {
+        return entityManager.createQuery("FROM Meetings m where m.church.id =:churchId", Meetings.class)
+                .setParameter("churchId",churchId)
+                .getResultList();
     }
 
     @Override

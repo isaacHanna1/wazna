@@ -32,11 +32,7 @@ public class UserDaoImp implements  UserDao{
 
     @Override
     public Optional<User> findUserBYId(int id) {
-        try{
-          return Optional.of(entityManager.find(User.class,id));
-        }catch (NoResultException ex){
-            return  Optional.empty();
-        }
+        return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
     @Override

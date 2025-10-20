@@ -14,5 +14,5 @@ public interface QrCodeDao {
      List<QrCode> getPaginatedQrCodes(LocalDate start , LocalDate end ,int pageNumber, int pageSize, int churchId, int mettingId);
      void update(QrCode qrCode);
      QrCode findById(int id, int churchId,int meetingId);
-     List<QrCode> findAll(LocalDate from , LocalDate to);
+     List<QrCode> findAll(LocalDate from , LocalDate to ,int churchId , int meetingId);
 }

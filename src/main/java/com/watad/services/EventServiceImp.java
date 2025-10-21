@@ -92,13 +92,14 @@ public  class EventServiceImp implements EventService{
     @Override
     @Transactional
     public void edit(EventDetail eventDetail , MultipartFile file) throws IOException {
-       if(file != null) {
-           if (!file.isEmpty()) {
-               uploadFileServices.deleteFile(uploadDir, eventDetail.getImageUrl());
-               String fileName = uploadFileServices.uploadFile(file, uploadDir);
-               eventDetail.setImageUrl(fileName);
-           }
-       }
+        EventDetail old = findById(eventDetail.getId());
+        if (file != null && !file.isEmpty()) {
+            uploadFileServices.deleteFile(uploadDir, old.getImageUrl());
+            String fileName = uploadFileServices.uploadFile(file, uploadDir);
+            eventDetail.setImageUrl(fileName);
+        } else {
+            eventDetail.setImageUrl(old.getImageUrl());
+        }
         eventDetail.setCurch(userServices.getLogInUserChurch());
         eventDetail.setMeetings(userServices.getLogInUserMeeting());
         eventDetail.setSprintData(userServices.getActiveSprint());

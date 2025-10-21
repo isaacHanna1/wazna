@@ -92,12 +92,13 @@ public class AuthController {
     public  String accessDenied(){
         return "accessDenied";
     }
+
     private void addDataToModel(Model model,Profile profile){
         model.addAttribute("profile",profile);
-        model.addAttribute("stages",serviceStagesService.findAll());
-        model.addAttribute("church",churchService.findAll());
-        model.addAttribute("meeting",meetingService.findAll());
         model.addAttribute(("dioceses"),diocesesService.findAll());
+        model.addAttribute("stages",serviceStagesService.findAll());
+        //model.addAttribute("church",churchService.findAll());
+        //model.addAttribute("meeting",meetingService.findAll());
     }
 
     @InitBinder

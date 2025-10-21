@@ -62,15 +62,21 @@ public class UserDaoImp implements  UserDao{
     }
 
     @Override
-    public List<User> findByRoleId(int role_id) {
+    public List<User> findByRoleId(int role_id , int churchId , int meetingId) {
         String JPQL = """
                               SELECT u FROM User u
                                 JOIN u.roles r
                                 JOIN u.profile p
                                 WHERE r.id = :roleId
+                                AND p.church.id   =: churchId
+                                AND p.meetings.id =: meetingId
                 """;
         List<User> users =  new ArrayList<>();
-        users = entityManager.createQuery(JPQL,User.class).setParameter("roleId",role_id).getResultList();
+        users = entityManager.createQuery(JPQL,User.class)
+                .setParameter("roleId",role_id)
+                .setParameter("churchId",churchId)
+                .setParameter("meetingId",meetingId)
+                .getResultList();
         return  users;
 
     }

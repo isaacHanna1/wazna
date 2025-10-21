@@ -52,13 +52,13 @@ public  class EventServiceImp implements EventService{
     @Override
     public List<EventDetail> findAllActiveEvent(int status) {
 
-        User user           = userServices.logedInUser();
-        Profile theProfile  = user.getProfile();
-        Meetings theMeeting = theProfile.getMeetings();
-        int theMeetingId    = theMeeting.getId();
-        int theChurchId     = theProfile.getChurch().getId();
-        int theSprintId     = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
-        List<EventDetail> events =  eventDao.findAllActiveEvent(theChurchId ,theChurchId ,theSprintId , status);
+        User user                =  userServices.logedInUser();
+        Profile theProfile       = user.getProfile();
+        Meetings theMeeting      = theProfile.getMeetings();
+        int theMeetingId         = theMeeting.getId();
+        int theChurchId          = theProfile.getChurch().getId();
+        int theSprintId          = sprintDataService.getSprintDataByIsActive(theChurchId,theMeetingId).getId();
+        List<EventDetail> events =  eventDao.findAllActiveEvent(theChurchId ,theMeetingId ,theSprintId , status);
         if (events.isEmpty()) {
             EventDetail defaultEvent = new EventDetail();
             defaultEvent.setTitle("NO Event Till Now");

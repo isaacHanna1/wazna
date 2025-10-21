@@ -44,7 +44,6 @@ public class EventDaoImp implements EventDao{
                e.curch = :church
               AND e.meetings = :meeting
               AND e.sprintData = :sprint
-
     """;
     StringBuilder sql = new StringBuilder(jpql);
         if(status == 1){
@@ -69,7 +68,7 @@ public class EventDaoImp implements EventDao{
             church.setId(curch_id);
 
             Meetings meeting = new Meetings();
-            meeting.setId(curch_id);
+            meeting.setId(meeting_id);
 
             SprintData sprint = new SprintData();
             sprint.setId(sprint_id);

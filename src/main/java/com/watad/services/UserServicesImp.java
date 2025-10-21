@@ -88,7 +88,9 @@ public class UserServicesImp implements UserServices{
 
     @Override
     public List<User> findByRole(int role_id) {
-        return  userDao.findByRoleId(role_id);
+        int theChurchId     = getLogInUserChurch().getId();
+        int theMeetingId    = getLogInUserMeeting().getId();
+        return  userDao.findByRoleId(role_id,theChurchId,theMeetingId);
     }
 
     @Override

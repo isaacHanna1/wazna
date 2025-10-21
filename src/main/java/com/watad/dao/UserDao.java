@@ -14,7 +14,7 @@ public interface UserDao {
     Optional<User> findUserBYId(int id);
     public Optional<User> findByUserNameForLogin(String userName);
     boolean existsByPhone(String phone);
-    List<User> findByRoleId(int role_id);
+    List<User> findByRoleId(int role_id, int churchId , int meetingId);
     UserCountsDto getCountsInMeeting(int churchId , int meetingId);
     void activeOrDisactiveUser(User user);
     List<RoleDto> getUserRole(String userName);

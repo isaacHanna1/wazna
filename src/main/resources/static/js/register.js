@@ -186,8 +186,12 @@ document.getElementById('dioceses').addEventListener('change', async function() 
   const selectedDioceseId = this.value;
   const response = await loadChurchName(selectedDioceseId);
    await builtTheDom(response);
+   const churchId        = document.getElementById("Church").value;
+   const responseMeeting = await loadMeetingByChurchID(churchId);
+   builtTheDomOfMeetings(responseMeeting);
    const fatherResponse = await loadPeriestByDiocesesID(selectedDioceseId);
    builtTheDomOfPeriest(fatherResponse);
+   
 });
 async function loadChurchName(dioceseId) {
   const URL = getBaseUrl();
@@ -215,10 +219,7 @@ async function builtTheDom(response){
     const churchEle           = document.getElementById("Church");
     churchEle.innerHTML = "";
 
-        // Remove all options except the first one
-    while (churchEle.options.length > 1) {
-        churchEle.remove(1);
-    }
+ 
     const church              = await response.json();
     church.forEach(church => {
             const option = document.createElement('option');
@@ -263,12 +264,7 @@ async function loadMeetingByChurchID(churchId){
 async function builtTheDomOfMeetings(response){
     const meetingEle           = document.getElementById("meeting");
         meetingEle.innerHTML = "";
-
-     // Remove all options except the first one
-    while (meetingEle.options.length > 1) {
-        meetingEle.remove(1);
-    }
-
+    console.log(response);
     const meeting              = await response.json();
     meeting.forEach(meeting => {
             const option = document.createElement('option');
@@ -307,10 +303,7 @@ async function builtTheDomOfPeriest(response){
     const fatherPeriestEle           = document.getElementById("fatherPeriest");
           fatherPeriestEle.innerHTML = "";
 
-     // Remove all options except the first one
-    while (fatherPeriestEle.options.length > 1) {
-        fatherPeriestEle.remove(1);
-    }
+
 
     const fatherPeriest              = await response.json();
     fatherPeriest.forEach(fatherPeriest => {

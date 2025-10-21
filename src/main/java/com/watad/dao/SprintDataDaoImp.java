@@ -25,7 +25,6 @@ public class SprintDataDaoImp implements SprintDataDao{
     public SprintData getSprintDataByIsActive(int churchId , int meetingId) {
         LocalDate today = timeUtil.now_localDate();
 
-
         TypedQuery<SprintData> theQuery = entityManager.createQuery(
                         "SELECT s FROM SprintData s WHERE s.isActive = :activeStatus " +
                                 "AND s.meetings.id = :meetingId AND s.church.id = :churchId " +

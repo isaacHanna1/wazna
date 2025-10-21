@@ -244,7 +244,9 @@ public class ProfileServiceImp implements ProfileService {
 
     @Override
     public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId) {
-        return profileDao.getTotalPagesByFilter(status,gender,pageSize , profileId);
+        int churchId = userServices.getLogInUserChurch().getId();
+        int meetingId = userServices.getLogInUserMeeting().getId();
+        return profileDao.getTotalPagesByFilter(status,gender,pageSize , profileId,churchId,meetingId);
     }
 
     @Override

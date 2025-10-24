@@ -57,7 +57,6 @@ public class Profile {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_day")
     @NotNull(message = "Enter Your BirthDay")
-    @MinimumAge(value = 17, message = "You must be at least 17 years old")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 

@@ -120,6 +120,12 @@ public class UserServicesImp implements UserServices{
     public Church getLogInUserChurch(){
         return  getLogedInUserProfile().getChurch();
     }
+
+    @Override
+    public Dioceses getLogInUserDiocese() {
+        return  getLogedInUserProfile().getDioceses();
+    }
+
     public Meetings getLogInUserMeeting(){
         return getLogedInUserProfile().getMeetings();
     }

@@ -18,6 +18,7 @@ public interface UserServices {
     SprintData getActiveSprint();
     Meetings getLogInUserMeeting();
     Church getLogInUserChurch();
+    Dioceses getLogInUserDiocese();
     Profile getLogedInUserProfile();
     List<User> findByRole(int role_id);
     UserCountsDto getCountsInMeeting();

@@ -107,6 +107,3 @@ async function exceute(btn){
 
 }
 
-function viewImage(URL){
-    
-}

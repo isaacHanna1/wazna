@@ -19,4 +19,9 @@ public class DiocesesDaoImp implements DioceseDao {
     public List<Dioceses> findAll() {
         return  entityManager.createQuery("From Dioceses",Dioceses.class).getResultList();
     }
+
+    @Override
+    public Dioceses findById(int diocesesId) {
+       return entityManager.find(Dioceses.class,diocesesId);
+    }
 }

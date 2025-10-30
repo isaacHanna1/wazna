@@ -7,5 +7,5 @@ import java.util.List;
 public interface DiocesesService {
 
     List<Dioceses> findAll();
-
+    Dioceses findById(int diocesesId);
 }

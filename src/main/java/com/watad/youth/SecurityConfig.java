@@ -38,11 +38,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, JpaPersistentTokenRepository tokenRepo) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .authenticationProvider(daoAuthenticationProvider())
                 .formLogin(form -> form
                         .loginPage("/sign-in")
                         .successHandler(loginSuccessHandler)
                         .loginProcessingUrl("/login")
-                        .failureHandler(new CustomAuthenticationFailureHandle(userDetailsService))
+                        .failureHandler(new CustomAuthenticationFailureHandle(userDetailsService,passwordEncoder()))
                         .permitAll()
 
                 ).rememberMe(remember ->remember
@@ -59,16 +60,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/youth/point/transfer").hasAnyRole("YOUTH")
-                                .requestMatchers("/youth/point/details").hasAnyRole("YOUTH","SUPER","SERVER")
-                                .requestMatchers("/youth/point/**").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/youth/point/details").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
+                                .requestMatchers("/youth/point/**").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
                                 .requestMatchers("/profile").authenticated()
-                                .requestMatchers("/profile/**").hasAnyRole("SERVER","SUPER")
-                                .requestMatchers("/youth/point/transfer").hasAnyRole("YOUTH","SERVER")
-                                .requestMatchers("/manualAttandance").hasAnyRole("SERVER","SUPER")
-                                .requestMatchers("/bonus/**").hasAnyRole("SERVER","SUPER")
-                                .requestMatchers("/event/**").hasAnyRole("SERVER","SUPER")
-                                .requestMatchers("/qr/**").hasAnyRole("SERVER","SUPER")
-                                .requestMatchers("/api/role").hasAnyRole("SERVER","SUPER")
+                                .requestMatchers("/profile/**").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
+                                .requestMatchers("/youth/point/transfer").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
+                                .requestMatchers("/manualAttandance").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
+                                .requestMatchers("/bonus/**").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
+                                .requestMatchers("/event/**").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
+                                .requestMatchers("/qr/**").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
+                                .requestMatchers("/api/role").hasAnyRole("YOUTH","CLASS_LEADER","TREASURER","SERVER","SERVICE_LEADER")
                         .requestMatchers(
                                 "/sign-in",
                                 "/register",

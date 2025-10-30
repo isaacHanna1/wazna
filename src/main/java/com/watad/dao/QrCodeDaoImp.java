@@ -64,7 +64,7 @@ public class QrCodeDaoImp  implements QrCodeDao{
     @Override
     public List<QrCode> getPaginatedQrCodes(LocalDate start, LocalDate end, int pageNumber, int pageSize  , int churchId, int mettingId) {
         TypedQuery<QrCode> query = entityManager.createQuery(
-                "FROM QrCode WHERE validDate >= :start AND validDate <= :end  AND church.id =: chucrhId AND meetings.id =: meetingId  ORDER BY createAt DESC",
+                "FROM QrCode WHERE validDate >= :start AND validDate <= :end  AND church.id =: chucrhId AND meetings.id =: meetingId  ORDER BY active DESC , createAt DESC",
                 QrCode.class
         );
         query.setParameter("start", start);

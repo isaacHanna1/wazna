@@ -36,6 +36,9 @@ public class ProfileDtlDto {
     private int userId;
     private boolean isEnabled ; // staus of account in user table is enabled or not
     private String email;
+    private String serviceClass;
+
+
     public ProfileDtlDto() {
     }
 
@@ -306,5 +309,13 @@ public class ProfileDtlDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getServiceClass() {
+        return serviceClass;
+    }
+
+    public void setServiceClass(String serviceClass) {
+        this.serviceClass = serviceClass;
     }
 }

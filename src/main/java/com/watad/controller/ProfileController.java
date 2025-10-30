@@ -3,6 +3,7 @@ package com.watad.controller;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.dto.UserCountsDto;
 import com.watad.entity.Profile;
+import com.watad.entity.SystemConfig;
 import com.watad.entity.User;
 import com.watad.exceptions.PhomeNumberAlreadyException;
 import com.watad.exceptions.ProfileException;
@@ -29,8 +30,10 @@ public class ProfileController {
     private final UserServices userServices;
     private final DiocesesService diocesesService;
     private final PriestService priestService;
+    private final SystemConfigService systemConfig;
 
-    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices, DiocesesService diocesesService, PriestService priestService) {
+
+    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices, DiocesesService diocesesService, PriestService priestService, SystemConfigService systemConfig) {
         this.serviceStagesService = serviceStagesService;
         this.churchService = churchService;
         this.meetingService = meetingService;
@@ -38,14 +41,19 @@ public class ProfileController {
         this.userServices = userServices;
         this.diocesesService = diocesesService;
         this.priestService = priestService;
+        this.systemConfig = systemConfig;
     }
 
     @GetMapping("/profile")
     public String viewProfile(Model model){
         ProfileDtlDto dto = profileService.getProfileById();
-        model.addAttribute("profileDto",dto);
         int logedInProfileId = userServices.getLogedInUserProfile().getId();
+        boolean isChildRegisterionExists       = systemConfig.getSystemCongigValueByKey("child_req");
+
+        model.addAttribute("profileDto",dto);
         model.addAttribute("logedInProfileId" , logedInProfileId);
+        model.addAttribute("isChildRegisterionExists" , isChildRegisterionExists);
+
         return "profile";
     }
     @GetMapping("/profile/{userId}")
@@ -105,8 +113,8 @@ public class ProfileController {
     // profile management for active or in active users
     @GetMapping("/profileManage")
     public String profileManagement(Model model
-                    ,@RequestParam int pageNum, @RequestParam int pageSize
-                    ,@RequestParam String status , @RequestParam String gender , @RequestParam(required = false) Integer  searchProfileId
+                    ,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize
+                    ,@RequestParam(defaultValue = "false") String status , @RequestParam (defaultValue = "All")String gender , @RequestParam(required = false) Integer  searchProfileId
                     ,@RequestParam(required = false) String keyword){
 
         if (searchProfileId == null) {
@@ -120,7 +128,8 @@ public class ProfileController {
         int  numOfPages                        = profileService.getTotalPagesByFilter(status,gender,pageSize,searchProfileId);
         int churchId                           = userServices.getLogInUserChurch().getId();
         int meetingId                          = userServices.getLogInUserMeeting().getId();
-
+        boolean isChildRegisterionExists       = systemConfig.getSystemCongigValueByKey("child_req");
+        System.out.println("we check the isChildRegisterionExists -> "+isChildRegisterionExists);
         model.addAttribute("totalUser",totalUser);
         model.addAttribute("inactiveUser",inactiveUser);
         model.addAttribute("activeUser",activeUser);
@@ -134,6 +143,7 @@ public class ProfileController {
         model.addAttribute("meetingId",meetingId);
         model.addAttribute("keyword",keyword);
         model.addAttribute("searchProfileId",searchProfileId);
+        model.addAttribute("isChildRegisterionExists",isChildRegisterionExists);
 
         return "profileManagement";
     }

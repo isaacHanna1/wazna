@@ -47,7 +47,7 @@ filterBtn.addEventListener('click', function() {
 });
 
 async function updateProfileStatus(element){
-    const userName          = element.getAttribute('data-phone');
+    const userName          = element.getAttribute('data-userName');
     let isEnabled           = element.getAttribute("data-isenabled") 
     const URL               = getBaseUrl();
      const isEnabledBool    = isEnabled === "true";
@@ -79,7 +79,7 @@ async function openRolePopup(element) {
     loadingMessage.style.display = 'none';
 
     const fullName     = element.getAttribute('data-fullName');
-    const userName     = element.getAttribute('data-phone');
+    const userName     = element.getAttribute('data-userName');
     const currentRoles = await getCurrentRole(userName);
     console.log(fullName);
     const userSpan           = document.getElementById('roleModal').querySelector('#popup-profile-name');

@@ -11,4 +11,5 @@ import java.util.List;
 public interface DioceseDao {
 
     List<Dioceses> findAll();
+    Dioceses findById(int diocesesId);
 }

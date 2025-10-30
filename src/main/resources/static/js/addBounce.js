@@ -256,14 +256,16 @@ let elementConstruct = "<ul>";
 }
 
 function selectTheUser(userStr){
+
     const user              = JSON.parse(decodeURIComponent(userStr));
+        console.log(user);
     const infoBox           = document.getElementById('userInfoBox');
     userFullName.value      = '';
     userFullName.id         = '';
     userNameInput.value     = '';
     userFullName.value      = `${user.name}`;
     userFullName.id         = `${user.id}`;
-    userNameInput.value     = `${user.phone}`;
+    userNameInput.value     = `${user.userName}`;
     infoBox.style.display   = 'none';
     currentPointsDisplay.innerText =`${user.currentPoints}`;
     userNameInput.focus();
@@ -292,6 +294,7 @@ async function fetchUserDate(phone) {
             return {
                 id:user.id,
                 phone: user.phone,
+                userName:user.userName,
                 name: fullName,
                 currentPoints: user.points || 0
             };

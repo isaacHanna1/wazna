@@ -25,7 +25,26 @@ document.getElementById("serviceStage").addEventListener("change", function () {
         classSelect.appendChild(option);
     });
 });
+// Trigger once on page load (for edit mode)
+window.addEventListener("DOMContentLoaded", function () {
+  console.log("called");
+    const serviceStage = document.getElementById("serviceStage");
+    const savedClassId = document.getElementById("savedClassId");
+    console.log("the saved class id is "+savedClassId);
+    //  Trigger stage change to populate class options // when change the data is getting placed in select of classes 
+    serviceStage.dispatchEvent(new Event("change"));
 
+    // wait some time
+    setTimeout(() => {
+        const classSelect = document.getElementById("serviceClass");
+        for (const option of classSelect.options) {
+            if (savedClassId && option.value === savedClassId.value) {
+                option.selected = true; 
+                break;
+            }
+        }
+    }, 50);
+});
 // Start Load the church depend on diocese
 // Attach event listener to dioceses select
 document.getElementById('dioceses').addEventListener('change', async function() {
@@ -194,3 +213,97 @@ async function generateCode() {
     console.error("Error:", err);
   }
 }
+
+/* Start  validation  */
+
+function validateBeforeSubmit(event){
+    event.preventDefault(); //  stop form from submitting
+
+  const firstName       = document.getElementById("firstName");
+  const lastName        = document.getElementById("lastName");
+  const gender          = document.getElementById("gender");
+  const username        = document.getElementById("username");
+  const dioceses        = document.getElementById("dioceses");
+  const serviceStage    = document.getElementById("serviceStage");
+  const serviceClass    = document.getElementById("serviceClass");
+  const address         = document.getElementById("address");
+  const birthday        = document.getElementById("birthday")
+  const image           = document.getElementById("image");
+  const pageInfo        = document.getElementById("pageInfo");
+  const fatherName      = document.getElementById("fatherName");
+  const fatherTelephone = document.getElementById("fatherTelephone");
+  const motherName      = document.getElementById("motherName");
+  const motherTelephone = document.getElementById("motherTelephone");
+  const fatherExists    = document.querySelector('input[name="familyInfo.fatherExists"]:checked');
+  const motherExists    = document.querySelector('input[name="familyInfo.motherExists"]:checked');
+
+  // check the first Name 
+  if(firstName && firstName.value.trim() ==""){
+    showToast("Error","Enter First Name - الاسم الاول مطلوب","error");
+    return;
+  }
+    // check the name 
+  if(lastName && lastName.value.trim() ==""){
+    showToast("Error","Enter Last Name -  الاسم الاخير مطلوب ","error");
+    return;
+  }
+  // check gender 
+  if(gender && gender.value.trim() ==""){
+    showToast("Error","Enter Gendre -  نوع ذكر / انثي   ","error");
+    return;
+  }
+
+  if(username && username.value.trim()==""){
+    showToast("Error","Enter User Name - اسمم المستخدم مطلوب ","error");
+    return;
+  }
+
+  if(dioceses && dioceses.value.trim() == ""){
+    showToast("Error","Choose Dioceses - اختر الايبارشية ", "error");
+    return;
+  }
+
+   if(serviceStage && serviceStage.value.trim() == ""){
+    showToast("Error","Choose Service Stage - مرحلة الخدمة مطلوبة ", "error");
+    return;
+  }
+  if(serviceClass && serviceClass.value.trim()==""){
+    showToast("Error","Choose Service Class - فصل المخدوم مطلوب ", "error");
+    return;
+  }
+   if(address && address.value.trim() == ""){
+    showToast("Error","Enter Address -  عنوان المخدوم مطلوب   ", "error");
+    return;
+  }
+  if(birthday && birthday.value.trim()==""){
+    showToast("Error","Enter Birthday -   ادخل تاريخ الميلاد المخدوم ", "error");
+    return;
+  }
+  if(pageInfo && pageInfo.value=="insert" && image && image.value.trim()==""){
+    showToast("Error","Enter  Profile Image -    ادخل الصورة الشخصية المخدوم   ", "error");
+    return;
+  }
+
+  if(fatherName && fatherName.value.trim()==""){
+    showToast("Error","Enter father Name  - اسم الأب مطلوب ", "error");
+    return;
+  }
+   if (fatherExists && fatherExists.value === "true" && fatherTelephone.value.trim() === "") {
+  showToast("Error","Enter Father Telephone - رقم التليفون الأب مطلوب", "error");
+  return false;
+}
+ if(motherName && motherName.value.trim()==""){
+    showToast("Error","Enter Mother Name   - اسم الأم مطلوب", "error");
+    return;
+  }
+ if (motherExists && motherExists.value === "true" && motherTelephone.value.trim() === "") {
+  showToast("Error","Enter Mother Telephone - رقم الأم مطلوب", "error");
+  return false;
+ }
+  //all validations passed
+  event.target.submit();
+  return true;
+
+}
+
+/* End Validation */  

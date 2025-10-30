@@ -1,11 +1,13 @@
 package com.watad.controller;
 
+import com.watad.Common.TimeUtil;
 import com.watad.dto.QRCodeDto;
 import com.watad.entity.QrCode;
 import com.watad.services.BonusAddingService;
 import com.watad.services.BonusTypeService;
 import com.watad.services.QrCodeService;
 import com.watad.wrapper.QrCodeWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class QrCodeController {
 
     private final QrCodeService qrCodeService;
     private final BonusTypeService bonusTypeService;
+
+    @Autowired
+    private TimeUtil timeUtil;
 
     public QrCodeController(QrCodeService qrCodeService, BonusTypeService bonusTypeService) {
         this.qrCodeService = qrCodeService;
@@ -66,9 +71,8 @@ public class QrCodeController {
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
 
-         toDate = (toDate == null) ? LocalDate.now() : toDate;
-         fromDate  = (fromDate == null) ? toDate.minusMonths(1) : fromDate;
-
+         fromDate = (fromDate == null)? timeUtil.now_localDate() :fromDate;
+         toDate = (toDate == null) ? fromDate.plusMonths(1) : toDate;
         List<QrCode> list = qrCodeService.getPaginatedQrCodes(fromDate, toDate ,pageNum,pageSize);
         QrCodeWrapper wrapper = new QrCodeWrapper();
         List<QRCodeDto> dtoList = new ArrayList<>();

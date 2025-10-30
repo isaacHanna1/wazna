@@ -4,6 +4,7 @@ import com.watad.Common.Util;
 import com.watad.dao.ProfileDao;
 import com.watad.dao.UserDao;
 import com.watad.dto.ProfileDtlDto;
+import com.watad.entity.FamilyInfo;
 import com.watad.entity.Profile;
 import com.watad.entity.User;
 import com.watad.exceptions.PhomeNumberAlreadyException;
@@ -116,6 +117,8 @@ public class ProfileServiceImp implements ProfileService {
         dto.setAge(age);
         dto.setRank(youthRankService.getSpecificYouthRank());
         dto.setEmail(profile.getEmail());
+        System.out.println("the services class is "+profile.getServiceClass());
+        dto.setServiceClass(profile.getServiceClass());
         return dto;
     }
 
@@ -153,8 +156,8 @@ public class ProfileServiceImp implements ProfileService {
         dto.setPoints(points);
         dto.setAge(age);
         dto.setRank(youthRankService.getSpecificYouthRank());
-        System.out.println("get the email data -> "+dto.getEmail());
         dto.setEmail(profile.getEmail());
+        dto.setServiceClass(profile.getServiceClass());
         return dto;
     }
 
@@ -191,12 +194,42 @@ public class ProfileServiceImp implements ProfileService {
             System.out.println("No new image uploaded. Keeping old image.");
             profile.setProfileImagePath(getProfileImageName(profile.getId()));
         }
-//        User user = existsOne.getUser();
-//        user.setUserName(profile.getPhone());
+        User user = existsOne.getUser();
+        user.setUserName(profile.getPhone());
 //        profile.setUser(user);
         profile.setJoinDate(localDateTime);
         profileDao.editprofile(profile);
     }
+
+    @Override
+    @Transactional
+    public void editProfileForChild(Profile profile, MultipartFile image, int id) throws IOException {
+        Profile existsOne = profileDao.getProfileById(id);
+        String old_image = UPLOAD_DIR +"/"+existsOne.getProfileImagePath();
+        LocalDateTime localDateTime = existsOne.getJoinDate();
+        if (image != null && !image.isEmpty()){
+            System.out.println("New image uploaded. Replacing old image.");
+            System.out.println("the old image path is "+old_image);
+            deleteOldFile(old_image);
+            String imageName = saveProfileImage(image);
+            profile.setProfileImagePath(imageName);
+        }
+        else{
+            System.out.println("No new image uploaded. Keeping old image.");
+            profile.setProfileImagePath(getProfileImageName(profile.getId()));
+        }
+        User user = existsOne.getUser();
+        profile.setUser(user);
+       // user.setProfile(profile);
+        FamilyInfo familyInfo = profile.getFamilyInfo();;
+        if(familyInfo != null){
+            profile.setFamilyInfo(familyInfo);
+            familyInfo.setProfile(profile);
+        }
+        profile.setJoinDate(localDateTime);
+        profileDao.editprofile(profile);
+    }
+
 
     @Override
     public String getProfileImageName(int profile_id) {

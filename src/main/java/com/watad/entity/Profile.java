@@ -24,18 +24,10 @@ public class Profile {
 
     @NotBlank(message = "First Name Is Mandatory")
     @Column(name ="first_name")
-    @Pattern(
-            regexp = "^[^\\s]+$",
-            message = "First Name Must Not Contain Spaces"
-    )
     private String firstName;
 
     @NotBlank(message = "Last Name Is Mandatory")
     @Column(name ="last_name")
-    @Pattern(
-            regexp = "^[^\\s]+$",
-            message = "Last Name Must Not Contain Spaces"
-    )
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -49,8 +41,7 @@ public class Profile {
     private ServiceStage serviceStage;
 
     @Column(name="phone")
-    @NotBlank(message = "Phone Number Is Mandatory")
-    @Pattern(regexp = "^(01)[0-2,5]{1}[0-9]{8}$", message = "Invalid Egyptian number")
+   // @Pattern(regexp = "^(01)[0-2,5]{1}[0-9]{8}$", message = "Invalid Egyptian number")
   //  @UniquePhone(message = "Phone Number already exists")
     private String phone;
     
@@ -63,11 +54,8 @@ public class Profile {
     @Column(name="address")
     @NotBlank(message = "Address  is mandatory")
     private String address;
-
-
     @Column(name ="profile_image_path_server")
     private String profileImagePath;
-
 
     @Column(name="image_url")
     private String imageUrl;
@@ -77,7 +65,7 @@ public class Profile {
     private LocalDateTime joinDate;
 
 
-    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "profile",cascade = CascadeType.ALL)
     private User user;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH} , fetch = FetchType.LAZY)
@@ -101,6 +89,13 @@ public class Profile {
 
     @Column(name = "email")
     private String email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "family_info_id")
+    private FamilyInfo familyInfo;
+
+    @Column(name = "service_class")
+    private String serviceClass;
 
     public Profile() {
     }
@@ -242,5 +237,21 @@ public class Profile {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public FamilyInfo getFamilyInfo() {
+        return familyInfo;
+    }
+
+    public void setFamilyInfo(FamilyInfo familyInfo) {
+        this.familyInfo = familyInfo;
+    }
+
+    public String getServiceClass() {
+        return serviceClass;
+    }
+
+    public void setServiceClass(String serviceClass) {
+        this.serviceClass = serviceClass;
     }
 }

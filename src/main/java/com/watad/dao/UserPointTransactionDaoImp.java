@@ -51,7 +51,8 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                                    p.phone,
                                    COALESCE(SUM(upt.points), 0) AS total_points,
                                    p.church_id,
-                                   p.meeting_id
+                                   p.meeting_id,
+                                   u.user_name
                                FROM
                                    profile p
                                LEFT JOIN
@@ -65,7 +66,7 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                                    p.church_id      = :church_id
                                    AND p.meeting_id = :meeting_id
                                     AND (
-                                        p.phone LIKE CONCAT('%', :userPhone, '%')
+                                        u.user_name LIKE CONCAT('%', :userPhone, '%')
                                         OR LOWER(CONCAT(p.first_name, ' ', p.last_name)) LIKE LOWER(CONCAT('%', :userPhone, '%'))
                                     )
                                    AND u.id IN (
@@ -96,11 +97,13 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
             String lastName   =   (String) row[2];
             String phone      =   (String) row[3];
             double point      =   ((Double) row[4]).doubleValue();
+            String userName   =   (String) row[7];
             p.setId(profileId);
             p.setFirstName(firstName);
             p.setLastName(lastName);
             p.setPoints(point);
             p.setPhone(phone);
+            p.setUserName(userName);
             listOfProfile.add(p);
         }
         return listOfProfile;

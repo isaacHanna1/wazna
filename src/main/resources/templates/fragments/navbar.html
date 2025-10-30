@@ -64,9 +64,9 @@
                <span class="menu-name"> Market </span>
          </a>
     </li>
-    <li class="main-menu nav-item " sec:authorize="hasAnyRole('SERVER','SUPER')">
+    <li class="main-menu nav-item " sec:authorize="hasAnyRole('SERVER','CLASS_LEADER' , 'SERVICE_LEADER','TREASURER')">
         <ul class="sub-menu">
-            <li class="nav-item protected-content" >
+            <li class="nav-item protected-content" sec:authorize="hasAnyRole('CLASS_LEADER' , 'SERVICE_LEADER')">
                 <a th:href="@{/youth/point/add}" class="nav-link logout-button">
                 <span class="menu-name"> Add Wazna </span>
                 </a>
@@ -108,17 +108,17 @@
             </svg>
            <span class="menu-name"> Waznaty </span>
         </a>
-    </li>
-    <li class="main-menu nav-item" sec:authorize="hasRole('SUPER')">
+    </li> 
+    <li class="main-menu nav-item" sec:authorize="hasAnyRole('SERVER','CLASS_LEADER' , 'SERVICE_LEADER','TREASURER')">
          <ul class="sub-menu">
-            <li class="nav-item" >
-                <span class="nav-link">
+            <li class="nav-item" sec:authorize="hasAnyRole('CLASS_LEADER' , 'SERVICE_LEADER','TREASURE')">
+                <span class="nav-link" >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         style="margin-left: 5px;">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
-                    <span class="menu-name">Meetings</span>
+                    <span class="menu-name" >Meetings</span>
                 </span>
                 <ul class="sub-sub-menu">
                     
@@ -134,7 +134,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" >
+            <li class="nav-item" sec:authorize="hasAnyRole('CLASS_LEADER' , 'SERVICE_LEADER')" >
                 <span class="nav-link">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -151,7 +151,7 @@
                     </li>
                 </ul>
             </li>
-             <li class="nav-item" >
+             <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')" >
                 <span class="nav-link">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -173,15 +173,15 @@
                      </li>
                  </ul>
              </li>
-                  <li class="nav-item" >
-                <span class="nav-link">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        style="margin-left: 5px;">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <span class="menu-name">Bonus</span>
-                </span>
+                  <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER')">
+                    <span class="nav-link">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            style="margin-left: 5px;">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        <span class="menu-name">Bonus</span>
+                    </span>
                  <ul class="sub-sub-menu">
                         <li class="nav-item " >
                             <a th:href="@{/bonus/create}" class="nav-link">
@@ -196,7 +196,7 @@
                     </ul>
                 </li>
 
-                  <li class="nav-item" >
+            <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')">
                 <span class="nav-link">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -218,6 +218,25 @@
                      </li>
                  </ul>
              </li>
+
+            <li class="nav-item" sec:authorize="hasAnyRole('SERVER','CLASS_LEADER' , 'SERVICE_LEADER','TREASURER')">
+                <span class="nav-link">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         style="margin-left: 5px;">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span class="menu-name">Register</span>
+                </span>
+                 <ul class="sub-sub-menu">
+                       <li class="nav-item " >
+                         <a th:href="@{/child/register}" class="nav-link">
+                             <span class="menu-name">Register Youth</span>
+                         </a>
+                     </li>
+                 </ul>
+             </li>
+
          </ul>
         <a href="#" class="nav-link">
             <svg class="nav-icon icon" viewBox="0 0 24 24" fill="none"

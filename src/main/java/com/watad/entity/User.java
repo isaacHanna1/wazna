@@ -31,7 +31,7 @@ public class User {
     private LocalDateTime lastLogin;
 
     @JoinColumn(name = "profile_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Profile profile;
 
     @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)

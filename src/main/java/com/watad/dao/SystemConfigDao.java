@@ -2,5 +2,5 @@ package com.watad.dao;
 
 public interface SystemConfigDao {
 
-    String getSystemConfigValueByKey(String key);
+    boolean getSystemConfigValueByKey(String key , int meetingId);
 }

@@ -20,4 +20,9 @@ public class DiocesesServiceImp implements DiocesesService{
     public List<Dioceses> findAll() {
         return dioceseDao.findAll();
     }
+
+    @Override
+    public Dioceses findById(int diocesesId) {
+        return dioceseDao.findById(diocesesId);
+    }
 }

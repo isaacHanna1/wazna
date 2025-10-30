@@ -6,7 +6,7 @@ import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SystemConfigDaoImp implements SystemConfigDao{
+public class SystemConfigDaoImp implements SystemConfigDao {
 
     private final EntityManager entityManager;
 
@@ -15,12 +15,24 @@ public class SystemConfigDaoImp implements SystemConfigDao{
     }
 
     @Override
-    public String getSystemConfigValueByKey(String key) {
+    public boolean getSystemConfigValueByKey(String key, int meetingId) {
+        boolean exists = false;
         try {
-            SystemConfig config = entityManager.find(SystemConfig.class, key);
-            return config.getConfigValue();
-        } catch (NoResultException ex){
-            throw  new NoResultException("This Configuration Is Missed from DataBase, Please Check");
+             exists = entityManager.createQuery(
+                            """
+                                    SELECT COUNT(c)
+                                    FROM SystemConfig c
+                                    WHERE c.configKey = :configKey
+                                      AND c.meetingId = :meetingId
+                                    """,
+                            Long.class
+                    )
+                    .setParameter("configKey", key)
+                    .setParameter("meetingId", meetingId)
+                    .getSingleResult() > 0;
+        } catch (NoResultException ex) {
+            throw new NoResultException("This Configuration Is Missed from DataBase, Please Check");
         }
-    }
+    return exists;
+}
 }

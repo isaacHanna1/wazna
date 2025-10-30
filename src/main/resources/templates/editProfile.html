@@ -75,6 +75,9 @@
                 class="form-input"
                 placeholder="Enter Your Phone"
         />
+            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
+            <span id="phone-err" class="error-message"></span>
+        </div>
         <div class="form-group">
         <label for="email" class="form-label"> Email </label>
         <input
@@ -86,7 +89,6 @@
                 class="form-input"
                 placeholder="Ex:isaac.hanna1@gmail.com"
         />
-        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></span>
         <span id="phone-err" class="error-message"></span>
       </div>
 
@@ -148,13 +150,20 @@
           <option value=""  disabled>Select stage</option>
           <option th:each="stage : ${stages}"
                   th:value="${stage.id}"
-                  th:text="${stage.description}">
+                  th:text="${stage.description}"
+                  th:selected="${stage != null and profile.serviceStage.id == stage.id}">
           </option>
         </select>
         <span th:if="${#fields.hasErrors('serviceStage')}" th:errors="*{serviceStage}" class="error-message"></span>
-        <span id="stage-err" class="error-message"></span>
+          <span id="serviceStage-err" class="error-message"></span>
       </div>
-
+      <div class="form-group">
+        <label for="serviceClass" class="form-label">class - الفصل </label>
+          <select id = "serviceClass"  th:field="*{serviceClass}"   class="form-input">
+              <option value="" selected disabled>Select Service Class</option>
+           </select>
+            <span id="serviceClass-err" class="error-message"></span>
+      </div>
       <div class="form-group">
         <label for="birthday" class="form-label"> Birth Day</label>
         <input
@@ -211,5 +220,8 @@
 <script th:src="@{/js/nav.js}"></script>
 <script th:src="@{/js/jCommon/Common.js}"></script>
 <script th:src="@{/js/register.js}"></script>
+
+  <!--Hidden fields-->
+  <input type="hidden" id="savedClassId" th:value="${profile.serviceClass}"/>
 </body>
 </html>

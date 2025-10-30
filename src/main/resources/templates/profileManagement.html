@@ -74,9 +74,15 @@
             <tr th:each="profile, iterStat : ${profiles}">
                 <td th:text="${iterStat.index + 1}">1</td>
                 <td>
-                    <a th:href="@{/profile/{id}(id=${profile.userId})}"
-                       th:text="${profile.firstName} + ' ' + ${profile.lastName}">
-                    </a>
+                            <a th:if="${isChildRegisterionExists}"
+                            th:href="@{/child/EditProfile/{id}(id=${profile.id})}"
+                            th:text="${profile.firstName + ' ' + profile.lastName}">
+                            </a>
+
+                            <a th:unless="${isChildRegisterionExists}"
+                            th:href="@{/profile/{id}(id=${profile.userId})}"
+                            th:text="${profile.firstName + ' ' + profile.lastName}">
+                            </a>
                 </td>
                 <td th:text="${profile.phone}">--</td>
                 <td class="mob-hid" th:text="${profile.gender}">--</td>
@@ -86,7 +92,7 @@
                         <button class=" btn-no-width btn-primary table_btn"
                                 onclick="openRolePopup(this)"
                                 th:data-fullName="${profile.firstName + ' ' + profile.lastName}"
-                                th:data-phone="${profile.phone}">
+                                th:data-userName="${profile.userName}">
                                 Role
                         </button>    
                 </td>
@@ -94,7 +100,7 @@
                         <button onclick="updateProfileStatus(this);"
                             th:class = "  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text table_btn ' : 'btn-no-width btn-primary table_btn'"
                             th:text  = "${profile.isEnabled} ? 'Disabled' : 'Enabled'"
-                            th:attr="data-phone=${profile.phone},data-isEnabled=${profile.isEnabled}">
+                            th:attr="data-userName=${profile.userName},data-isEnabled=${profile.isEnabled}">
                         </button>                    
                 </td>
             </tr>

@@ -1,0 +1,249 @@
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Child Updated</title>
+        <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+        <link th:href="@{/css/registerChild.css}" rel="stylesheet">
+    </head>
+    <body>
+        <!-- Include the navbar fragment -->
+        <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+         <!-- Toast Container -->
+         <div id="toast-container" class="toast-container"></div>
+
+
+
+        <div class="container">
+            <div class="header">
+                <h1>Update Youth Data</h1>
+                <p>Please fill in all the required information</p>
+            </div>
+
+            <form th:method="POST" enctype="multipart/form-data" th:action="@{/child/editProfile}" th:object="${profile}" onsubmit="return validateBeforeSubmit(event)" >
+                <input type="hidden" th:field="*{id}">
+                <!-- Personal Information Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Personal Information - بيانات المخدوم </h2>
+                        <p>Child's personal details</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="firstName">First Name - الاسم الاول <span class="required">*</span></label>
+                                <input type="text" th:field = "*{firstName}" id="firstName">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name - الاسم الثاني <span class="required">*</span></label>
+                                <input type="text" th:field = "*{lastName}" id="lastName"  >
+                            </div>
+                        </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="gender">Gender - النوع <span class="required">*</span></label>
+                                <select id="gender"  th:field = "*{gender}" >
+                                    <option value=""    >Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone - نليفون المخدوم  </label>
+                                <input type="tel" th:field = "*{phone}"  id="phone"  >
+                            </div>
+                        </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="email">Email - أيميل</label>
+                                <input type="email" th:field = "*{email}"  id="email" >
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username - اسم المستخدم <span class="required">*</span></label>
+                                <input type="text"  th:field = "*{user.userName}"  id="username"    readonly>
+                            </div>
+                        </div>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="dioceses" class="form-label">Select dioceses (الإيبارشية)</label>
+                                    <select id = "dioceses" name="dioceses.id"    class="form-input">
+                                        <option value="" disabled>Select dioceses (الإيبارشية)</option>
+                                        <option th:each="d : ${dioceses}"
+                                                th:value="${d.id}"
+                                                th:text="${d.name}"
+                                                th:selected="${profile.dioceses != null} ? ${profile.dioceses.id} == ${d.id} : false">
+                                        </option>
+                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Church" class="form-label">Church - الكنيسة </label>
+                                <select id = "Church" name="church.id"   class="form-input">
+                                    <option th:each="c : ${church}"
+                                        th:value    = "${c.id}"
+                                        th:text     = "${c.churchName}"
+                                        th:selected = "${profile.church != null and profile.church.id == c.id}">
+                                </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="meeting" class="form-label">Meeting - الاجتماع </label>
+                                <select id="meeting" name="meetings.id" class="form-input" >
+                                        <option th:each="m : ${meeting}"
+                                            th:value="${m.id}"
+                                            th:text="${m.description}"
+                                            th:selected="${profile.meetings != null and profile.meetings.id == m.id}">
+                                    </option>
+                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fatherPeriest" class="form-label">   Father Periest -  الاب الكاهن </label  >
+                                <select id="fatherPeriest" name="priest.id" class="form-input">
+                                    <option  th:each="p :${priests}" th:value="${p.id}"
+                                            th:text="${p.name}"
+                                            th:selected="${p != null and profile.priest.id == p.id}">
+                                    </option>
+                                    </select>
+                            </div>
+                            </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="serviceStage" class="form-label">Stage - المرحلة </label>
+                                <select id = "serviceStage" name="serviceStage.id"   class="form-input">
+                                        <option value=""  disabled>Select stage</option>
+                                        <option th:each  = "stage : ${stages}"
+                                                th:value = "${stage.id}"
+                                                th:text  = "${stage.description}"
+                                                th:selected="${profile.serviceStage != null and stage.id.equals(profile.serviceStage.id)}">
+                                        </option>
+                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceClass" class="form-label">Class - الفصل </label>
+                                    <select id = "serviceClass"  th:field="*{serviceClass}"   class="form-input">
+                                        <option value="" selected disabled>Select Service Class</option>
+                                    </select>
+                            </div>
+                        
+                        </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label for="address">Address - عنوان البيت   <span class="required">*</span></label>
+                                <input type="text" id="address" th:field = "*{address}" >
+                            </div>
+                            <div class="form-group">
+                                <label for="birthday">Birthday  -  تاريخ الميلاد المخدوم<span class="required">*</span></label>
+                                <input type="date" id="birthday"  th:field = "*{birthday}" >
+                            </div>
+                        </div>
+
+                        <div class="form-row two-cols">
+                            <div class="form-group browse-image">
+                                <label for="image">Profile Image -  الصورة الشخصية<span class="required">*</span> </label>
+                                <input type="file" id="image" name="image" accept="image/*">
+                                <p>Add a new image if you’d like to change your profile picture.</p>
+                            </div>
+                            <div class="form-group image_preview">
+                                <label>Profile Image</label>
+                                <img th:if="${profile.profileImagePath != null}"
+                                        th:src="@{'/profile_pic/' + ${profile.profileImagePath}}"
+                                        alt="Profile Image" class="preview-img"/>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Family Information Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Family Information - بيانات  ألعائلة  </h2>
+                        <p>Parent's contact details</p>
+                    </div>
+                    <div class="card-content">
+                        <!-- Father Information -->
+                        <div class="family-section">
+                            <h3>Father Information - معلومات الأب</h3>
+                            <div class="form-row two-cols">
+                                <div class="form-group">
+                                    <label for="fatherName">Father Name - اسم الأب <span class="required">*</span></label>
+                                    <input type="text" id="fatherName"  th:field="*{familyInfo.fatherName}" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="fatherTelephone">Father Telephone - رقم التليفون الأب <span class="required">*</span></label>
+                                    <input type="tel" id="fatherTelephone"  th:field="*{familyInfo.fatherTelephone}"  >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Is Father Exists? الأب علي قيد الحياة؟<span class="required">*</span></label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input type="radio" id="fatherYes"  th:field="*{familyInfo.fatherExists}" value="true" checked>
+                                        <label for="fatherYes">Yes - نعم </label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" id="fatherNo"  th:field="*{familyInfo.fatherExists}" value="false">
+                                        <label for="fatherNo">No - لا </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mother Information -->
+                        <div class="family-section">
+                            <h3>Mother Information - معلومات الأم</h3>
+                            <div class="form-row two-cols">
+                                <div class="form-group">
+                                    <label for="motherName">Mother Name - اسم الأم <span class="required">*</span></label>
+                                    <input type="text" id="motherName" th:field="*{familyInfo.motherName}" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="motherTelephone">Mother Telephone - رقم تليفون الأم<span class="required">*</span></label>
+                                    <input type="tel" id="motherTelephone"th:field="*{familyInfo.motherTelephone}" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Is Mother Exists? هل الام علي قيد الحياة ؟ <span class="required">*</span></label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input type="radio" id="motherYes" th:field="*{familyInfo.motherExists}"  value="true" checked>
+                                        <label for="motherYes">Yes - نعم </label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" id="motherNo"  th:field="*{familyInfo.motherExists}"  value="false">
+                                        <label for="motherNo">No - لا </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="submit-container">
+                    <button type="submit">Update Data</button>
+                </div>
+            </form>
+        </div>
+
+        
+        <!--Hidden values-->
+        <!-- Hidden field to store saved class id -->
+        <input type="hidden" id="savedClassId" th:value="${profile.serviceClass}"/>
+        <input type="hidden" id="pageInfo" value="modify">
+        <script th:src="@{/js/nav.js}"></script>
+        <script th:src="@{/js/jCommon/Common.js}"></script>
+        <script th:src="@{/js/registerChild.js}"></script>
+
+
+        
+    </body>
+    </html>

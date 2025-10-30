@@ -19,8 +19,21 @@
          <h1 th:text="${profileDto.firstName + ' ' + profileDto.lastName}">Alex Johnson</h1>
         <p class="profile-tag" th:text="${profileDto.serviceStage}"> High School</p>
       </div>
+      
     <div class="edit-profile" th:if="${profileDto.id == logedInProfileId}">
-        <a th:href="@{/editProfile/{id}(id=${profileDto.id})}" class="edit-button">Edit Profile</a>
+
+        <a th:if="${isChildRegisterionExists}"
+          th:href="@{/child/EditProfile/{id}(id=${profileDto.id})}"
+          class="edit-button">
+          Edit Profile
+        </a>
+
+        <a th:unless="${isChildRegisterionExists}"
+          th:href="@{/editProfile/{id}(id=${profileDto.id})}"
+          class="edit-button">
+          Edit Profile
+        </a>
+
     </div>
     <input type="hidden" th:value="${profileDto.id}"/>
     <input type="hidden" th:value="${logedInProfileId}"/>
@@ -29,15 +42,15 @@
     <div class="profile-stats">
       <div class="stat">
         <a href="/youth/point/details"><span class="stat-value" th:text="${profileDto.Points}" >750</span></a>
-        <span class="stat-label" >Wazna</span>
+        <span class="stat-label" >Wazna - وزنات</span>
       </div>
       <div class="stat">
         <span class="stat-value"th:text="${profileDto.rank}" >3</span>
-        <span class="stat-label">Rank</span>
+        <span class="stat-label">Score Rank - ترتيبك </span>
       </div>
       <div class="stat">    
         <span class="stat-value" th:text="${profileDto.age}" >22</span>
-        <span class="stat-label">Age</span>
+        <span class="stat-label">Age - العمر </span>
 
       </div>
     </div>
@@ -56,47 +69,59 @@
       <h2>Personal Information</h2>
       
       <div class="detail-row">
-        <div class="detail-label">Gender:</div>
+        <div class="detail-label">Gender :</div>
         <div class="detail-value" th:text="${profileDto.gender}" >Male</div>
       </div>
       
       <div class="detail-row">
-        <div class="detail-label">Phone:</div>
+        <div class="detail-label">Phone : </div>
         <div class="detail-value"th:text="${profileDto.phone}" >123-456-7890</div>
       </div>
       
       <div class="detail-row">
-        <div class="detail-label">Birthday:</div>
+        <div class="detail-label">Birthday :</div>
         <div class="detail-value" th:text="${profileDto.birthday}">2006-05-15</div>
       </div>
       
       <div class="detail-row">
-        <div class="detail-label">Address:</div>
+        <div class="detail-label">Address :</div>
         <div class="detail-value" th:text="${profileDto.address}">123 Main Street, Springfield</div>
       </div>
 
        <div class="detail-row">
-        <div class="detail-label">Email:</div>
+        <div class="detail-label">Email :</div>
         <div class="detail-value" th:text="${profileDto.email}"></div>
       </div>
+
+     
     </div>
     
     <div class="profile-details">
       <h2>Church Information</h2>
       
       <div class="detail-row">
-        <div class="detail-label">Father Priest:</div>
+        <div class="detail-label">Father Priest :</div>
         <div class="detail-value" th:text="${profileDto.fatherPeriest}">Father Michael</div>
       </div>
       
       <div class="detail-row">
-        <div class="detail-label">Church:</div>
+        <div class="detail-label">Church : </div>
         <div class="detail-value" th:text="${profileDto.ChurchName}">St. Mary's Church</div>
+      </div>
+            
+      <div class="detail-row">
+        <div class="detail-label">Meeting :</div>
+        <div class="detail-value" th:text="${profileDto.MeetingName}">Youth Fellowship</div>
       </div>
       
       <div class="detail-row">
-        <div class="detail-label">Meeting:</div>
-        <div class="detail-value" th:text="${profileDto.MeetingName}">Youth Fellowship</div>
+        <div class="detail-label">Stage : </div>
+        <div class="detail-value" th:text="${profileDto.serviceStage}">St. Mary's Church</div>
+      </div>
+
+       <div class="detail-row">
+        <div class="detail-label">Class :</div>
+        <div class="detail-value" th:text="${profileDto.serviceClass}"></div>
       </div>
     </div>
   </div>

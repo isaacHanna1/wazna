@@ -80,13 +80,14 @@ public class profileDaoImp implements ProfileDao{
 
     @Override
     public List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword, int churchId, int meetingId) {
-
-        String  jpql = " select new com.watad.dto.ProfileDtlDto(p.id, p.firstName, p.lastName , p.meetings.id , p.church.id  , p.user.id , p.phone , p.profileImagePath)  from Profile " +
-                       " p where p.meetings.id = :meetingId and p.church.id = :churchId and ( p.phone like :keyword OR  LOWER(CONCAT(p.firstName, ' ', p.lastName)) LIKE LOWER(CONCAT('%', :keyword, '%')))";
+        int currentProfileId = userServices.getLogedInUserProfile().getId();
+        String  jpql = " select new com.watad.dto.ProfileDtlDto(p.id, p.firstName, p.lastName , p.meetings.id , p.church.id  , p.user.id , p.phone , p.profileImagePath)  from Profile  " +
+                       " p JOIN p.user u where p.meetings.id = :meetingId and p.church.id = :churchId AND  p.id <> :profileId  AND ( u.userName like :keyword OR  LOWER(CONCAT(p.firstName, ' ', p.lastName)) LIKE LOWER(CONCAT('%', :keyword, '%')))";
         List<ProfileDtlDto>  result     =
                 entityManager.createQuery(jpql,ProfileDtlDto.class)
                                 .setParameter("meetingId",meetingId)
                                 .setParameter("churchId",churchId)
+                                .setParameter("profileId",currentProfileId)
                                 .setMaxResults(5)
                                 .setParameter("keyword", "%" + keyword + "%").getResultList();
         if(result.isEmpty()) return new ArrayList<>();
@@ -120,7 +121,7 @@ public class profileDaoImp implements ProfileDao{
         if(profileId != 0){
             jpql.append(" AND p.id = :profileId");
         }
-        jpql.append(" Order by p.firstName");
+        jpql.append(" Order by p.id desc ");
         TypedQuery<ProfileDtlDto> query = entityManager.createQuery(jpql.toString(), ProfileDtlDto.class);
         if (!status.equalsIgnoreCase("All")) {
             boolean statusValue = Boolean.parseBoolean(status);
@@ -188,10 +189,11 @@ public class profileDaoImp implements ProfileDao{
                             Select new com.watad.dto.ProfileDtlDto(
                             p.id, p.firstName, p.lastName , p.phone)
                             From Profile p
+                            Join p.user u
                             Where p.meetings.id = :meetingId
                             and p.church.id = :churchId
                             and ( CONCAT(p.firstName, ' ', p.lastName) LIKE :keyword
-                            OR p.phone LIKE :keyword )
+                            OR u.userName LIKE :keyword )
                     """;
         TypedQuery<ProfileDtlDto> query = entityManager.createQuery(jpql, ProfileDtlDto.class);
         query.setParameter("meetingId",meetingId);

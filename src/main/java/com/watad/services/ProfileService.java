@@ -18,6 +18,7 @@ public interface ProfileService {
     public ProfileDtlDto getProfileData(int id ); // when i need to view the data of user i will use this
     public  Profile getProfileById(int id );
     public  void editPrfofile(Profile profile , MultipartFile image , int id )  throws IOException;
+    public  void editProfileForChild(Profile profile , MultipartFile image , int id )  throws IOException;
     public String getProfileImageName(int profile_id);
     List<ProfileDtlDto> findByUserPhone(String phone);
     List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword);

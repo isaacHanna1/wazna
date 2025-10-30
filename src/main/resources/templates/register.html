@@ -69,7 +69,7 @@
                 id="phone"
                 name="phone"
                 th:field="*{phone}"
-                type="tel"
+                type="tel"  
                  
                 class="form-input"
                 placeholder="Enter Your Phone"
@@ -164,20 +164,25 @@
         <span th:if="${#fields.hasErrors('priest')}" th:errors="*{priest}" class="error-message"></span>
         <span id="father-err" class="error-message"></span>
       </div>
-
-
-
         <div class="form-group">
-        <label for="serviceStage" class="form-label">Stage</label>
-        <select id = "serviceStage" name="serviceStage.id"   class="form-input">
-          <option value="" selected disabled>Select stage</option>
-          <option th:each="stage : ${stages}"
-                  th:value="${stage.id}"
-                  th:text="${stage.description}">
-          </option>
-        </select>
-        <span th:if="${#fields.hasErrors('serviceStage')}" th:errors="*{serviceStage}" class="error-message"></span>
-        <span id="serviceStage-err" class="error-message"></span>
+            <label for="serviceStage" class="form-label">Stage</label>
+            <select id = "serviceStage" name="serviceStage.id"   class="form-input">
+              <option value="" selected disabled>Select stage</option>
+              <option th:each="stage : ${stages}"
+                      th:value="${stage.id}"
+                      th:text="${stage.description}">
+              </option>
+            </select>
+            <span th:if="${#fields.hasErrors('serviceStage')}" th:errors="*{serviceStage}" class="error-message"></span>
+            <span id="serviceStage-err" class="error-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="serviceClass" class="form-label">class - الفصل </label>
+          <select id = "serviceClass"  th:field="*{serviceClass}"   class="form-input">
+              <option value="" selected disabled>Select Service Class</option>
+           </select>
+            <span id="serviceClass-err" class="error-message"></span>
       </div>
 
       <div class="form-group">
@@ -207,7 +212,6 @@
         />
         <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></span>
         <span id="address-err" class="error-message"></span>
-
       </div>
 
       <div class="form-group">
@@ -242,5 +246,9 @@
 </div>
 <script th:src="@{/js/jCommon/Common.js}"></script>
 <script th:src="@{/js/register.js}"></script>
+
+  <!--Hidden values-->
+  <input type="hidden" id="mode" value="insert">
+
 </body>
 </html>

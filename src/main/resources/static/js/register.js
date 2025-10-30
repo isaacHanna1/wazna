@@ -4,19 +4,20 @@
 
 // start validation when on blur form textbox 
 document.addEventListener("DOMContentLoaded", function () {
-    const firstNameEl = document.getElementById("firstName");
-    const lastNameEl  = document.getElementById("lastName");
-	const phoneEl     = document.getElementById("phone");
-	const passwordEl  = document.getElementById("password");
-	const passConfEl  = document.getElementById("confirmPassword");
-	const birthdayEl  = document.getElementById("birthday");
-	const addressEl   = document.getElementById("address");
-	const imageEl     = document.getElementById("image");
-	const serviceEl   = document.getElementById("serviceStage");
-	const fatherEl    = document.getElementById("fatherPeriest");
-	const genderEl    = document.getElementById("gender");
-	const formEL      = document.getElementById('register-form');
-	const mode        = document.getElementById('mode');
+    const firstNameEl  = document.getElementById("firstName");
+    const lastNameEl   = document.getElementById("lastName");
+    const phoneEl      = document.getElementById("phone");
+    const passwordEl   = document.getElementById("password");
+    const passConfEl   = document.getElementById("confirmPassword");
+    const birthdayEl   = document.getElementById("birthday");
+    const addressEl    = document.getElementById("address");
+    const imageEl      = document.getElementById("image");
+    const serviceEl    = document.getElementById("serviceStage");
+    const fatherEl     = document.getElementById("fatherPeriest");
+    const genderEl     = document.getElementById("gender");
+    const formEL       = document.getElementById('register-form');
+    const mode         = document.getElementById('mode');
+    const serviceClass = document.getElementById('serviceClass');
 
     if (firstNameEl) {
         firstNameEl.addEventListener("blur", function () {
@@ -63,11 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
-	if(serviceEl){
-		serviceEl.addEventListener("blur",function(){
-			validateRequiredSelect(this,"stage-err","Stage is required");
-		});
-	}
 	if(fatherEl){
 		fatherEl.addEventListener("blur",function(){
 			validateRequiredSelect(this,"father-err","Father is required");
@@ -79,19 +75,41 @@ document.addEventListener("DOMContentLoaded", function () {
 			validateRequiredSelect(this,"gender-err","Gender Is Required");
 		});
 	}
+  if(serviceClass){
+		serviceClass.addEventListener("blur",function(){
+			validateRequiredSelect(this,"serviceClass-err","serviceClass required - فصل المخدوم مطلوب ");
+		});
+	}
+  
 	
 	
-	 formEL.addEventListener('submit', function(event) {
-        event.preventDefault();
+	 formEL.addEventListener('submit',  async function(event) {
+
+    const form       = document.getElementById("register-form");
+    const imageInput = document.getElementById("image");
+      
+    event.preventDefault();
         
         let isValid = checkBeforSubmit();
-        if (isValid) {
-            this.submit();
+        if (!isValid) {
+            console.log("Validation failed");
+            return ;
         }
-    });
+        const file = imageInput.files[0];
+        if (file) {
+        const compressed = await compressImage(file, 800, 0.7);
+        const compressedFile = new File([compressed], file.name, { type: "image/jpeg" });
+
+        // Replace the original image in the input field
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(compressedFile);
+        imageInput.files = dataTransfer.files;
+      }
+      form.submit();
+
 	
 });
-
+}); 
 // End validation when on blur form textbox 
 
 
@@ -149,33 +167,90 @@ function checkBeforSubmit() {
 	
     let isValid = true;
 
-    const firstNameEl = document.getElementById("firstName");
-    const lastNameEl  = document.getElementById("lastName");
-    const phoneEl     = document.getElementById("phone");
-    const passwordEl  = document.getElementById("password");
-    const passConfEl  = document.getElementById("confirmPassword");
-    const birthdayEl  = document.getElementById("birthday");
-    const addressEl   = document.getElementById("address");
-    const imageEl     = document.getElementById("image");
-    const serviceEl   = document.getElementById("serviceStage");
-    const fatherEl    = document.getElementById("fatherPeriest");
-    const genderEl    = document.getElementById("gender");
-    const mode        = document.getElementById("mode");
+    const firstNameEl  = document.getElementById("firstName");
+    const lastNameEl   = document.getElementById("lastName");
+    const phoneEl      = document.getElementById("phone");
+    const passwordEl   = document.getElementById("password");
+    const passConfEl   = document.getElementById("confirmPassword");
+    const birthdayEl   = document.getElementById("birthday");
+    const addressEl    = document.getElementById("address");
+    const imageEl      = document.getElementById("image");
+    const serviceEl    = document.getElementById("serviceStage");
+    const fatherEl     = document.getElementById("fatherPeriest");
+    const genderEl     = document.getElementById("gender");
+    const mode         = document.getElementById("mode");
+    const serviceClass = document.getElementById('serviceClass');
+    const serviceStage = document.getElementById("serviceStage");
+    const dioceses     = document.getElementById("dioceses");
+    const Church       = document.getElementById("Church");
+    const meeting      = document.getElementById("meeting");
+    const image        = document.getElementById("image");
 
-    if (!validateRequiredField(firstNameEl, "fName-err", "First name is required")) isValid = false;
-    if (!validateRequiredField(lastNameEl, "lName-err", "Last name is required")) isValid = false;
-    if (!validateRequiredField(phoneEl, "phone-err", "Phone is required")) isValid = false;
-    if (!checkPassword()) isValid = false;
-    if (!checkPasswordConfirmPassword()) isValid = false;
-    if (!validateRequiredField(birthdayEl, "birthday-err", "Birthday is required")) isValid = false;
-    if (!validateRequiredField(addressEl, "address-err", "Address is required")) isValid = false;
-    if(mode.value !="edit"){
-        if (!validateRequiredField(imageEl, "image-err", "Image is required")) isValid = false;
+  // Start checks
+    if (!validateRequiredField(firstNameEl, "fName-err", "First name is required - الاسم الأول")) {
+        console.log("❌ Failed: firstName");
+        isValid = false;
     }
-    if (!validateRequiredSelect(serviceEl, "stage-err", "Stage is required")) isValid = false;
-    if (!validateRequiredSelect(fatherEl, "father-err", "Father is required")) isValid = false;
-    if (!validateRequiredSelect(genderEl, "gender-err", "Gender is required")) isValid = false;
+    if (!validateRequiredField(lastNameEl, "lName-err", "Last name is required - الاسم الاخير ")) {
+        console.log("❌ Failed: lastName");
+        isValid = false;
+    }
+    if (!validateRequiredSelect(genderEl, "gender-err", "Gender is required -  النوع")) {
+        console.log("❌ Failed: gender");
+        isValid = false;
+    }
+    if (!validateRequiredField(phoneEl, "phone-err", "Phone is required - رقم التليفون ")) {
+        console.log("❌ Failed: phone");
+        isValid = false;
+    }
+    if (!checkPassword()) {
+        console.log("❌ Failed: checkPassword()");
+        isValid = false;
+    }
+    if (!checkPasswordConfirmPassword()) {
+        console.log("❌ Failed: checkPasswordConfirmPassword()");
+        isValid = false;
+    }
+    if (!validateRequiredSelect(dioceses,"dioceses-err","Dioceses Required - الإيبارشية مطلوبة ")) {
+        console.log("❌ Failed: dioceses");
+        isValid = false;
+    }
+    if (!validateRequiredSelect(Church,"church-err","Church Required - الكنيسة مطلوبة ")) {
+        console.log("❌ Failed: church");
+        isValid = false;
+    }
+    if (!validateRequiredSelect(meeting,"meetings-err","Meeting Required - الاجتماع مطلوب ")) {
+        console.log("❌ Failed: meeting");
+        isValid = false;
+    }
+    if (!validateRequiredSelect(fatherEl, "father-err", "Father is required - أب الكاهن ")) {
+        console.log("❌ Failed: father");
+        isValid = false;
+    }
+    if (!validateRequiredSelect(serviceStage,"serviceStage-err","Service Stage Required - مرحلة العمرية مطلوبة")) {
+        console.log("❌ Failed: serviceStage");
+        isValid = false;
+    }
+    if (!validateRequiredSelect(serviceClass,"serviceClass-err","Service Class required - فصل المخدوم مطلوب ")) {
+        console.log("❌ Failed: serviceClass");
+        isValid = false;
+    }
+    if (!validateRequiredField(birthdayEl, "birthday-err", "Birthday is required - تاريخ الميلاد ")) {
+        console.log("❌ Failed: birthday");
+        isValid = false;
+    }
+    if (!validateRequiredField(addressEl, "address-err", "Address is required - العنوان مطلوب ")) {
+        console.log("❌ Failed: address");
+        isValid = false;
+    }
+    if(mode.value =="insert"){
+        if (!validateRequiredField(image, "image-err", "Image is required الصورة المطلوبة")) {
+            console.log("❌ Failed: image");
+            isValid = false;
+        }
+    }
 
+    console.log("✅ Final Result:", isValid);
     return isValid; 
 }
 // End Submit button 
@@ -317,8 +392,7 @@ async function builtTheDomOfPeriest(response){
 
 // Compress Image before Upload 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("register-form");
-  const imageInput = document.getElementById("image");
+  
 
     form.addEventListener("submit", async (e) => {
       const file = imageInput.files[0];
@@ -337,4 +411,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// start load the class depend on stage 
+document.getElementById("serviceStage").addEventListener("change", function () {
+    const serviceStage = document.getElementById("serviceStage");
+    const value = serviceStage.value;
+    const classSelect = document.getElementById("serviceClass");
 
+    classSelect.innerHTML = '<option value="" selected disabled>Select Service Class</option>';
+
+    let classes = [];
+
+    if (value === "1") { // Prep
+        classes = ["أولى", "تانية", "تالتة","رابعة","فيما فوق"];
+    } else if (value === "2") { // Sec
+        classes = ["أولى", "تانية", "تالتة"];
+    } else if (value === "3") { // College
+        classes = ["أولى", "تانية", "تالتة", "رابعة", "خامسة", "سادسة"];
+    }
+
+    // أضف القيم الجديدة للقائمة
+    classes.forEach((className, index) => {
+        const option = document.createElement("option");
+        option.value = index + 1;
+        option.textContent = className;
+        classSelect.appendChild(option);
+    });
+});
+
+// Trigger once on page load (for edit mode)
+window.addEventListener("DOMContentLoaded", function () {
+    const serviceStage = document.getElementById("serviceStage");
+    const savedClassId = document.getElementById("savedClassId");
+    //  Trigger stage change to populate class options // when change the data is getting placed in select of classes 
+    serviceStage.dispatchEvent(new Event("change"));
+    // wait some time
+    setTimeout(() => {
+        const classSelect = document.getElementById("serviceClass");
+        for (const option of classSelect.options) {
+            if (savedClassId && option.value === savedClassId.value) {
+                option.selected = true; 
+                break;
+            }
+        }
+    }, 50);
+});

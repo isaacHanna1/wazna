@@ -44,7 +44,7 @@ public class YouthPointsController {
 
     @GetMapping("/transfer")
     public String transferPoint(Model model){
-        List<User> superUSers = userServices.findByRole(3); // get user have Super role;
+        List<User> superUSers = userServices.findByRole(5); // get user have ROLE_TREASURER;
         model.addAttribute("SuperUser",superUSers);
         model.addAttribute("logedInUser",userServices.logedInUser().getId());
         return  "TransferWazna";

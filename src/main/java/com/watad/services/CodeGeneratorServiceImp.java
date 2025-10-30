@@ -25,8 +25,13 @@ public class CodeGeneratorServiceImp implements  CodeGeneratorService{
                 .replaceAll("[^A-Za-z0-9]", "") // remove non-alphanumeric characters
                 .substring(0, 8)
                 .toUpperCase();
+
+        // Get current date in format YYMMDD
+        String datePart = java.time.LocalDate.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd"));
+
         // New format: D + dioceseId + C + churchId + M + meetingId + randomPart
-        String code        = "D" + dioceseId + "C" + churchId + "M" + meetingId +"CO"+ randomPart;
+        String code        = "D" + dioceseId + "C" + churchId + "M" + meetingId +"DA"+datePart+"CO"+ randomPart;
 
         return code;
     }

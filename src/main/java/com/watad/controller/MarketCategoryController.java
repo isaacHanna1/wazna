@@ -35,7 +35,7 @@ public class MarketCategoryController {
         System.out.println("the default cat is -> "+defaultCatNum);
         // by default send the category one
         model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(defaultCatNum,0,PAGE_SIZE));
-        model.addAttribute("catCount",allActiveCategory.get(1));
+        model.addAttribute("catCount",allActiveCategory.get(0));
         model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(defaultCatNum) / PAGE_SIZE));
         model.addAttribute("categoryId","1");
         return "marketHome";

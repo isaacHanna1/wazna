@@ -22,8 +22,8 @@ public interface ProfileService {
     public String getProfileImageName(int profile_id);
     List<ProfileDtlDto> findByUserPhone(String phone);
     List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword);
-    List<ProfileDtlDto> findAllByFilterPaginated(int profileId,String status , String gender , int pageNum , int pageSize);
-    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId);
+    List<ProfileDtlDto> findAllByFilterPaginated(int profileId,String status , String gender , int pageNum , int pageSize,String serviceClass);
+    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId ,String serviceClass);
     public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword , int churchId , int meetingId);
     public Profile getEditableProfile(int profileId , HttpServletRequest request);
 }

@@ -97,7 +97,7 @@ public class profileDaoImp implements ProfileDao{
 
     @Override
     public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status , String gender ,
-                                                  int pageNum , int pageSize){
+                                                  int pageNum , int pageSize , String serviceClass){
 
 
         int churchId  = userServices.getLogInUserChurch().getId();
@@ -118,6 +118,9 @@ public class profileDaoImp implements ProfileDao{
         if (!status.equalsIgnoreCase("All")) {
             jpql.append(" AND u.isEnabled = :status");
         }
+        if (!serviceClass.equalsIgnoreCase("All")) {
+            jpql.append(" AND p.serviceClass = :serviceClass");
+        }
         if(profileId != 0){
             jpql.append(" AND p.id = :profileId");
         }
@@ -131,6 +134,10 @@ public class profileDaoImp implements ProfileDao{
             Gender genderEnum = Gender.valueOf(gender);
             query.setParameter("gender", genderEnum);
         }
+        if (!serviceClass.equalsIgnoreCase("All")) {
+            query.setParameter("serviceClass", serviceClass);
+        }
+
 
         if (profileId != 0) {
             query.setParameter("profileId", profileId);
@@ -147,7 +154,7 @@ public class profileDaoImp implements ProfileDao{
     }
 
     @Override
-    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId, int churchId, int meetingId ) {
+    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId, int churchId, int meetingId ,String serviceClass ) {
         StringBuilder jpql = new StringBuilder("""
                         Select COUNT(p.id)
                         From Profile p JOIN p.user u
@@ -159,6 +166,9 @@ public class profileDaoImp implements ProfileDao{
         }
         if (!status.equalsIgnoreCase("All")) {
             jpql.append(" AND u.isEnabled = :status");
+        }
+        if (!serviceClass.equalsIgnoreCase("All")) {
+            jpql.append(" AND p.serviceClass = :serviceClass");
         }
         if(profileId != 0){
             jpql.append(" AND p.id = :profileId");
@@ -175,6 +185,9 @@ public class profileDaoImp implements ProfileDao{
         }
         if (profileId != 0) {
             query.setParameter("profileId", profileId);
+        }
+        if (!serviceClass.equalsIgnoreCase("All")) {
+            query.setParameter("serviceClass", serviceClass);
         }
         query.setParameter("churchId",churchId);
         query.setParameter("meetingId",meetingId);
@@ -200,8 +213,23 @@ public class profileDaoImp implements ProfileDao{
         query.setParameter("churchId",churchId);
         query.setMaxResults(5);
         query.setParameter("keyword","%"+keyword+"%");
-        query.setMaxResults(5);
         return  query.getResultList();
+    }
+
+    @Override
+    public List<Profile> listProfilesOfMeeting(int meetingId) {
+
+        String jpql = """
+        SELECT p
+        FROM Profile p
+        JOIN p.user u
+        WHERE p.meetings.id = :meetingId
+          AND u.isEnabled = TRUE
+    """;
+
+        TypedQuery<Profile> query = entityManager.createQuery(jpql, Profile.class);
+        query.setParameter("meetingId", meetingId);
+        return query.getResultList();
     }
 
 }

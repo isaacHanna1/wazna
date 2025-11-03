@@ -59,8 +59,9 @@ public class RegisterChildController {
     @GetMapping("/EditProfile/{id}")
     public String editChidProfile(@PathVariable  int id , Model model){
             Profile profile =   profileService.getProfileById(id);
+            System.out.println("th id id -> "+id);
+            System.out.println("the services class is "+profile.getServiceClass());
             model.addAttribute("profile",profile);
-            System.out.println("the getProfileImagePath  is -> "+profile.getProfileImagePath());
             addDataToModel(model,profile);
         model.addAttribute("priests",priestService.findByDioceses(profile.getDioceses().getId()));
         return "registerChildEdit";
@@ -85,7 +86,6 @@ public class RegisterChildController {
         profile.setChurch(currentProfile.getChurch());
         profile.setMeetings(currentProfile.getMeetings());
         profile.setServiceStage(currentProfile.getServiceStage());
-        profile.setServiceClass(currentProfile.getServiceClass());
         model.addAttribute("profile",profile);
         model.addAttribute("dioceses",diocesesService.findById(currentProfile.getDioceses().getId()));
         model.addAttribute("stages",serviceStagesService.findById(currentProfile.getServiceStage().getId()));

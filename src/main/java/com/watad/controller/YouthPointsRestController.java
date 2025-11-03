@@ -1,12 +1,16 @@
 package com.watad.controller;
 
+import com.watad.dao.ProfileDao;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.dto.response.YouthRankDto;
+import com.watad.entity.Profile;
 import com.watad.services.BonusAddingService;
+import com.watad.services.ProfileService;
 import com.watad.services.UserPointTransactionService;
 import com.watad.services.YouthRankService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -16,10 +20,13 @@ public class YouthPointsRestController {
     private  final YouthRankService youthRankService;
     private final UserPointTransactionService userPointTransactionService;
     private final BonusAddingService bonusAddingService;
-    public YouthPointsRestController(YouthRankService youthRankService , UserPointTransactionService userPointTransactionService ,BonusAddingService bonusAddingService) {
+    private final ProfileDao profileDao;
+
+    public YouthPointsRestController(YouthRankService youthRankService, UserPointTransactionService userPointTransactionService, BonusAddingService bonusAddingService, ProfileDao profileDao) {
         this.youthRankService = youthRankService;
         this.userPointTransactionService = userPointTransactionService;
         this.bonusAddingService = bonusAddingService;
+        this.profileDao = profileDao;
     }
 
     @GetMapping("/youth/rank/top")
@@ -33,10 +40,12 @@ public class YouthPointsRestController {
             return userPointTransactionService.findProfileByUserName(userName);
     }
 
+
     @PostMapping("/youth/point/{profileId}/{userId}/{bonusTypeId}")
     public void addPoints(@PathVariable int profileId , @PathVariable int userId , @PathVariable int bonusTypeId){
         bonusAddingService.addNewBonus(profileId,userId,bonusTypeId);
     }
+
 
 
 

@@ -24,16 +24,16 @@ document.getElementById("serviceStage").addEventListener("change", function () {
         option.textContent = className;
         classSelect.appendChild(option);
     });
+    
 });
 // Trigger once on page load (for edit mode)
 window.addEventListener("DOMContentLoaded", function () {
-  console.log("called");
     const serviceStage = document.getElementById("serviceStage");
     const savedClassId = document.getElementById("savedClassId");
-    console.log("the saved class id is "+savedClassId);
+    const pageInfo     = this.document.getElementById("pageInfo");
     //  Trigger stage change to populate class options // when change the data is getting placed in select of classes 
     serviceStage.dispatchEvent(new Event("change"));
-
+if(pageInfo.value =="modify"){
     // wait some time
     setTimeout(() => {
         const classSelect = document.getElementById("serviceClass");
@@ -44,6 +44,7 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         }
     }, 50);
+}
 });
 // Start Load the church depend on diocese
 // Attach event listener to dioceses select

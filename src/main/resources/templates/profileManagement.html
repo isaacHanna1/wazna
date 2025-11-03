@@ -30,7 +30,7 @@
         <div class="filter form-element mar-bottom-5px">
             <form class="flex flx-wrap flex-mob gap-5 just-con-bet manage_filter">
                 <div class="searchContainer">
-                    <input type="text" placeholder="Search by Name Or Phone " class="input" id ="searchBox" name="keyword" th:value="${keyword}" autocomplete="off">
+                    <input type="text" placeholder="Search by UserName " class="input" id ="searchBox" name="keyword" th:value="${keyword}" autocomplete="off">
                     <input type="hidden" th:value="${searchProfileId}" name="searchProfileId" id ="searchProfileId"/>
                     <input type="hidden" th:value="${meetingId}" name="meetingId" id = "meetingId"/>
                     <input type="hidden" th:value="${churchId}" name="churchId"   id = "churchId"/>
@@ -51,6 +51,15 @@
                             <option value="All"    th:selected="${gender} == 'All'">All Gender</option>
                             <option value="Male"   th:selected="${gender} == 'Male'">Male</option>
                             <option value="Female" th:selected="${gender} == 'Female'">Female</option>
+                        </select>
+                </div>
+                 <div>
+                        <select name="serviceClass" class="input">
+                            <option value="">اختر المرحلة</option>
+                            <th:block th:each="entry : ${serviceClass}">
+                                <option th:value="${entry.key}" th:text="${entry.value}"
+                                th:selected="${entry.key} == ${searchClass}">
+                            </th:block>
                         </select>
                 </div>
                 <button type="submit" class="btn-no-width btn-primary" id="filter_btn">Filter</button>
@@ -110,11 +119,16 @@
         <div class="pagination pad-10px flex just-con-center" th:if="${numOfPages > 0}" >
             <ul class="pagination-list flex gap-5 ul-list-style-none ">
                 <li th:each="pageNum : ${#numbers.sequence(1, numOfPages)}">
-                <a th:href="@{/profileManage(pageNum=${pageNum}, pageSize=${pageSize}, status=${status}, gender=${gender})}"
-
+                <a th:href="@{/profileManage(
+                            pageNum=${pageNum}, 
+                            pageSize=${pageSize}, 
+                            status=${status}, 
+                            gender=${gender}, 
+                            serviceClass=${searchClass}
+                        )}"
                     th:classappend="${pageNum == currentPage} ? 'active-page'"
                     class="pagination-link">
-                    <span th:text="${pageNum}">1</span>
+                        <span th:text="${pageNum}">1</span>
                 </a>
                 </li>
             </ul>

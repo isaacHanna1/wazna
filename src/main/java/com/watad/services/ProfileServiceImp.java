@@ -271,15 +271,15 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     @Override
-    public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status, String gender, int pageNum, int pageSize) {
-       return  profileDao.findAllByFilterPaginated( profileId ,status,gender,pageNum,pageSize);
+    public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status, String gender, int pageNum, int pageSize,String serviceClass) {
+       return  profileDao.findAllByFilterPaginated( profileId ,status,gender,pageNum,pageSize,serviceClass);
     }
 
     @Override
-    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId) {
+    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId,String serviceClass) {
         int churchId = userServices.getLogInUserChurch().getId();
         int meetingId = userServices.getLogInUserMeeting().getId();
-        return profileDao.getTotalPagesByFilter(status,gender,pageSize , profileId,churchId,meetingId);
+        return profileDao.getTotalPagesByFilter(status,gender,pageSize , profileId,churchId,meetingId,serviceClass);
     }
 
     @Override

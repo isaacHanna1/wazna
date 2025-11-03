@@ -31,9 +31,10 @@ public class ProfileController {
     private final DiocesesService diocesesService;
     private final PriestService priestService;
     private final SystemConfigService systemConfig;
+    private final YouthServiceClass youthServiceClass;
 
 
-    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices, DiocesesService diocesesService, PriestService priestService, SystemConfigService systemConfig) {
+    public ProfileController(ServiceStagesService serviceStagesService, ChurchService churchService, MeetingService meetingService, ProfileService profileService, UserServices userServices, DiocesesService diocesesService, PriestService priestService, SystemConfigService systemConfig, YouthServiceClass youthServiceClass) {
         this.serviceStagesService = serviceStagesService;
         this.churchService = churchService;
         this.meetingService = meetingService;
@@ -42,6 +43,7 @@ public class ProfileController {
         this.diocesesService = diocesesService;
         this.priestService = priestService;
         this.systemConfig = systemConfig;
+        this.youthServiceClass = youthServiceClass;
     }
 
     @GetMapping("/profile")
@@ -115,21 +117,22 @@ public class ProfileController {
     public String profileManagement(Model model
                     ,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize
                     ,@RequestParam(defaultValue = "false") String status , @RequestParam (defaultValue = "All")String gender , @RequestParam(required = false) Integer  searchProfileId
-                    ,@RequestParam(required = false) String keyword){
+                    ,@RequestParam(required = false) String keyword
+                    ,@RequestParam(defaultValue = "All" )String serviceClass){
 
         if (searchProfileId == null) {
             searchProfileId = 0;
         }
         UserCountsDto dto                      = userServices.getCountsInMeeting();
-        List<ProfileDtlDto>     profileDtlDtos = profileService.findAllByFilterPaginated(searchProfileId,status,gender,pageNum,pageSize);
+        List<ProfileDtlDto>     profileDtlDtos = profileService.findAllByFilterPaginated(searchProfileId,status,gender,pageNum,pageSize,serviceClass);
         Long totalUser                         = dto.getTotalProfiles();
         Long activeUser                        = dto.getActiveProfiles();
         Long inactiveUser                      = dto.getInactiveProfiles();
-        int  numOfPages                        = profileService.getTotalPagesByFilter(status,gender,pageSize,searchProfileId);
+        int  numOfPages                        = profileService.getTotalPagesByFilter(status,gender,pageSize,searchProfileId,serviceClass);
         int churchId                           = userServices.getLogInUserChurch().getId();
         int meetingId                          = userServices.getLogInUserMeeting().getId();
         boolean isChildRegisterionExists       = systemConfig.getSystemCongigValueByKey("child_req");
-        System.out.println("we check the isChildRegisterionExists -> "+isChildRegisterionExists);
+
         model.addAttribute("totalUser",totalUser);
         model.addAttribute("inactiveUser",inactiveUser);
         model.addAttribute("activeUser",activeUser);
@@ -144,6 +147,9 @@ public class ProfileController {
         model.addAttribute("keyword",keyword);
         model.addAttribute("searchProfileId",searchProfileId);
         model.addAttribute("isChildRegisterionExists",isChildRegisterionExists);
+        int serviceStageId = userServices.getLogedInUserProfile().getServiceStage().getId();
+        model.addAttribute("serviceClass",youthServiceClass.getServicesClassByStage(serviceStageId));
+        model.addAttribute("searchClass",serviceClass);
 
         return "profileManagement";
     }

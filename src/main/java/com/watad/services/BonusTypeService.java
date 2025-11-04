@@ -8,9 +8,10 @@ import java.util.List;
 public interface BonusTypeService {
 
     BonusType getBonusTypeByDescription(String description);
+    public List<BonusTypeDto> findAll(String evaluationType);
     public List<BonusTypeDto> findAll();
     public BonusType findById(int id);
     void createBonusType(BonusType bonusType);
-    List<BonusTypeDto> findByDesc(String desc);
+    List<BonusTypeDto> findByDesc(String desc ,String evaluationType);
     void updateBonusType(BonusType bonusType);
 }

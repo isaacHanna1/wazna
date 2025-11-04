@@ -1159,7 +1159,6 @@ min-width: 8rem;
 .ul-list-style-none{
 list-style: none;
 }
-
 /*Profile Management */
 .status{
   margin-bottom: 10px;
@@ -1170,18 +1169,18 @@ list-style: none;
     text-align: center;
     box-shadow: var(--shadow-sm);
     width: 30%;
-    padding: 30px 0;
+    padding: 20px 0;
     font-weight: bold;
-
 }
 .status > .card span{
   display: block;
-  font-size: var(--space-6);
-  color: var(--youth-primary);
-  font-weight: bold;
+    font-size: var(--space-5);
+    color: var(--youth-primary);
+    font-weight: bold;
 }
+
 .profile_manage .filter .searchContainer {
-position: relative;
+  position: relative;
 }
 .profile_manage .filter .profileSuggestion {
     list-style: none;
@@ -1195,69 +1194,249 @@ position: relative;
     margin: 0;
     padding: 0;
     display: none;  
+    max-height: 200px;
+    overflow-y: auto;
 }
 .profile_manage .filter .profileSuggestion li {
     padding: 8px 12px;
     cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
 }
-
 .profile_manage .filter .profileSuggestion li:hover {
     background-color: var(--youth-primary);
     color: #fff;
 }
-.profile_manage .profiles .table_btn{
-    width: 6em;
-    font-weight: bold;
-}
-@media (max-width:768px) {
-  .profile_manage .profiles .table_btn{
-        width: 4em;
-        font-size: 1em;
-        padding: 6px 30px;
-        font-size: 12px;
-  }
-  .profile_manage .manage_filter > div select , div input{
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  .profile_manage .status  > .card {
-    font-size: .9em;
-  }
-  .profile_manage .status span{
-        font-size: 1.2em;
-  }
+
+/* Table container for horizontal scrolling */
+.profile_manage .profiles {
+    overflow-x: auto;
+    position: relative;
 }
 
-/*The Style of Pop up for roles */
+/* Make table responsive */
+.profile_manage .profiles .table {
+    font-size: 0.9em;
+    min-width: 800px;
+    border-collapse: collapse;
+    position: relative;
+}
+
+.profile_manage .profiles .table th,
+.profile_manage .profiles .table td {
+    padding: 8px 6px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Fixed name column styles - BODY CELLS */
+.profile_manage .profiles .table td:nth-child(2) {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 5;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    min-width: 150px;
+}
+
+/* Fixed name column styles - HEADER CELL (higher z-index) */
+.profile_manage .profiles .table th:nth-child(2) {
+    position: sticky;
+    left: 0;
+    z-index: 15; /* Higher than body cells */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    min-width: 150px;
+}
+
+/* Make all table headers sticky for vertical scrolling */
+.profile_manage .profiles .table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 20; /* Highest z-index */
+    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
+}
+
+/* Special case for name header - both top and left sticky */
+.profile_manage .profiles .table thead th:nth-child(2) {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 25; /* Highest of all */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Ensure the serial number column (SNo) is also fixed if needed */
+.profile_manage .profiles .table th:nth-child(1),
+.profile_manage .profiles .table td:nth-child(1) {
+    position: sticky;
+    left: 0;
+    z-index: 10;
+    min-width: 60px;
+}
+
+.profile_manage .profiles .table td:nth-child(1) {
+    z-index: 5;
+}
+
+/* Adjust left position for name column to account for SNo column */
+.profile_manage .profiles .table th:nth-child(2),
+.profile_manage .profiles .table td:nth-child(2) {
+    left: 60px; /* Width of SNo column */
+}
+
+/* Compact table buttons */
+.profile_manage .profiles .table_btn {
+    width: auto;
+    min-width: 3.5em;
+    padding: 6px 8px;
+    font-weight: bold;
+    font-size: 0.85em;
+    margin: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+/* Icon-specific styling */
+.profile_manage .profiles .table_btn i {
+    font-size: 0.9em;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .profile_manage .status > .card {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 15px 0;
+        font-size: 0.85em;
+    }
+    
+    .profile_manage .status {
+        flex-direction: column;
+    }
+    
+    .profile_manage .status > .card span {
+        font-size: 1.1em;
+    }
+    
+    .profile_manage .profiles .table_btn {
+        min-width: 2.8em;
+        padding: 4px 6px;
+        font-size: 0.75em;
+        margin: 1px;
+    }
+    
+    .profile_manage .profiles .table_btn i {
+        font-size: 0.8em;
+    }
+    
+    .profile_manage .profiles .table {
+        font-size: 0.8em;
+        min-width: 600px;
+    }
+    
+    .profile_manage .profiles .table th,
+    .profile_manage .profiles .table td {
+        padding: 6px 4px;
+    }
+    
+    /* Fixed columns for mobile */
+    .profile_manage .profiles .table th:nth-child(1),
+    .profile_manage .profiles .table td:nth-child(1) {
+        min-width: 50px;
+        left: 0;
+    }
+    
+    .profile_manage .profiles .table th:nth-child(2),
+    .profile_manage .profiles .table td:nth-child(2) {
+        min-width: 120px;
+        left: 50px; /* Adjusted for smaller SNo column */
+    }
+    
+    .profile_manage .manage_filter > div select, 
+    .profile_manage .manage_filter > div input {
+        width: 100%;
+        margin-bottom: 8px;
+        font-size: 0.9em;
+    }
+    
+    /* Hide less important columns on mobile */
+    .profile_manage .profiles .mob-hid {
+        display: none;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .profile_manage .profiles .table_btn {
+        min-width: 2.5em;
+        padding: 3px 4px;
+        font-size: 0.7em;
+    }
+    
+    .profile_manage .profiles .table_btn i {
+        font-size: 0.75em;
+    }
+    
+    .profile_manage .profiles .table {
+        font-size: 0.75em;
+        min-width: 500px;
+    }
+    
+    /* Fixed columns for extra small screens */
+    .profile_manage .profiles .table th:nth-child(1),
+    .profile_manage .profiles .table td:nth-child(1) {
+        min-width: 40px;
+    }
+    
+    .profile_manage .profiles .table th:nth-child(2),
+    .profile_manage .profiles .table td:nth-child(2) {
+        min-width: 100px;
+        left: 40px;
+    }
+}
+
+/* The Style of Pop up for roles */
 /* Modal background overlay */
 .modal {
-    display: none; /* hidden by default */
+    display: none;
     position: fixed;
     z-index: 999;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5); /* semi-transparent black */
+    background-color: rgba(0,0,0,0.5);
 }
 
 /* Modal dialog box */
 .modal-dialog {
     background: white;
-    margin: 20% auto;
+    margin: 10% auto;
     padding: 0;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
     border-radius: 8px;
+    box-shadow: var(--shadow-xl);
 }
-@media (max-width:768px) {
-  .modal-dialog{
-    max-width: 300px;
-  }
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 5% auto;
+        max-width: 320px;
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-dialog {
+        max-width: 280px;
+        margin: 2% auto;
+    }
 }
 
 /* Header, body, footer styling */
 .modal-header, .modal-footer {
-    padding: 10px 15px;
+    padding: 12px 15px;
     background: #f5f5f5;
 }
 
@@ -1267,27 +1446,432 @@ position: relative;
 
 .modal-header h5 {
     margin: 0;
-    font-size: 18px;
+    font-size: 1.1em;
+    font-weight: 600;
 }
 
 .btn-close {
     float: right;
-    font-size: 20px;
+    font-size: 1.2em;
     cursor: pointer;
     border: none;
     background: none;
-}
-.modal .modal-dialog .form-check{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-;
-}
-.modal .modal-dialog .form-check label{
-  width: 70%;
-}
-.modal .modal-dialog .form-check input[type="radio"]{
-margin-top: 10px;;
+    font-weight: bold;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Compact form elements in modal */
+.modal .modal-dialog .form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 4px 0;
+}
+
+.modal .modal-dialog .form-check label {
+    width: 85%;
+    font-size: 0.9em;
+    margin: 0;
+    cursor: pointer;
+}
+
+.modal .modal-dialog .form-check input[type="radio"],
+.modal .modal-dialog .form-check input[type="checkbox"] {
+    margin: 0;
+    margin-right: 8px;
+    transform: scale(0.9);
+}
+
+/* Compact modal buttons */
+.modal-footer .btn {
+    padding: 6px 12px;
+    font-size: 0.85em;
+    min-width: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.modal-footer .btn i {
+    font-size: 0.9em;
+}
+
+/* Loading message styling */
+#loadingMessage {
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#loadingMessage i {
+    font-size: 0.9em;
+}
+
+/* Enhanced table scrolling */
+.profile_manage .profiles::-webkit-scrollbar {
+    height: 8px;
+}
+
+.profile_manage .profiles::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.profile_manage .profiles::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.profile_manage .profiles::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Hover effects for better UX */
+.profile_manage .profiles .table_btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-close:hover {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 50%;
+}
+
+/* Ensure links in fixed column are visible */
+.profile_manage .profiles .table td:nth-child(2) a {
+    color: var(--youth-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.profile_manage .profiles .table td:nth-child(2) a:hover {
+    text-decoration: underline;
+}
 /* --- Error Page --- */
+
+
+/*Delete Pop Confirmation*/
+/* Youth Theme Modal Styles */
+.youth-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 31, 44, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.youth-dialog {
+    position: relative;
+    background: var(--youth-white);
+    margin: 10% auto;
+    padding: 0;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(110, 89, 165, 0.2);
+    overflow: hidden;
+    animation: youthSlideIn 0.3s ease;
+}
+
+@keyframes youthSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header Styles */
+.youth-header {
+    background: linear-gradient(135deg, var(--youth-primary), var(--youth-secondary));
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+.youth-warning-icon {
+    background: var(--youth-white);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(110, 89, 165, 0.3);
+}
+
+.youth-warning-icon i {
+    font-size: 20px;
+    color: var(--youth-primary);
+}
+
+.youth-header-content {
+    flex: 1;
+}
+
+.youth-title {
+    color: var(--youth-white);
+    margin: 0 0 5px 0;
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.youth-subtitle {
+    color: var(--youth-accent);
+    margin: 0;
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+
+.youth-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: var(--youth-white);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.youth-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Body Styles */
+.youth-body {
+    padding: 30px;
+}
+
+.youth-message {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.youth-warning-main {
+    color: var(--youth-dark);
+    font-size: 1.1em;
+    font-weight: 500;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.youth-warning-detail {
+    color: #666;
+    font-size: 0.95em;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Verification Section */
+.youth-verification {
+    background: var(--youth-light);
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--youth-accent);
+}
+
+.youth-input-group label {
+    color: var(--youth-dark);
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 0.95em;
+    text-align: right;
+}
+
+.youth-input-group label strong {
+    color: var(--youth-primary);
+    font-weight: 600;
+}
+
+.youth-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--youth-white);
+    border: 2px solid var(--youth-accent);
+    border-radius: 8px;
+    color: var(--youth-dark);
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.youth-input:focus {
+    outline: none;
+    border-color: var(--youth-primary);
+    box-shadow: 0 0 0 3px rgba(110, 89, 165, 0.1);
+}
+
+.youth-input::placeholder {
+    color: #999;
+}
+
+/* Footer Styles */
+.youth-footer {
+    display: flex;
+    gap: 12px;
+    padding: 20px 25px;
+    background: var(--youth-light);
+    border-top: 1px solid var(--youth-accent);
+}
+
+.youth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    font-size: 0.95em;
+}
+
+.youth-btn-cancel {
+    background: var(--youth-white);
+    color: var(--youth-dark);
+    border: 2px solid var(--youth-accent);
+}
+
+.youth-btn-cancel:hover {
+    background: var(--youth-accent);
+    border-color: var(--youth-secondary);
+    transform: translateY(-1px);
+}
+
+.youth-btn-confirm {
+    background: var(--youth-primary);
+    color: var(--youth-white);
+    border: 2px solid var(--youth-primary);
+}
+
+.youth-btn-confirm:enabled:hover {
+    background: var(--youth-secondary);
+    border-color: var(--youth-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(110, 89, 165, 0.3);
+}
+
+.youth-btn-confirm:disabled {
+    background: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Success/Error Messages */
+.youth-success {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--youth-primary);
+    color: var(--youth-white);
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(110, 89, 165, 0.3);
+    z-index: 10001;
+    animation: youthSlideInRight 0.5s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+}
+
+.youth-error {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #dc3545;
+    color: var(--youth-white);
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+    z-index: 10001;
+    animation: youthSlideInRight 0.5s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+}
+
+@keyframes youthSlideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Loading Animation */
+.youth-loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--youth-white);
+    animation: youthSpin 1s ease-in-out infinite;
+}
+
+@keyframes youthSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .youth-dialog {
+        margin: 5% auto;
+        max-width: 90%;
+    }
+    
+    .youth-header {
+        padding: 20px;
+    }
+    
+    .youth-body {
+        padding: 20px;
+    }
+    
+    .youth-footer {
+        padding: 15px 20px;
+        flex-direction: column;
+    }
+    
+    .youth-btn {
+        padding: 14px 20px;
+    }
+}
+/*End Delete Confirmation*/

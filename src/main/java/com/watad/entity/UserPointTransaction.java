@@ -13,13 +13,13 @@ public class UserPointTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="transaction_id")
     private int id ;
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "profile_id")
     private Profile profile;
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "related_user_id")
     private Profile transferTo;
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "sprint_id")
     private SprintData sprintData;
     @Column(name = "points")

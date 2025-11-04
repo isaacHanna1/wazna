@@ -308,4 +308,15 @@ public class ProfileServiceImp implements ProfileService {
         return profile;
     }
 
+    @Override
+    @Transactional
+    public void deleteProfileById(int id) {
+        try {
+            profileDao.deleteProfileBy(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

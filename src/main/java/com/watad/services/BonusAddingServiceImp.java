@@ -3,6 +3,7 @@ package com.watad.services;
 import com.watad.entity.*;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 
 @Service
@@ -47,7 +48,11 @@ public class BonusAddingServiceImp implements BonusAddingService{
         pointTransaction.setActive(true);
         pointTransaction.setTransactionDate(LocalDateTime.now());
         pointTransaction.setUsedFor(bonceTypeDesc);
-        pointTransaction.setTransactionType("Earn");
+        if(addPoint > 0) {
+            pointTransaction.setTransactionType("Earn");
+        }else {
+            pointTransaction.setTransactionType("Lose");
+        }
         pointTransaction.setChurch(profile.getChurch());
         pointTransaction.setMeetings(profile.getMeetings());
         userPointTransactionService.save(pointTransaction);

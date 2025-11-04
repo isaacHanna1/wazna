@@ -18,4 +18,5 @@ public interface ProfileDao {
     public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId , int churchId, int meetingId,String serviceClass);
     public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword , int churchId , int meetingId);
     public List<Profile> listProfilesOfMeeting(int meetingId);
+    public void deleteProfileBy(int profileId);
 }

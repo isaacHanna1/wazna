@@ -63,6 +63,39 @@ public class BonusTypeDaoImp implements BonusTypeDao {
         return query.getResultList();
     }
     @Override
+    public List<BonusTypeDto> findAll(int churchId, int meetingId, String evaluationType) {
+        LocalDate now = timeUtil.now_localDate();
+
+        StringBuilder jpql = new StringBuilder(
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive, b.activeFrom, b.activeTo) " +
+                        "FROM BonusType b JOIN b.bonusHead bh " +
+                        "WHERE b.activeFrom <= :now " +
+                        "AND (b.activeTo IS NULL OR :now <= b.activeTo) " +
+                        "AND b.church.id = :churchId " +
+                        "AND b.meetings.id = :meetingId " +
+                        "AND b.isActive = true "
+        );
+
+        // Add evaluationType filter only if not "All"
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            jpql.append("AND bh.evaluationType = :evaluationType ");
+        }
+
+        jpql.append("ORDER BY b.description");
+
+        TypedQuery<BonusTypeDto> query = entityManager.createQuery(jpql.toString(), BonusTypeDto.class);
+        query.setParameter("now", now);
+        query.setParameter("churchId", churchId);
+        query.setParameter("meetingId", meetingId);
+
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            query.setParameter("evaluationType", evaluationType);
+        }
+
+        return query.getResultList();
+    }
+
+    @Override
     public BonusType findById(int id) {
         return  entityManager.find(BonusType.class , id);
     }
@@ -73,23 +106,46 @@ public class BonusTypeDaoImp implements BonusTypeDao {
     }
 
     @Override
-    public List<BonusTypeDto> findByDesc(int churchId, int meetingId ,String desc) {
-        LocalDate now               = timeUtil.now_localDate();
-        TypedQuery<BonusTypeDto> query = entityManager.createQuery(
-                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description ,b.point,b.isActive,b.activeFrom,b.activeTo)  FROM BonusType b " +
+    public List<BonusTypeDto> findByDesc(int churchId, int meetingId, String desc, String evaluationType) {
+        LocalDate now = timeUtil.now_localDate();
+
+        StringBuilder jpql = new StringBuilder(
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive, b.activeFrom, b.activeTo) " +
+                        "FROM BonusType b JOIN b.bonusHead bh " +
                         "WHERE b.activeFrom <= :now " +
-                        " AND (b.activeTo IS NULL OR :now <= b.activeTo)"+
-                        " AND b.church.id =: churchId"+
-                        " AND b.meetings.id =: meetingId"+
-                        " AND b.description like :description ",
-                BonusTypeDto.class
+                        "AND (b.activeTo IS NULL OR :now <= b.activeTo) " +
+                        "AND b.church.id = :churchId " +
+                        "AND b.meetings.id = :meetingId "
         );
-        query.setParameter("now",now);
-        query.setParameter("churchId",churchId);
-        query.setParameter("meetingId",meetingId);
-        query.setParameter("description","%"+desc+"%");
+
+        // add filters dynamically
+        if (desc != null && !desc.trim().isEmpty()) {
+            jpql.append("AND b.description LIKE :description ");
+        }
+
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            jpql.append("AND bh.evaluationType = :evaluationType ");
+        }
+
+        jpql.append("ORDER BY b.description");
+
+        TypedQuery<BonusTypeDto> query = entityManager.createQuery(jpql.toString(), BonusTypeDto.class);
+
+        query.setParameter("now", now);
+        query.setParameter("churchId", churchId);
+        query.setParameter("meetingId", meetingId);
+
+        if (desc != null && !desc.trim().isEmpty()) {
+            query.setParameter("description", "%" + desc + "%");
+        }
+
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            query.setParameter("evaluationType", evaluationType);
+        }
+
         return query.getResultList();
     }
+
 
     @Override
     public void updateBonusType(BonusType bonusType) {

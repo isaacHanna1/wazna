@@ -24,12 +24,16 @@
         </div>
 
         <div th:each="tx : ${transactionList}" class="transaction-details">
-              <div class="icon">
-                    <i th:class="${tx.transactionType == 'Earn' ? 'fa fa-plus-circle text-green' 
-                                    : (tx.transactionType == 'TRANSFER_OUT' ? 'fa fa-arrow-up text-red'
-                                    : (tx.transactionType == 'TRANSFER_IN' ? 'fa fa-arrow-down text-blue' 
-                                    : 'fa fa-question-circle text-gray'))}"></i>
-               </div>
+            <div class="icon">
+            <i th:class="${
+                tx.transactionType == 'Earn' ? 'fa fa-plus-circle text-green' :
+                (tx.transactionType == 'Lose' ? 'fa fa-minus-circle text-red' :
+                (tx.transactionType == 'TRANSFER_OUT' ? 'fa fa-arrow-up text-red' :
+                (tx.transactionType == 'TRANSFER_IN' ? 'fa fa-arrow-down text-blue' :
+                'fa fa-question-circle text-gray')))
+            }"></i>
+            </div>
+
             <div class="details">
                 <h3 class="transaction-title" th:text="${tx.usedFor}"></h3>
                 <p class="transaction-date" th:text="${#temporals.format(tx.transactionTime, 'dd-MM-yyyy')}"></p>

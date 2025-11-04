@@ -34,6 +34,13 @@ public class BonusTypeServiceImp implements  BonusTypeService{
         int meetingId       = userServices.getLogInUserMeeting().getId();
         return bonusTypeDao.findAll(churchId,meetingId);
     }
+    @Override
+    public List<BonusTypeDto> findAll(String evaluationType) {
+        int churchId        = userServices.getLogInUserChurch().getId();
+        int meetingId       = userServices.getLogInUserMeeting().getId();
+        return bonusTypeDao.findAll(churchId,meetingId,evaluationType);
+    }
+
 
     public BonusType findById(int id){
         return bonusTypeDao.findById(id);
@@ -50,10 +57,10 @@ public class BonusTypeServiceImp implements  BonusTypeService{
     }
 
     @Override
-    public List<BonusTypeDto> findByDesc(String desc) {
+    public List<BonusTypeDto> findByDesc(String desc , String evaluationType) {
         Church church           = userServices.getLogInUserChurch();
         Meetings meetings       = userServices.getLogInUserMeeting();
-        return bonusTypeDao.findByDesc(church.getId(),meetings.getId(),desc);
+        return bonusTypeDao.findByDesc(church.getId(),meetings.getId(),desc,evaluationType);
     }
 
     @Override

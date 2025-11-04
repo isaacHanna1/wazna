@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Wazna - Profile-Management</title>
 </head>
 <body>
@@ -55,7 +57,7 @@
                 </div>
                  <div>
                         <select name="serviceClass" class="input">
-                            <option value="">اختر المرحلة</option>
+                            <option value="All"> كل الفصول</option>
                             <th:block th:each="entry : ${serviceClass}">
                                 <option th:value="${entry.key}" th:text="${entry.value}"
                                 th:selected="${entry.key} == ${searchClass}">
@@ -72,11 +74,12 @@
                         <th>SNo</th>
                         <th>Name</th>
                         <th>phone</th>
-                        <th class="mob-hid">Gender</th>
-                        <th class="mob-hid">Address</th>
-                        <th class="mob-hid">State</th>
+                        <th>Class</th>
+                        <th>Gender</th>
+                        <th>Address</th>
                         <th>Role</th>
-                        <th>Action</th>
+                        <th>Enabled</th>
+                        <th>Del Account</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,24 +97,37 @@
                             </a>
                 </td>
                 <td th:text="${profile.phone}">--</td>
-                <td class="mob-hid" th:text="${profile.gender}">--</td>
-                <td class="mob-hid" th:text="${profile.address}">--</td>
-                <td class="mob-hid" th:text="${profile.serviceStage}">--</td>
-                <td>
-                        <button class=" btn-no-width btn-primary table_btn"
-                                onclick="openRolePopup(this)"
-                                th:data-fullName="${profile.firstName + ' ' + profile.lastName}"
-                                th:data-userName="${profile.userName}">
-                                Role
-                        </button>    
-                </td>
-                <td>
-                        <button onclick="updateProfileStatus(this);"
-                            th:class = "  ${profile.isEnabled} ? 'btn-no-width red-col white-color-text table_btn ' : 'btn-no-width btn-primary table_btn'"
-                            th:text  = "${profile.isEnabled} ? 'Disabled' : 'Enabled'"
-                            th:attr="data-userName=${profile.userName},data-isEnabled=${profile.isEnabled}">
-                        </button>                    
-                </td>
+                <td th:text="${profile.serviceClass}">--</td>
+                <td th:text="${profile.gender}">--</td>
+                <td th:text="${profile.address}">--</td>
+            <td>
+                <button class="btn-no-width btn-primary table_btn"
+                        onclick="openRolePopup(this)"
+                        th:data-fullName="${profile.firstName + ' ' + profile.lastName}"
+                        th:data-userName="${profile.userName}"
+                        title="Manage Roles">
+                    <i class="fas fa-user-cog"></i>
+                </button>    
+            </td>
+            <td>
+                <button onclick="updateProfileStatus(this);"
+                    th:class="${profile.isEnabled} ? 'btn-no-width btn-success table_btn' : 'btn-no-width btn-warning table_btn'"
+                    th:attr="data-userName=${profile.userName},data-isEnabled=${profile.isEnabled}"
+                    th:title="${profile.isEnabled} ? 'Disable User' : 'Enable User'">
+                    <!-- Toggle switch with colors -->
+                    <i th:if="${profile.isEnabled}" class="fas fa-toggle-on" style="color: green;"></i>
+                    <i th:unless="${profile.isEnabled}" class="fas fa-toggle-off" style="color: red;"></i>
+                </button>                    
+            </td>
+            <td>
+                <button class="btn-no-width btn-danger table_btn"
+                        onclick="showDeleteConfirmation(this)"
+                        th:data-id="${profile.id}"
+                        title="Delete Account"
+                        style="background-color: red; color: white;">
+                    <i class="fas fa-trash"></i>
+                </button> 
+            </td>
             </tr>
                 </tbody>
             </table>
@@ -155,16 +171,66 @@
 
                         <!-- Modal Footer -->
                         <div class="modal-footer">
-                            <button id="save-role-btn" class="btn btn-primary btn-no-width" onclick="save(this)">Save Changes</button>
-                            <button onclick="closeModal()" class="btn red-col btn-no-width white-color-text">Cancel</button>
-                            <div id="loadingMessage" style="display:none; color: blue;">Loading...</div>
+                            <button id="save-role-btn" class="btn btn-primary btn-no-width" onclick="save(this)">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <button onclick="closeModal()" class="btn red-col btn-no-width white-color-text">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <div id="loadingMessage" style="display:none; color: blue;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </div>
                         </div>
                     </div>
                 </div>
+<!-- Elegant Delete Confirmation Modal -->
+<div id="deleteConfirmationModal" class="modal youth-modal">
+    <div class="youth-dialog">
+        <!-- Header -->
+        <div class="youth-header">
+            <div class="youth-warning-icon">
+                <i class="fas fa-user-slash"></i>
+            </div>
+            <div class="youth-header-content">
+                <h3 class="youth-title">Delete Account</h3>
+                <p class="youth-subtitle">هذا الأجراء في حاجة إلي تاكيد </p>
+            </div>
+            <span class="youth-close" onclick="closeDeleteModal()">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
 
+        <!-- Body -->
+        <div class="youth-body">
+            <div class="youth-message">
+                <p class="youth-warning-main">هل انت متاكد من مسح الحساب ؟</p>
+                <p class="youth-warning-detail">اذا قومت بالتأكيد لا يمكن استرجاع البيانات مرة اخري</p>
+            </div>
+            
+            <!-- Simple Verification -->
+            <div class="youth-verification">
+                <div class="youth-input-group">
+                    <label for="confirmText">   : <strong>DELETE</strong>  للتأكيد اكتب </label>
+                    <input type="text" id="confirmText" class="youth-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="youth-footer">
+            <button class="youth-btn youth-btn-cancel" onclick="closeDeleteModal()">
+                <i class="fas fa-times"></i>
+                Cancel
+            </button>
+            <button id="confirmDeleteBtn" class="youth-btn youth-btn-confirm" onclick="confirmDelete()" disabled>
+                <i class="fas fa-trash-alt"></i>
+                Delete Account
+            </button>
+        </div>
+    </div>
+</div>
     <script th:src="@{/js/nav.js}"></script>
     <script th:src="@{/js/jCommon/Common.js}"></script>
     <script th:src="@{/js/manageProfile.js}"></script>
 </body>
-
 </html>

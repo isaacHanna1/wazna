@@ -2,6 +2,8 @@ package com.watad.dao;
 
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.Profile;
+import com.watad.entity.Role;
+import com.watad.entity.User;
 import com.watad.enumValues.Gender;
 import com.watad.services.UserServices;
 import jakarta.persistence.EntityManager;
@@ -13,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Repository
-public class profileDaoImp implements ProfileDao{
+public class profileDaoImp implements ProfileDao {
 
     private final EntityManager entityManager;
     private final UserServices userServices;
@@ -24,7 +27,6 @@ public class profileDaoImp implements ProfileDao{
         this.entityManager = entityManager;
         this.userServices = userServices;
     }
-
 
 
     @Override
@@ -38,7 +40,7 @@ public class profileDaoImp implements ProfileDao{
     @Override
     public void saveProfile(Profile profile) {
 
-        if (profile !=null){
+        if (profile != null) {
             entityManager.persist(profile);
         }
     }
@@ -46,9 +48,9 @@ public class profileDaoImp implements ProfileDao{
     @Override
     public Profile getProfileById(int id) {
         try {
-            return entityManager.find(Profile.class,id);
+            return entityManager.find(Profile.class, id);
         } catch (NoResultException e) {
-            throw new NoResultException("There Is no Profile Founded with Id "+id);
+            throw new NoResultException("There Is no Profile Founded with Id " + id);
         }
     }
 
@@ -66,52 +68,52 @@ public class profileDaoImp implements ProfileDao{
     }
 
     @Override
-    public List<ProfileDtlDto> findByUserPhone(String phone , int churchId , int meetingId) {
-        String  jpql = " select new com.watad.dto.ProfileDtlDto(p.id, p.firstName, p.lastName , p.meetings.id , p.church.id  , p.user.id , p.phone , p.profileImagePath)  from Profile " +
-                        " p where p.meetings.id = :meetingId and p.church.id = :churchId and  p.phone like :phone ";
-         List<ProfileDtlDto>  result     =
-                                        entityManager.createQuery(jpql,ProfileDtlDto.class)
-                                            .setParameter("meetingId",meetingId)
-                                            .setParameter("churchId",meetingId)
-                                                .setParameter("phone", "%" + phone + "%").getResultList();
-         if(result.isEmpty()) return new ArrayList<>();
-         return  result;
+    public List<ProfileDtlDto> findByUserPhone(String phone, int churchId, int meetingId) {
+        String jpql = " select new com.watad.dto.ProfileDtlDto(p.id, p.firstName, p.lastName , p.meetings.id , p.church.id  , p.user.id , p.phone , p.profileImagePath)  from Profile " +
+                " p where p.meetings.id = :meetingId and p.church.id = :churchId and  p.phone like :phone ";
+        List<ProfileDtlDto> result =
+                entityManager.createQuery(jpql, ProfileDtlDto.class)
+                        .setParameter("meetingId", meetingId)
+                        .setParameter("churchId", meetingId)
+                        .setParameter("phone", "%" + phone + "%").getResultList();
+        if (result.isEmpty()) return new ArrayList<>();
+        return result;
     }
 
     @Override
     public List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword, int churchId, int meetingId) {
         int currentProfileId = userServices.getLogedInUserProfile().getId();
-        String  jpql = " select new com.watad.dto.ProfileDtlDto(p.id, p.firstName, p.lastName , p.meetings.id , p.church.id  , p.user.id , p.phone , p.profileImagePath)  from Profile  " +
-                       " p JOIN p.user u where p.meetings.id = :meetingId and p.church.id = :churchId AND  p.id <> :profileId  AND ( u.userName like :keyword OR  LOWER(CONCAT(p.firstName, ' ', p.lastName)) LIKE LOWER(CONCAT('%', :keyword, '%')))";
-        List<ProfileDtlDto>  result     =
-                entityManager.createQuery(jpql,ProfileDtlDto.class)
-                                .setParameter("meetingId",meetingId)
-                                .setParameter("churchId",churchId)
-                                .setParameter("profileId",currentProfileId)
-                                .setMaxResults(5)
-                                .setParameter("keyword", "%" + keyword + "%").getResultList();
-        if(result.isEmpty()) return new ArrayList<>();
+        String jpql = " select new com.watad.dto.ProfileDtlDto(p.id, p.firstName, p.lastName , p.meetings.id , p.church.id  , p.user.id , p.phone , p.profileImagePath)  from Profile  " +
+                " p JOIN p.user u where p.meetings.id = :meetingId and p.church.id = :churchId AND  p.id <> :profileId  AND ( u.userName like :keyword OR  LOWER(CONCAT(p.firstName, ' ', p.lastName)) LIKE LOWER(CONCAT('%', :keyword, '%')))";
+        List<ProfileDtlDto> result =
+                entityManager.createQuery(jpql, ProfileDtlDto.class)
+                        .setParameter("meetingId", meetingId)
+                        .setParameter("churchId", churchId)
+                        .setParameter("profileId", currentProfileId)
+                        .setMaxResults(5)
+                        .setParameter("keyword", "%" + keyword + "%").getResultList();
+        if (result.isEmpty()) return new ArrayList<>();
 
-        return  result;
+        return result;
     }
 
     @Override
-    public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status , String gender ,
-                                                  int pageNum , int pageSize , String serviceClass){
+    public List<ProfileDtlDto> findAllByFilterPaginated(int profileId, String status, String gender,
+                                                        int pageNum, int pageSize, String serviceClass) {
 
 
-        int churchId  = userServices.getLogInUserChurch().getId();
+        int churchId = userServices.getLogInUserChurch().getId();
         int meetingId = userServices.getLogInUserMeeting().getId();
 
 
         StringBuilder jpql = new StringBuilder("""
-        Select new com.watad.dto.ProfileDtlDto(
-            p.id, p.firstName, p.lastName, p.gender,
-            p.serviceStage.description, p.phone, p.birthday,
-            p.address, p.priest.name, u.userName , u.isEnabled,u.id )
-             From Profile p JOIN p.user u
-             where p.church.id = :churchId and p.meetings.id = :meetingId 
-    """);
+                    Select new com.watad.dto.ProfileDtlDto(
+                        p.id, p.firstName, p.lastName, p.gender,
+                        p.serviceStage.description, p.phone, p.birthday,
+                        p.address, p.priest.name, u.userName , u.isEnabled,u.id ,p.serviceClass)
+                         From Profile p JOIN p.user u
+                         where p.church.id = :churchId and p.meetings.id = :meetingId 
+                """);
         if (!gender.equalsIgnoreCase("All")) {
             jpql.append(" and p.gender = :gender");
         }
@@ -121,7 +123,7 @@ public class profileDaoImp implements ProfileDao{
         if (!serviceClass.equalsIgnoreCase("All")) {
             jpql.append(" AND p.serviceClass = :serviceClass");
         }
-        if(profileId != 0){
+        if (profileId != 0) {
             jpql.append(" AND p.id = :profileId");
         }
         jpql.append(" Order by p.id desc ");
@@ -142,19 +144,16 @@ public class profileDaoImp implements ProfileDao{
         if (profileId != 0) {
             query.setParameter("profileId", profileId);
         }
-        query.setParameter("meetingId",meetingId);
-        query.setParameter("churchId",churchId);
+        query.setParameter("meetingId", meetingId);
+        query.setParameter("churchId", churchId);
         query.setFirstResult((pageNum - 1) * pageSize);
         query.setMaxResults(pageSize);
         List<ProfileDtlDto> resultList = query.getResultList();
-        for(ProfileDtlDto dto :resultList){
-            System.out.println(" profile "+dto.getFirstName() +" is enabled "+dto.isEnabled());
-        }
-        return  resultList;
+        return resultList;
     }
 
     @Override
-    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId, int churchId, int meetingId ,String serviceClass ) {
+    public int getTotalPagesByFilter(String status, String gender, int pageSize, int profileId, int churchId, int meetingId, String serviceClass) {
         StringBuilder jpql = new StringBuilder("""
                         Select COUNT(p.id)
                         From Profile p JOIN p.user u
@@ -170,7 +169,7 @@ public class profileDaoImp implements ProfileDao{
         if (!serviceClass.equalsIgnoreCase("All")) {
             jpql.append(" AND p.serviceClass = :serviceClass");
         }
-        if(profileId != 0){
+        if (profileId != 0) {
             jpql.append(" AND p.id = :profileId");
         }
         Query query = entityManager.createQuery(jpql.toString());
@@ -189,47 +188,112 @@ public class profileDaoImp implements ProfileDao{
         if (!serviceClass.equalsIgnoreCase("All")) {
             query.setParameter("serviceClass", serviceClass);
         }
-        query.setParameter("churchId",churchId);
-        query.setParameter("meetingId",meetingId);
+        query.setParameter("churchId", churchId);
+        query.setParameter("meetingId", meetingId);
 
         Long totalCount = (Long) query.getSingleResult();
         return (int) Math.ceil((double) totalCount / pageSize);
     }
 
     @Override
-    public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword , int churchId , int meetingId) {
+    public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword, int churchId, int meetingId) {
         String jpql = """
-                            Select new com.watad.dto.ProfileDtlDto(
-                            p.id, p.firstName, p.lastName , p.phone)
-                            From Profile p
-                            Join p.user u
-                            Where p.meetings.id = :meetingId
-                            and p.church.id = :churchId
-                            and ( CONCAT(p.firstName, ' ', p.lastName) LIKE :keyword
-                            OR u.userName LIKE :keyword )
-                    """;
+                        Select new com.watad.dto.ProfileDtlDto(
+                        p.id, p.firstName, p.lastName , p.phone)
+                        From Profile p
+                        Join p.user u
+                        Where p.meetings.id = :meetingId
+                        and p.church.id = :churchId
+                        and ( CONCAT(p.firstName, ' ', p.lastName) LIKE :keyword
+                        OR u.userName LIKE :keyword )
+                """;
         TypedQuery<ProfileDtlDto> query = entityManager.createQuery(jpql, ProfileDtlDto.class);
-        query.setParameter("meetingId",meetingId);
-        query.setParameter("churchId",churchId);
+        query.setParameter("meetingId", meetingId);
+        query.setParameter("churchId", churchId);
         query.setMaxResults(5);
-        query.setParameter("keyword","%"+keyword+"%");
-        return  query.getResultList();
+        query.setParameter("keyword", "%" + keyword + "%");
+        return query.getResultList();
     }
 
     @Override
     public List<Profile> listProfilesOfMeeting(int meetingId) {
 
         String jpql = """
-        SELECT p
-        FROM Profile p
-        JOIN p.user u
-        WHERE p.meetings.id = :meetingId
-          AND u.isEnabled = TRUE
-    """;
+                    SELECT p
+                    FROM Profile p
+                    JOIN p.user u
+                    WHERE p.meetings.id = :meetingId
+                      AND u.isEnabled = TRUE
+                """;
 
         TypedQuery<Profile> query = entityManager.createQuery(jpql, Profile.class);
         query.setParameter("meetingId", meetingId);
         return query.getResultList();
     }
+
+    @Override
+    public void deleteProfileBy(int profileId) {
+
+        Profile profile = entityManager.find(Profile.class, profileId);
+        if (profile == null) {
+            throw new RuntimeException("Profile not found");
+        }
+
+        int deletedFrom = entityManager.createQuery(
+                        "DELETE FROM UserPointTransaction t WHERE t.profile.id = :pid")
+                .setParameter("pid", profileId)
+                .executeUpdate();
+        entityManager.flush();
+        int deletedTo = entityManager.createQuery(
+                        "DELETE FROM UserPointTransaction t WHERE t.transferTo.id = :pid")
+                .setParameter("pid", profileId)
+                .executeUpdate();
+        entityManager.flush();
+        int updated = entityManager.createQuery(
+                        "UPDATE UserBonus b SET b.addByUserId = null WHERE b.addByUserId.id = :uid")
+                .setParameter("uid", profile.getUser().getId())
+                .executeUpdate();
+        entityManager.flush();
+
+        int deletedBonuses = entityManager.createQuery(
+                        "DELETE FROM UserBonus b WHERE b.profile.id = :pid")
+                .setParameter("pid", profileId)
+                .executeUpdate();
+        entityManager.flush();
+        System.out.println("DEBUG: Deleted " + deletedBonuses + " UserBonuses");
+
+        if (profile.getUser() != null) {
+            int deletedAttendance = entityManager.createQuery(
+                            "DELETE FROM Attendance a WHERE a.attendanceId.user.id = :uid")
+                    .setParameter("uid", profile.getUser().getId())
+                    .executeUpdate();
+            entityManager.flush();
+
+            int deletedAssociations = entityManager.createNativeQuery(
+                            "DELETE FROM user_role WHERE user_id = :uid")
+                    .setParameter("uid", profile.getUser().getId())
+                    .executeUpdate();
+            entityManager.flush();
+            entityManager.remove(profile.getUser());
+            entityManager.flush();
+        }
+        // Delete FamilyInfo
+        if (profile.getFamilyInfo() != null) {
+            System.out.println("DEBUG: Deleting FamilyInfo with ID " + profile.getFamilyInfo().getId());
+            entityManager.remove(profile.getFamilyInfo());
+        }
+        // Delete Profile
+        System.out.println("DEBUG: Deleting Profile with ID " + profileId);
+        try {
+            entityManager.remove(profile);
+            entityManager.flush();
+        } catch (Exception e) {
+            Throwable t = e;
+            while (t.getCause() != null) t = t.getCause();
+            System.out.println("Root cause: " + t.getMessage());
+            throw e;
+        }
+    }
+
 
 }

@@ -7,4 +7,5 @@ import java.util.List;
 public interface BonusHeadDao {
 
     List<BonusHead> findAllBonusHead();
+    List<BonusHead> findBYEvaluationType(String type);
 }

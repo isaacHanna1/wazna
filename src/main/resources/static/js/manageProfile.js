@@ -185,3 +185,112 @@ async function save(element){
     }
 }
 // End of Pop up 
+
+
+let currentProfileIdToDelete = null;
+
+function showDeleteConfirmation(button) {
+    currentProfileIdToDelete = button.dataset.id;
+    const modal = document.getElementById('deleteConfirmationModal');
+    modal.style.display = 'block';
+    
+    // Reset confirmation input
+    document.getElementById('confirmText').value = '';
+    document.getElementById('confirmDeleteBtn').disabled = true;
+    
+    // Add typing validation
+    document.getElementById('confirmText').addEventListener('input', function() {
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        confirmBtn.disabled = this.value.toUpperCase() !== 'DELETE';
+    });
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteConfirmationModal');
+    modal.style.display = 'none';
+    currentProfileIdToDelete = null;
+}
+
+async function confirmDelete() {
+    if (!currentProfileIdToDelete) return;
+    
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const originalContent = confirmBtn.innerHTML;
+    
+    // Show loading state
+    confirmBtn.innerHTML = '<div class="youth-loading"></div> Deleting...';
+    confirmBtn.disabled = true;
+    
+    try {
+        const URL = getBaseUrl(); 
+        const response = await fetch(URL + "/api/profile/delete/" + currentProfileIdToDelete, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.text();
+        console.log(data);
+        
+        // Show success message
+        showYouthSuccessMessage();
+        
+        // Close modal and reload page after success
+        setTimeout(() => {
+            closeDeleteModal();
+            location.reload();
+        }, 1500);
+        
+    } catch (error) {
+        console.error("Error deleting profile:", error);
+        showYouthErrorMessage();
+        
+        // Reset button state on error
+        confirmBtn.innerHTML = originalContent;
+        confirmBtn.disabled = false;
+    }
+}
+
+function showYouthSuccessMessage() {
+    const successMsg = document.createElement('div');
+    successMsg.className = 'youth-success';
+    successMsg.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <div style="font-weight: 500;">Account Deleted</div>
+            <div style="font-size: 0.85em; opacity: 0.9;">User account has been removed</div>
+        </div>
+    `;
+    document.body.appendChild(successMsg);
+    
+    setTimeout(() => {
+        successMsg.remove();
+    }, 3000);
+}
+
+function showYouthErrorMessage() {
+    const errorMsg = document.createElement('div');
+    errorMsg.className = 'youth-error';
+    errorMsg.innerHTML = `
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+            <div style="font-weight: 500;">Delete Failed</div>
+            <div style="font-size: 0.85em; opacity: 0.9;">Please try again</div>
+        </div>
+    `;
+    document.body.appendChild(errorMsg);
+    
+    setTimeout(() => {
+        errorMsg.remove();
+    }, 3000);
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('deleteConfirmationModal');
+    if (event.target === modal) {
+        closeDeleteModal();
+    }
+});

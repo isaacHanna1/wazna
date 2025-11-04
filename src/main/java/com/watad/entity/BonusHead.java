@@ -27,6 +27,9 @@ public class BonusHead {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
+    @Column(name = "evaluation_type")
+    private String evaluationType;
+
     public int getId() {
         return id;
     }
@@ -59,5 +62,11 @@ public class BonusHead {
         this.active = active;
     }
 
+    public String getEvaluationType() {
+        return evaluationType;
+    }
 
+    public void setEvaluationType(String evaluationType) {
+        this.evaluationType = evaluationType;
+    }
 }

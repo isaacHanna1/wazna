@@ -65,7 +65,7 @@ public class Profile {
     private LocalDateTime joinDate;
 
 
-    @OneToOne(mappedBy = "profile",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "profile",cascade = CascadeType.ALL,orphanRemoval = true)
     private User user;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH} , fetch = FetchType.LAZY)
@@ -90,7 +90,7 @@ public class Profile {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "family_info_id")
     private FamilyInfo familyInfo;
 

@@ -364,3 +364,45 @@ async function addPoints(profileId, userId, bonusTypeId) {
         console.error("Error while adding points:", error);
     }
 }
+
+
+// load the bonuc depened on the type 
+
+const evaluationType = document.getElementById("evaluationType");
+
+  evaluationType.addEventListener("change", async function () {
+    const type = this.value;
+    if (!type) return;
+
+    const baseUrl = getBaseUrl();
+    try {
+      const response = await fetch(`${baseUrl}/api/bonusType?evaluationType=${encodeURIComponent(type)}`);
+      if (!response.ok) throw new Error("Failed to load bonus parents");
+
+      const data = await response.json();
+      loadBonusParentOptions(data,type);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+function loadBonusParentOptions(data, evaluationType) {
+  const bountyType = document.getElementById("bountyType");
+  bountyType.innerHTML = '<option value="">Select</option>';
+
+  data.forEach(bonus => {
+    const option = document.createElement("option");
+    option.value = bonus.id;
+
+    // Choose + or - depending on evaluationType
+    const sign = evaluationType === "PO" ? "+" : "";
+
+    // Example: "Attendance (+10 WAZNA)" or "Late (-5 WAZNA)"
+    option.textContent = `${bonus.description} (${sign}${bonus.point} WAZNA)`;
+
+    // Optional: color-code the options
+    option.className = (evaluationType === "PO") ? "text-success" : "text-danger";
+
+    bountyType.appendChild(option);
+  });
+}

@@ -13,7 +13,7 @@ public class UserBonus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id ;
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name="profile_id")
     private Profile profile;
 
@@ -24,7 +24,7 @@ public class UserBonus {
     @Column(name = "bounce_point")
     private double BouncePoint;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "sprint_id")
     private SprintData sprintData;
 

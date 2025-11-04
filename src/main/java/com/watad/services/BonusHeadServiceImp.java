@@ -19,4 +19,9 @@ public class BonusHeadServiceImp implements  BonusHeadService{
     public List<BonusHead> findAllBonusService() {
         return bonusHeadDao.findAllBonusHead();
     }
+
+    @Override
+    public List<BonusHead> findByEvaluationType(String evaluationType) {
+        return  bonusHeadDao.findBYEvaluationType(evaluationType);
+    }
 }

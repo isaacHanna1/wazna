@@ -59,7 +59,7 @@ public class QrCodeController {
     @GetMapping("/code")
     public String qrCodeView(Model model){
         model.addAttribute("qrCode",new QrCode());
-        model.addAttribute("bonusType",bonusTypeService.findAll());
+        model.addAttribute("bonusType",bonusTypeService.findAll("PO"));
         return  "QRCode";
     }
 

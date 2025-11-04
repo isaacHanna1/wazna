@@ -22,4 +22,10 @@ public class BonusHeadDaoImp implements BonusHeadDao{
         return  entityManager.createQuery("From BonusHead bh where bh.active = true ",BonusHead.class).getResultList();
     }
 
+    @Override
+    public List<BonusHead> findBYEvaluationType(String type) {
+        return  entityManager.createQuery("From BonusHead bh where bh.active = true AND evaluationType =:type ",BonusHead.class).setParameter("type",type).getResultList();
+
+    }
+
 }

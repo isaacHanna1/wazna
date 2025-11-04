@@ -11,6 +11,8 @@ public interface BonusTypeDao {
     List<BonusTypeDto> findAll(int churchId , int MeetingId);
     BonusType findById(int id);
     void createBonus(BonusType bonusType);
-    List<BonusTypeDto> findByDesc(int churchId , int meetingId ,String desc);
+    List<BonusTypeDto> findByDesc(int churchId , int meetingId ,String desc , String evaluationType);
     void updateBonusType(BonusType bonusType);
+    List<BonusTypeDto> findAll(int churchId , int MeetingId , String evaluationType);
+
 }

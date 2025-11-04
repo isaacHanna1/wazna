@@ -3,6 +3,8 @@ package com.watad.controller;
 import com.watad.dto.ProfileDtlDto;
 import com.watad.entity.Profile;
 import com.watad.services.ProfileService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +35,15 @@ public class ProfileRestControl {
         return  profileService.findProfileByNameOrPhone(keyword, churchId, meetingId);
     }
 
+    @DeleteMapping("/profile/delete/{profileId}")
+    public ResponseEntity<String> deleteProfile(@PathVariable  int profileId){
+        try {
+            profileService.deleteProfileById(profileId);
+            return  ResponseEntity.ok("Profile Deleted");
+        } catch (RuntimeException e) {
+            System.out.println("When deleting data -> "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Internal Error Profile Deleting");
+        }
+    }
 
 }

@@ -84,7 +84,7 @@ public class ProfileDtlDto {
 
     public ProfileDtlDto(int id, String firstName, String lastName, Gender gender,
                          String serviceStage, String phone, LocalDate birthday,
-                         String address, String fatherPeriest, String userName  , boolean isEnabled , int userId) {
+                         String address, String fatherPeriest, String userName  , boolean isEnabled , int userId , String serviceClass) {
         this.id = id;
         this.firstName  = firstName;
         this.lastName         = lastName;
@@ -97,6 +97,7 @@ public class ProfileDtlDto {
         this.userName = userName;
         this.isEnabled = isEnabled;
         this.userId   = userId;
+        this.serviceClass = serviceClass;
     }
 
 
@@ -318,4 +319,5 @@ public class ProfileDtlDto {
     public void setServiceClass(String serviceClass) {
         this.serviceClass = serviceClass;
     }
+
 }

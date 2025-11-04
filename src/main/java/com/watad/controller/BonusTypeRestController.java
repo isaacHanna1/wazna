@@ -5,6 +5,7 @@ import com.watad.entity.BonusType;
 import com.watad.services.BonusTypeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class BonusTypeRestController {
     }
 
     @GetMapping("/bonusType")
-    public List<BonusTypeDto> getBonusType(){
-        return  bonusTypeService.findAll();
+    public List<BonusTypeDto> getBonusType(@RequestParam(defaultValue = "All") String evaluationType){
+        return  bonusTypeService.findAll(evaluationType);
     }
 }

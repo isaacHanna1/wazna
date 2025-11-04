@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Bonus</title>
+  <title>Create Evaluation</title>
   <link th:href="@{/css/styles.css}" rel="stylesheet" />
 
     <style>
@@ -22,37 +22,42 @@
 
 <div class="auth-container">
   <div class="auth-form">
-    <h2 class="auth-title">Bonus</h2>
+    <h2 class="auth-title">Evaluation</h2>
       <form th:action="@{/bonus/create}" method="POST" th:object="${bonus}">
+
     <div class="form-group">
-        <label for="bonusDescription">Bonus Description:</label>
+         <label  class = "form-label" for="evaluationType">Evaluation Type - نوع التقييم</label>
+            <select class = "form-input" id ="evaluationType" name=""  required>
+                  <option value="" >Select</option>
+                  <option value="PO" >Postive - إيجابي</option>
+                  <option value="NE" >Negative -  سلبي</option>
+            </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="bonceParent">Evaluation Parent :</label>
+        <select class="form-input" id="bonceParent" name="bonusHead.id" required>
+          <option value="" disabled selected>Select</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="bonusDescription">Evaluation Description - وصف التقيم :</label>
         <input class="form-input" type="text" id="bonusDescription" th:field="*{description}" required>
     </div>
 
     <div class="form-group">
-        <label for="point">Points:</label>
+        <label for="point">Points - عدد النقط :</label>
         <input class="form-input" type="number" id="point" th:field="*{point}" required>
     </div>
 
     <div class="form-group">
-        <label for="activeFrom">Active From:</label>
+        <label for="activeFrom">Active From - مفعلة من : </label>
         <input class="form-input" type="date" id="activeFrom" th:field="*{activeFrom}" required>
     </div>
 
     <div class="form-group">
-        <label for="activeTo">Active To:</label>
+        <label for="activeTo">Active To  - مفعلة الي :</label>
         <input class="form-input" type="date" id="activeTo" th:field="*{activeTo}">
     </div>
-    <div class="form-group">
-            <label  class = "form-label" for="bonceParent">Bounce Parent :</label>
-            <select class = "form-input" id ="bonceParent" name="bonusHead.id"  required>
-                  <option value="" disabled th:selected="${bonus.bonusHead == null}">Select</option>
-                  <option th:each="bonusHead : ${bonusHead}"
-                          th:value="${bonusHead.id}"
-                          th:text="${bonusHead.name}">
-                  </option>
-            </select>
-      </div>
     <div class="form-group">
         <label for="active">Active:</label>
         <input type="checkbox" id="active" th:field="*{active}">
@@ -65,6 +70,8 @@
 </div>
 <script th:src="@{/js/nav.js}"></script>
 <script th:src="@{/js/jCommon/Common.js}"></script>
+<script th:src="@{/js/bonusHeader.js}"></script>
+
 <script>
 
 </script>

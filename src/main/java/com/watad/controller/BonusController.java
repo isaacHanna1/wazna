@@ -1,5 +1,6 @@
 package com.watad.controller;
 
+import com.watad.entity.BonusHead;
 import com.watad.entity.BonusType;
 import com.watad.services.BonusHeadService;
 import com.watad.services.BonusTypeService;
@@ -35,26 +36,31 @@ public class BonusController {
 
     @GetMapping("/all")
     public String viewAll(Model model){
-        model.addAttribute("bonus",bonusTypeService.findAll());
+        model.addAttribute("bonus",bonusTypeService.findAll("All"));
         return "allBonus";
     }
 
     @GetMapping("/find")
-    public String findByDesc(Model model, @RequestParam String desc){
-        model.addAttribute("bonus",bonusTypeService.findByDesc(desc));
+    public String findByDesc(Model model, @RequestParam String desc , @RequestParam String evaluationType){
+        model.addAttribute("bonus",bonusTypeService.findByDesc(desc,evaluationType));
+        model.addAttribute("desc",desc);
+        model.addAttribute("evaluationType",evaluationType);
         return "allBonus";
     }
 
     @GetMapping("/find/{id}")
     public String findByDesc(Model model, @PathVariable int id ){
-        model.addAttribute("bonus",bonusTypeService.findById(id));
-        model.addAttribute("bonusHead",bonusHeadService.findAllBonusService());
+        BonusType bonusType = bonusTypeService.findById(id);
+        model.addAttribute("bonus",bonusType);
+        BonusHead bonusHead = bonusType.getBonusHead();
+        model.addAttribute("bonusEvaluationType",bonusHead.getEvaluationType());
+        model.addAttribute("bonusHead",bonusHeadService.findByEvaluationType(bonusHead.getEvaluationType()));
         return "editBonus";
     }
     @PostMapping("/update")
     public String update(Model model,@ModelAttribute("bonus") BonusType bonusType){
         bonusTypeService.updateBonusType(bonusType);
-        model.addAttribute("bonus",bonusTypeService.findAll());
+        model.addAttribute("bonus",bonusTypeService.findAll("All"));
         return "allBonus";
     }
 

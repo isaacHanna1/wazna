@@ -127,7 +127,7 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                                 ORDER BY t.transaction_date, t.transaction_id
                                 ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
                             ) AS 'before'
-                        FROM wazna.user_point_transaction t
+                        FROM user_point_transaction t
                         WHERE t.profile_id = :profileId
                           AND t.sprint_id =  :sprintId
                           AND t.church_id = :churchId

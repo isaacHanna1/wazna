@@ -271,8 +271,8 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     @Override
-    public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status, String gender, int pageNum, int pageSize,String serviceClass) {
-       return  profileDao.findAllByFilterPaginated( profileId ,status,gender,pageNum,pageSize,serviceClass);
+    public List<ProfileDtlDto> findAllByFilterPaginated(int profileId , String status, String gender, int pageNum, int pageSize,String serviceClass, String byRole) {
+       return  profileDao.findAllByFilterPaginated( profileId ,status,gender,pageNum,pageSize,serviceClass,  byRole);
     }
 
     @Override

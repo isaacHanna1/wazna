@@ -42,12 +42,14 @@
                     </ul>
                 </div>
                 <div>
+                    <!--Filter by Status-->
                     <select class="input" name="status">
                         <option value="All"   th:selected="${status} == 'All'">All Status</option>
                         <option value="true"  th:selected="${status} == 'true'">Active</option>
                         <option value="false" th:selected="${status} == 'false'">Inactive</option>
                     </select>
                 </div>
+                    <!--Filter by Gender-->
                 <div>
                         <select class="input" name="gender">
                             <option value="All"    th:selected="${gender} == 'All'">All Gender</option>
@@ -55,12 +57,23 @@
                             <option value="Female" th:selected="${gender} == 'Female'">Female</option>
                         </select>
                 </div>
+                <!--Filter by service Class-->
                  <div>
                         <select name="serviceClass" class="input">
                             <option value="All"> كل الفصول</option>
                             <th:block th:each="entry : ${serviceClass}">
                                 <option th:value="${entry.key}" th:text="${entry.value}"
                                 th:selected="${entry.key} == ${searchClass}">
+                            </th:block>
+                        </select>
+                </div>
+                <!--Filter by Role-->
+                <div>
+                        <select name="searchRole" class="input">
+                            <option value="All"> كل الصلاحيات</option>
+                            <th:block th:each="role : ${roleList}">
+                                <option th:value="${role.id}" th:text="${role.name}"
+                                th:selected="${role.id} == ${searchRole}">
                             </th:block>
                         </select>
                 </div>

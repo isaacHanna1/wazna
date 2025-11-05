@@ -13,4 +13,5 @@ public interface RoleService {
     public  Role findById(int id );
     public void findOrCreate(String roleName);
     public List<RoleDto> findRoles();
+    public List<RoleDto> findRolesWithArabDesc();
 }

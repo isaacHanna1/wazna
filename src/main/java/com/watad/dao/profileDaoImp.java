@@ -99,7 +99,7 @@ public class profileDaoImp implements ProfileDao {
 
     @Override
     public List<ProfileDtlDto> findAllByFilterPaginated(int profileId, String status, String gender,
-                                                        int pageNum, int pageSize, String serviceClass) {
+                                                        int pageNum, int pageSize, String serviceClass , String byRole) {
 
 
         int churchId = userServices.getLogInUserChurch().getId();
@@ -111,7 +111,7 @@ public class profileDaoImp implements ProfileDao {
                         p.id, p.firstName, p.lastName, p.gender,
                         p.serviceStage.description, p.phone, p.birthday,
                         p.address, p.priest.name, u.userName , u.isEnabled,u.id ,p.serviceClass)
-                         From Profile p JOIN p.user u
+                         From Profile p JOIN p.user u LEFT JOIN u.roles r
                          where p.church.id = :churchId and p.meetings.id = :meetingId 
                 """);
         if (!gender.equalsIgnoreCase("All")) {
@@ -123,6 +123,10 @@ public class profileDaoImp implements ProfileDao {
         if (!serviceClass.equalsIgnoreCase("All")) {
             jpql.append(" AND p.serviceClass = :serviceClass");
         }
+        if (!byRole.equalsIgnoreCase("All")) {
+            jpql.append(" AND r.id = :byRole");
+        }
+
         if (profileId != 0) {
             jpql.append(" AND p.id = :profileId");
         }
@@ -139,7 +143,9 @@ public class profileDaoImp implements ProfileDao {
         if (!serviceClass.equalsIgnoreCase("All")) {
             query.setParameter("serviceClass", serviceClass);
         }
-
+        if (!byRole.equalsIgnoreCase("All")) {
+            query.setParameter("byRole", Integer.parseInt(byRole));
+        }
 
         if (profileId != 0) {
             query.setParameter("profileId", profileId);

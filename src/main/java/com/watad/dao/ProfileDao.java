@@ -15,7 +15,7 @@ public interface ProfileDao {
     List<ProfileDtlDto> findByUserPhone(String phone , int churchId , int meetingId);
     List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword , int churchId , int meetingId);
     public List<ProfileDtlDto> findAllByFilterPaginated(int profileId ,String status , String gender , int pageNum , int pageSize,String serviceClass,String byRole);
-    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId , int churchId, int meetingId,String serviceClass);
+    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId , int churchId, int meetingId,String serviceClass,String byRole);
     public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword , int churchId , int meetingId);
     public List<Profile> listProfilesOfMeeting(int meetingId);
     public void deleteProfileBy(int profileId);

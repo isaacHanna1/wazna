@@ -95,8 +95,6 @@ public class ProfileController {
             addDataToModel(model,profile);
             return "editProfile";
         }
-
-
         try {
             addDataToModel(model,profile);
             profileService.editPrfofile(profile, image ,id);
@@ -138,7 +136,7 @@ public class ProfileController {
 
         //  3. Get total number of pages for pagination
         int numOfPages = profileService.getTotalPagesByFilter(
-                status, gender, pageSize, searchProfileId, serviceClass
+                status, gender, pageSize, searchProfileId, serviceClass,searchRole
         );
 
         //  4. Context info about the logged-in user

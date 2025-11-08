@@ -159,10 +159,10 @@ public class profileDaoImp implements ProfileDao {
     }
 
     @Override
-    public int getTotalPagesByFilter(String status, String gender, int pageSize, int profileId, int churchId, int meetingId, String serviceClass) {
+    public int getTotalPagesByFilter(String status, String gender, int pageSize, int profileId, int churchId, int meetingId, String serviceClass , String byRole) {
         StringBuilder jpql = new StringBuilder("""
                         Select COUNT(p.id)
-                        From Profile p JOIN p.user u
+                        From Profile p JOIN p.user u LEFT JOIN u.roles r
                         where 1 = 1 AND p.church.id =:churchId And p.meetings.id = :meetingId
                 """);
 
@@ -174,6 +174,9 @@ public class profileDaoImp implements ProfileDao {
         }
         if (!serviceClass.equalsIgnoreCase("All")) {
             jpql.append(" AND p.serviceClass = :serviceClass");
+        }
+        if (!byRole.equalsIgnoreCase("All")) {
+            jpql.append(" AND r.id = :byRole");
         }
         if (profileId != 0) {
             jpql.append(" AND p.id = :profileId");
@@ -188,6 +191,11 @@ public class profileDaoImp implements ProfileDao {
             boolean statusValue = Boolean.parseBoolean(status);
             query.setParameter("status", statusValue);
         }
+
+        if (!byRole.equalsIgnoreCase("All")) {
+            query.setParameter("byRole", Integer.parseInt(byRole));
+        }
+
         if (profileId != 0) {
             query.setParameter("profileId", profileId);
         }

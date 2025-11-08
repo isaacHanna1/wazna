@@ -23,7 +23,7 @@ public interface ProfileService {
     List<ProfileDtlDto> findByUserPhone(String phone);
     List<ProfileDtlDto> findByUserPhoneOrUserName(String keyword);
     List<ProfileDtlDto> findAllByFilterPaginated(int profileId,String status , String gender , int pageNum , int pageSize,String serviceClass , String byRole);
-    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId ,String serviceClass);
+    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId ,String serviceClass, String byRole);
     public List<ProfileDtlDto> findProfileByNameOrPhone(String keyword , int churchId , int meetingId);
     public Profile getEditableProfile(int profileId , HttpServletRequest request);
     void deleteProfileById(int id);

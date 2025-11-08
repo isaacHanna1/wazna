@@ -180,25 +180,31 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     @Transactional
     public void editPrfofile(Profile profile , MultipartFile image , int id ) throws IOException {
-        Profile existsOne = profileDao.getProfileById(id);
-        String old_image = UPLOAD_DIR +"/"+existsOne.getProfileImagePath();
-        LocalDateTime localDateTime = existsOne.getJoinDate();
-        if (image != null && !image.isEmpty()){
-            System.out.println("New image uploaded. Replacing old image.");
-            System.out.println("the old image path is "+old_image);
-            deleteOldFile(old_image);
-            String imageName = saveProfileImage(image);
-            profile.setProfileImagePath(imageName);
+        try {
+            Profile existsOne = profileDao.getProfileById(id);
+            System.out.println("the Exists one profile is -> " + existsOne.getFirstName());
+            String old_image = UPLOAD_DIR + "/" + existsOne.getProfileImagePath();
+            System.out.println("the old image path is " + old_image);
+            LocalDateTime localDateTime = existsOne.getJoinDate();
+            if (image != null && !image.isEmpty()) {
+                System.out.println("New image uploaded. Replacing old image.");
+                System.out.println("the old image path is " + old_image);
+                deleteOldFile(old_image);
+                String imageName = saveProfileImage(image);
+                profile.setProfileImagePath(imageName);
+            } else {
+                System.out.println("No new image uploaded. Keeping old image.");
+                profile.setProfileImagePath(getProfileImageName(profile.getId()));
+            }
+            User user = existsOne.getUser();
+            user.setUserName(profile.getPhone());
+            profile.setUser(user);
+            profile.setJoinDate(localDateTime);
+            profileDao.editprofile(profile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("the exception happened now "+e.getMessage());
         }
-        else{
-            System.out.println("No new image uploaded. Keeping old image.");
-            profile.setProfileImagePath(getProfileImageName(profile.getId()));
-        }
-        User user = existsOne.getUser();
-        user.setUserName(profile.getPhone());
-//        profile.setUser(user);
-        profile.setJoinDate(localDateTime);
-        profileDao.editprofile(profile);
     }
 
     @Override
@@ -276,10 +282,10 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     @Override
-    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId,String serviceClass) {
+    public int getTotalPagesByFilter(String status, String gender, int pageSize , int profileId,String serviceClass , String byRole) {
         int churchId = userServices.getLogInUserChurch().getId();
         int meetingId = userServices.getLogInUserMeeting().getId();
-        return profileDao.getTotalPagesByFilter(status,gender,pageSize , profileId,churchId,meetingId,serviceClass);
+        return profileDao.getTotalPagesByFilter(status,gender,pageSize , profileId,churchId,meetingId,serviceClass,byRole);
     }
 
     @Override

@@ -94,6 +94,14 @@
                               th:text="${code}">
                       </option>
                   </select>
+                <!-- Camera Preview for QR Scan -->
+                <div class="camera-container" th:if="${isChildRegisterionExists}">
+                  <video id="camera-video" autoplay playsinline width="300" height="150" style="border: 1px solid #ccc;"></video>
+                  <p id="scan-result-err">Scan a QR/Barcode to select meeting code...</p>
+                  <button id="start-scan-btn">Start Camera Scan</button>
+                  <button id="stop-scan-btn">Stop Camera</button>
+                </div>
+
 
                   <label for="search-input" class="label"
                     >Search by Name or Phone Number</label
@@ -263,5 +271,6 @@
     <script th:src="@{/js/nav.js}"></script>
     <script th:src="@{/js/jCommon/Common.js}"></script>
     <script th:src="@{/js/manualAttandance.js}"></script>
+    <script type="module" th:src="@{/js/QrReader.js}"></script>
   </body>
 </html>

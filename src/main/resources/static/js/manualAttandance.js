@@ -515,3 +515,5 @@ function cancelAttendance(){
     searchInput.value       = "";
     displayEmptyUser();
 }
+
+

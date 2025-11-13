@@ -3,6 +3,7 @@ package com.watad.controller;
 
 import com.watad.Common.Util;
 import com.watad.services.QrCodeService;
+import com.watad.services.SystemConfigService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,14 @@ import java.util.List;
 public class ManaulAttandanceController {
 
     private final QrCodeService qrCodeService;
+    private final SystemConfigService systemConfig;
 
-    public ManaulAttandanceController(QrCodeService qrCodeService) {
+
+    public ManaulAttandanceController(QrCodeService qrCodeService, SystemConfigService systemConfig) {
         this.qrCodeService = qrCodeService;
+        this.systemConfig = systemConfig;
     }
+
     @GetMapping("/manualAttandance")
     public  String loadPageManalAttance(Model model){
         String currentDate = Util.getCurrentDate("EEEE, MMMM d, yyyy");
@@ -28,6 +33,10 @@ public class ManaulAttandanceController {
             System.out.println(data.get(i));
         }
         model.addAttribute("codes",qrCodeService.getActiveByDate(LocalDate.now()));
+        boolean isChildRegisterionExists = systemConfig.getSystemCongigValueByKey("child_req");
+        System.out.println("isChildRegisterionExists -> "+isChildRegisterionExists);
+
+        model.addAttribute("isChildRegisterionExists", isChildRegisterionExists);
         return "manualAttandance";
     }
 

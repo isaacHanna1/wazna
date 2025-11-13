@@ -941,3 +941,58 @@ input:focus {
     border: 1px solid var(--gray-300);
   }
 }
+
+/* Compact camera container */
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px; /* small space between elements */
+  margin-top: 5px;
+}
+
+/* Video element smaller size */
+#camera-video {
+  width: 200px;  /* smaller width */
+  height: 150px; /* smaller height */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Buttons smaller and tighter */
+#start-scan-btn,
+#stop-scan-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+/* Start button */
+#start-scan-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#start-scan-btn:hover {
+  background-color: #45a049;
+}
+
+/* Stop button */
+#stop-scan-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+#stop-scan-btn:hover {
+  background-color: #e53935;
+}
+
+/* Optional: make buttons inline */
+.camera-container button {
+  width: 48%; /* each button takes almost half */
+  margin: 2px 1%;
+}

@@ -81,7 +81,7 @@
 
   async function handleScannedCode(code) {
   try {
-    generateUser(code);
+    scannedPresent(code);
 
     // Optionally stop camera to prevent multiple scans
     if (usingNativeDetector && stream) {
@@ -97,4 +97,45 @@
     console.error("Error after scanning:", err);
     scanResultErr.textContent = "Error while marking attendance: " + err.message;
   }
+}
+
+
+
+async function scannedPresent(code) {
+    try{
+      const baseURL                   = getBaseUrl();
+
+      // getting the user 
+        const responseForUser  = await fetch(baseURL+`/api/profile/search?phone=${code}`);
+        if(!responseForUser.ok){
+            throw new Error("Network response was not ok: " + response.status);
+        }
+        const userDataArray = await responseForUser.json();
+        const userData = userDataArray[0]; // take the first object
+        const userId = userData.userId;   
+      let meetingCode                 = document.getElementById("meetingCode").value;
+      if (meetingCode === "") {
+                showToast("خطأ", "لابد من اختيار كود الاجتماع", "error");
+                return;
+      }
+      const response                  = await fetch(baseURL+`/api/scanner/${meetingCode}/${userId}`);
+      if(!response.ok){
+        const errorData              = await response.json();
+        throw new Error("Error : " + errorData.message);
+      }
+     const user                      = await response.json();
+    showToast(
+        "عملية ناجحة",
+        `أحسنت ${user.firstName}! لقد تم تسجيل حضورك وكسبت ${user.points} نقاط Wazna. استمر على هذا الأداء الرائع!`,
+        "success"
+    );
+
+     updateAttendanceTable(user); 
+      }catch(error){
+          showToast("Error", error.message, "error");
+          btn_attendance.disabled = false;
+          return;
+      }
+
+
 }

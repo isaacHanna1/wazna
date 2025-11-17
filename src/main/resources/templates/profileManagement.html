@@ -103,9 +103,8 @@
                             th:href="@{/child/EditProfile/{id}(id=${profile.id})}"
                             th:text="${profile.firstName + ' ' + profile.lastName}">
                             </a>
-
                             <a th:unless="${isChildRegisterionExists}"
-                            th:href="@{/profile/{id}(id=${profile.userId})}"
+                            th:href="@{/editProfile/{id}(id=${profile.id})}"
                             th:text="${profile.firstName + ' ' + profile.lastName}">
                             </a>
                 </td>

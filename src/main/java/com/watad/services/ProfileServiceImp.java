@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Service
+@Service("ProfileService")
 public class ProfileServiceImp implements ProfileService {
 
     private final PasswordEncoder passwordEncoder;
@@ -322,6 +322,16 @@ public class ProfileServiceImp implements ProfileService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public boolean isUserProfileOwner(int profileId, int userId) {
+        Profile profile = getProfileById(profileId);
+        if(profile == null){
+            return  false;
+        }
+        return profile.getUser().getId() == userId;
 
     }
 

@@ -112,6 +112,10 @@ async function scannedPresent(code) {
         }
         const userDataArray = await responseForUser.json();
         const userData = userDataArray[0]; // take the first object
+        if (!userDataArray || userDataArray.length === 0) {
+          showToast("خطأ", "لم يتم العثور على المستخدم", "error");
+          return;
+      }
         const userId = userData.userId;   
       let meetingCode                 = document.getElementById("meetingCode").value;
       if (meetingCode === "") {

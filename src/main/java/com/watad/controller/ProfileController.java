@@ -11,6 +11,7 @@ import com.watad.exceptions.ProfileException;
 import com.watad.services.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,12 +69,19 @@ public class ProfileController {
         return "profile";
     }
 
+    @PreAuthorize(
+            "hasAnyRole('SERVER', 'CLASS_LEADER', 'TREASURER', 'SERVICE_LEADER', 'SUPER') " +
+                    "or @ProfileService.isUserProfileOwner(#id, authentication.principal.id)"
+    )
     @GetMapping("/editProfile/{id}")
     public String editProfile(Model model , @PathVariable int id , HttpServletRequest request) throws ProfileException {
         Profile profile = profileService.getEditableProfile(id,request);
         addDataToModel(model,profile);
         return "editProfile";
     }
+
+
+
 
     private void addDataToModel(Model model,Profile profile){
         model.addAttribute("profile",profile);
@@ -107,8 +115,8 @@ public class ProfileController {
             result.rejectValue("phone", "error.phone", ex.getMessage());
             return "editProfile";
         }
-
-        return "redirect:/profile";
+            int userId = profileService.getProfileById(id).getUser().getId();
+        return "redirect:/profile/"+userId;
     }
 
 

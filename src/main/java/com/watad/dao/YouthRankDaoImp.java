@@ -128,7 +128,7 @@ public class YouthRankDaoImp implements YouthRankDao  {
             String firstName = (String) row[2];
             String lastName = (String) row[3];
             double totalPoints = ((Number) row[4]).doubleValue();
-            String imagePath = "/uploads/profile/" +(String) row[5];
+            String imagePath = "/profile_pic/" +(String) row[5];
             String serviceClass = (String) row[6];
 
             System.out.println("Mapped: rank=" + rank + ", profileId=" + profileId + ", name=" + firstName + " " + lastName + ", points=" + totalPoints + ", imagePath=" + imagePath + ", class=" + serviceClass);

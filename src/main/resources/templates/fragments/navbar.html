@@ -253,6 +253,19 @@
         </a>
     </li>
         <li class="nav-item protected-content">
+            <form th:action="@{/youth/point/all/rank}" style="display: inline;">
+                <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer;">
+                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"></path>
+                    <line x1="12" y1="12" x2="12" y2="18"></line>
+                    <line x1="10" y1="14" x2="14" y2="14"></line>
+                </svg>
+                 <span class="menu-name">   Heroes Arena     </span>
+                </button>
+            </form>
+        </li>
+        <li class="nav-item protected-content">
             <form th:action="@{/logout}" method="post" style="display: inline;">
                 <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer;">
                     <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -265,6 +278,7 @@
                 </button>
             </form>
         </li>
+
     </ul>
 </nav>
 </body>

@@ -7,6 +7,7 @@ import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -66,6 +67,75 @@ public class YouthRankDaoImp implements YouthRankDao  {
 
             rankedYouth.add(new YouthRankDto(rank,firstName, lastName, totalPoints));
         }
+        return rankedYouth;
+    }
+    @Override
+    public List<YouthRankDto> getYouthRankWithImage(int sprintId, int churchId, int meetingId, String userRoles, int limit, int offset) {
+
+        String nativeSql = """
+            SELECT
+                DENSE_RANK() OVER (
+                    PARTITION BY p.meeting_id, p.church_id, upt.sprint_id
+                    ORDER BY SUM(upt.points) DESC
+                ) AS r,
+                p.profile_id,
+                p.first_name,
+                p.last_name,
+                SUM(upt.points) AS total_points,
+                p.profile_image_path_server,
+                p.service_class
+            FROM profile p
+            JOIN user_point_transaction upt ON p.profile_id = upt.profile_id
+            JOIN user u ON u.profile_id = p.profile_id
+            WHERE p.meeting_id = :meeting_id
+              AND p.church_id = :church_id
+              AND upt.sprint_id = :sprint_id
+              AND u.id IN (
+                  SELECT ur.user_id
+                  FROM user_role ur
+                  WHERE ur.role_id IN (:allowed_roles)
+              )
+            GROUP BY
+                p.profile_id, p.first_name, p.last_name,
+                p.meeting_id, p.church_id, upt.sprint_id
+            LIMIT :limit OFFSET :offset
+    """;
+        System.out.println("SQL is "+nativeSql);
+        List<Object[]> youth = entityManager.createNativeQuery(nativeSql)
+                .setParameter("meeting_id", meetingId)
+                .setParameter("church_id", churchId)
+                .setParameter("allowed_roles", userRoles)
+                .setParameter("sprint_id", sprintId)
+                .setParameter("limit", limit)
+                .setParameter("offset", offset)
+                .getResultList();
+
+        System.out.println("Fetched rows: " + youth.size());
+        System.out.println("meeting_id "+meetingId);
+        System.out.println("church_id "+churchId);
+        System.out.println("allowed_roles "+userRoles);
+        System.out.println("sprint_id "+sprintId);
+        System.out.println("limit "+limit);
+        System.out.println("offset "+offset);
+
+        List<YouthRankDto> rankedYouth = new ArrayList<>();
+        for (Object[] row : youth) {
+            // Print raw row data
+            System.out.println("Row data: " + Arrays.toString(row));
+
+            int rank = ((Number) row[0]).intValue();
+            long profileId = ((Number) row[1]).longValue();
+            String firstName = (String) row[2];
+            String lastName = (String) row[3];
+            double totalPoints = ((Number) row[4]).doubleValue();
+            String imagePath = "/uploads/profile/" +(String) row[5];
+            String serviceClass = (String) row[6];
+
+            System.out.println("Mapped: rank=" + rank + ", profileId=" + profileId + ", name=" + firstName + " " + lastName + ", points=" + totalPoints + ", imagePath=" + imagePath + ", class=" + serviceClass);
+
+            rankedYouth.add(new YouthRankDto(rank, firstName, lastName, totalPoints, imagePath, serviceClass));
+        }
+
         return rankedYouth;
     }
 

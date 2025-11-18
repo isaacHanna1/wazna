@@ -83,4 +83,11 @@ public class YouthPointsController {
     }
     // End view for point transaction summary
 
+
+    // this view return all youth with Name,rank, class,images
+    @GetMapping("/all/rank")
+    public String viewAllRank(){
+        return "youthRankingBoard";
+    }
+
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public interface YouthRankService {
 
     List<YouthRankDto> getRankedYouth( int limit , int offset);
+    List<YouthRankDto> getRankedYouthWithImage( int limit , int offset);
     public double getYouthPoint();
     int getSpecificYouthRank( );
 

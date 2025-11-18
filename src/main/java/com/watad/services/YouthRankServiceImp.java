@@ -37,6 +37,19 @@ public class YouthRankServiceImp implements  YouthRankService{
         return youthRankDao.getYouthRank(theSprintId,theChurchId,theMeetingId,user_roles,limit,offset);
 
     }
+
+    @Override
+    public List<YouthRankDto> getRankedYouthWithImage(int limit, int offset) {
+        User user = userServices.logedInUser();
+        int theMeetingId    = userServices.getLogInUserMeeting().getId();
+        int theChurchId     = userServices.getLogInUserChurch().getId();
+        int theSprintId     = userServices.getActiveSprint().getId();
+        String user_roles = user.getRoles().stream()
+                .map(role -> String.valueOf(role.getId()))
+                .collect(Collectors.joining(","));
+        return youthRankDao.getYouthRankWithImage(theSprintId,theChurchId,theMeetingId,user_roles,limit,offset);
+    }
+
     @Override
     public double getYouthPoint() {
         Profile theProfile  = userServices.getLogedInUserProfile();

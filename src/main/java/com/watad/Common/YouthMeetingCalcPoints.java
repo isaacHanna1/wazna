@@ -29,23 +29,22 @@ public class YouthMeetingCalcPoints {
         LocalTime q1End = fromTime.plusMinutes(quarterMinutes);
         LocalTime q2End = q1End.plusMinutes(quarterMinutes);
         LocalTime q3End = q2End.plusMinutes(quarterMinutes);
-        LocalTime q4End = toTime; // last quarter
+        LocalTime q4End = toTime;
 
-        if (!qrTime.isBefore(fromTime) && !qrTime.isAfter(toTime)) {
-            if (!qrTime.isAfter(q1End)) {
-                return totalPoints;
-            } else if (!qrTime.isAfter(q2End)) {
-                return totalPoints / 2;
-            } else if (!qrTime.isAfter(q3End)) {
-                return totalPoints / 4;
-            } else {
-                return 0;
-            }
+        if (qrTime.isBefore(fromTime) || qrTime.isAfter(toTime)) {
+            return 0;
+        }
+
+        if (!qrTime.isAfter(q1End)) {
+            return totalPoints;              // 100%
+        } else if (!qrTime.isAfter(q2End)) {
+            return (int)(totalPoints * 0.75); // 75%
+        } else if (!qrTime.isAfter(q3End)) {
+            return (int)(totalPoints * 0.50); // 50%
         } else {
-            return 0; // outside valid time range
+            return (int)(totalPoints * 0.25); // 25%
         }
     }
-
 
 
 }

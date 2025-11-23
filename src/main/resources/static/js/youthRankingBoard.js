@@ -1,6 +1,6 @@
-let offset = 0;
-const limit = 20;
-let loading = false;
+let offset      = 0;
+const limit     = 20;
+let loading     = false;
 
 async function loadYouth() {
     if (loading) return;
@@ -35,6 +35,7 @@ function appendYouth(list) {
                 <div class="info-overlay">
                     <div class="name">${yt.firstName} ${yt.lastName}</div>
                     <div class="class">${yt.classService}</div>
+                    <div class="class">${yt.point}  Wazna </div>
                 </div>
             </div>
         `;

@@ -26,7 +26,6 @@ function appendYouth(list) {
         const div = document.createElement("div");
         div.classList.add("youth-item");
 
-
         div.innerHTML = `
             <div class="rank-badge ${getRankClass(yt.rank)}">#${yt.rank}</div>
 
@@ -35,14 +34,50 @@ function appendYouth(list) {
                 <div class="info-overlay">
                     <div class="name">${yt.firstName} ${yt.lastName}</div>
                     <div class="class">${yt.classService}</div>
-                    <div class="class">${yt.point}  Wazna </div>
+                    <div class="class">${yt.point} Wazna</div>
                 </div>
             </div>
         `;
 
+        // Click on image to fetch transaction data
+        div.querySelector(".youth-circle img").addEventListener("dblclick", async () => {
+            const response = await fetch(`/api/youth/transaction/details/${yt.profileId}`);
+            const data = await response.json();
+
+            // Build HTML from transaction JSON
+            let html = '';
+            data.forEach(tx => {
+                html += `
+                    <p><strong>الوصف :</strong> ${tx.usedFor}</p>
+                    <p><strong>عدد الوزنات :</strong> ${tx.points}</p>
+                    <hr>
+                `;
+            });
+
+            openPopup(html);
+        });
+
         container.appendChild(div);
     });
 }
+
+// Popup JS
+const popup = document.getElementById("transactionPopup");
+const popupBody = document.getElementById("popup-body");
+const popupClose = document.querySelector(".popup-close");
+
+function openPopup(content) {
+    popupBody.innerHTML = content;
+    popup.style.display = "block";
+}
+
+popupClose.onclick = () => popup.style.display = "none";
+
+window.onclick = (event) => {
+    if (event.target === popup) popup.style.display = "none";
+};
+
+
 
 function getRankClass(rank) {
     if (rank === 1) return "rank-gold";

@@ -2,6 +2,7 @@ package com.watad.dto.response;
 
 public class YouthRankDto {
 
+    private int profileId;
     private int    rank;
     private String firstName;
     private String lastName;
@@ -17,13 +18,14 @@ public class YouthRankDto {
         this.point = point;
     }
 
-    public YouthRankDto(int rank, String firstName, String lastName, double point, String photoPath, String classService) {
-        this.rank = rank;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.point = point;
-        this.photoPath = photoPath;
+    public YouthRankDto(int profileId ,int rank, String firstName, String lastName, double point, String photoPath, String classService) {
+        this.rank         = rank;
+        this.firstName    = firstName;
+        this.lastName     = lastName;
+        this.point        = point;
+        this.photoPath    = photoPath;
         this.classService = classService;
+        this.profileId    = profileId;
     }
 
     public int getRank() {
@@ -72,5 +74,13 @@ public class YouthRankDto {
 
     public void setClassService(String classService) {
         this.classService = classService;
+    }
+
+    public int getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
     }
 }

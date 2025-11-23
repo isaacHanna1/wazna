@@ -92,13 +92,12 @@ public class UserPointTransactionServiceImp implements UserPointTransactionServi
     }
 
     @Override
-    public List<PointTransactionSummaryDto> getSummaryOfPoints() {
+    public List<PointTransactionSummaryDto> getSummaryOfPoints(int profileId) {
 
         SprintData sprint       = userServices.getActiveSprint();
         Church church           = userServices.getLogInUserChurch();
         Meetings meeting        = userServices.getLogInUserMeeting();
-        Profile  profile        = userServices.getLogedInUserProfile();
-        List<PointTransactionSummaryDto> summaryOfPoints = userPointTransactionDao.getSummaryOfPoints(profile.getId(), sprint.getId(), church.getId(), meeting.getId());
+        List<PointTransactionSummaryDto> summaryOfPoints = userPointTransactionDao.getSummaryOfPoints(profileId, sprint.getId(), church.getId(), meeting.getId());
         System.out.println("the size of summaryOfPoints is "+summaryOfPoints.size());
         return  summaryOfPoints;
     }

@@ -110,30 +110,21 @@ public class YouthRankDaoImp implements YouthRankDao  {
                 .setParameter("offset", offset)
                 .getResultList();
 
-        System.out.println("Fetched rows: " + youth.size());
-        System.out.println("meeting_id "+meetingId);
-        System.out.println("church_id "+churchId);
-        System.out.println("allowed_roles "+userRoles);
-        System.out.println("sprint_id "+sprintId);
-        System.out.println("limit "+limit);
-        System.out.println("offset "+offset);
-
         List<YouthRankDto> rankedYouth = new ArrayList<>();
         for (Object[] row : youth) {
             // Print raw row data
             System.out.println("Row data: " + Arrays.toString(row));
 
             int rank = ((Number) row[0]).intValue();
-            long profileId = ((Number) row[1]).longValue();
+            int profileId = ((Number) row[1]).intValue();
             String firstName = (String) row[2];
             String lastName = (String) row[3];
             double totalPoints = ((Number) row[4]).doubleValue();
             String imagePath = "/profile_pic/" +(String) row[5];
             String serviceClass = (String) row[6];
 
-            System.out.println("Mapped: rank=" + rank + ", profileId=" + profileId + ", name=" + firstName + " " + lastName + ", points=" + totalPoints + ", imagePath=" + imagePath + ", class=" + serviceClass);
 
-            rankedYouth.add(new YouthRankDto(rank, firstName, lastName, totalPoints, imagePath, serviceClass));
+            rankedYouth.add(new YouthRankDto(profileId,rank, firstName, lastName, totalPoints, imagePath, serviceClass));
         }
 
         return rankedYouth;

@@ -14,6 +14,6 @@ public interface UserPointTransactionService {
     public Double getTotalPointsByProfileIdAndSprintId(int profileId, Integer sprintId);
     public List<ProfileDtlDto> findProfileByUserName( String userPhone);
     boolean transferPoint( int fromUserId , int toUserId , double point , String reason);
-    List<PointTransactionSummaryDto> getSummaryOfPoints();
+    List<PointTransactionSummaryDto> getSummaryOfPoints(int profileId);
 
     }

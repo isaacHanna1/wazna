@@ -76,9 +76,10 @@ public class YouthPointsController {
     public String transactionSummary(Model model){
         double youthPoint = youthRankService.getYouthPoint();
         String first_name = userServices.getLogedInUserProfile().getFirstName();
+        int profileId     = userServices.getLogedInUserProfile().getId();
         model.addAttribute("balance",youthPoint);
         model.addAttribute("fName",first_name +"`s Transaction Details");
-        model.addAttribute("transactionList",userPointTransactionService.getSummaryOfPoints());
+        model.addAttribute("transactionList",userPointTransactionService.getSummaryOfPoints(profileId));
         return "transactionHistory";
     }
     // End view for point transaction summary

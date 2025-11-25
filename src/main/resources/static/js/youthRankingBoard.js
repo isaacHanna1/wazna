@@ -48,6 +48,7 @@ function appendYouth(list) {
             let html = '';
             data.forEach(tx => {
                 html += `
+                     <p> ${formatDate(tx.transactionTime)}</p>
                     <p><strong>الوصف :</strong> ${tx.usedFor}</p>
                     <p><strong>عدد الوزنات :</strong> ${tx.points}</p>
                     <hr>
@@ -59,6 +60,15 @@ function appendYouth(list) {
 
         container.appendChild(div);
     });
+}
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split("T")[0].split("-");
+    const date = new Date(year, month - 1, day);
+
+    const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+    const formattedDate = `${day}/${month}/${year}`;
+
+    return `${weekday} — ${formattedDate}`;
 }
 
 // Popup JS

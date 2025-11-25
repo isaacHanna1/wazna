@@ -28,14 +28,8 @@ public class ManaulAttandanceController {
         String currentDate = Util.getCurrentDate("EEEE, MMMM d, yyyy");
         model.addAttribute("currentDate",currentDate);
         List<String> data = qrCodeService.getActiveByDate(LocalDate.now());
-        System.out.println("the data size is "+data.size()+" , "+ "the date is "+LocalDate.now());
-        for(int i = 0 ;i <data.size() ; i++){
-            System.out.println(data.get(i));
-        }
         model.addAttribute("codes",qrCodeService.getActiveByDate(LocalDate.now()));
         boolean isChildRegisterionExists = systemConfig.getSystemCongigValueByKey("child_req");
-        System.out.println("isChildRegisterionExists -> "+isChildRegisterionExists);
-
         model.addAttribute("isChildRegisterionExists", isChildRegisterionExists);
         return "manualAttandance";
     }

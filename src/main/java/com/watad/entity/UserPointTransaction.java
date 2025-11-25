@@ -41,6 +41,13 @@ public class UserPointTransaction {
     @JoinColumn(name = "meeting_id")
     private Meetings meetings;
 
+    @Column(name = "point_source_type")
+    private String pointSource;
+
+    @Column(name = "added_by_profile_id")
+    private Integer addedByProfileId;
+
+
     public UserPointTransaction() {
     }
 
@@ -130,5 +137,21 @@ public class UserPointTransaction {
 
     public void setMeetings(Meetings meetings) {
         this.meetings = meetings;
+    }
+
+    public String getPointSource() {
+        return pointSource;
+    }
+
+    public void setPointSource(String pointSource) {
+        this.pointSource = pointSource;
+    }
+
+    public Integer getAddedByProfileId() {
+        return addedByProfileId;
+    }
+
+    public void setAddedByProfileId(Integer addedByProfileId) {
+        this.addedByProfileId = addedByProfileId;
     }
 }

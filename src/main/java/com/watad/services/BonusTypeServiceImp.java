@@ -72,4 +72,11 @@ public class BonusTypeServiceImp implements  BonusTypeService{
         bonusType.setMeetings(meetings);
         bonusTypeDao.updateBonusType(bonusType);
     }
+
+    @Override
+    public List<BonusTypeDto> findAllActiveAndNotActive(String evaluationType) {
+        Church church           = userServices.getLogInUserChurch();
+        Meetings meetings       = userServices.getLogInUserMeeting();
+        return bonusTypeDao.findAllActiveAndNotActive(church.getId(),meetings.getId(),evaluationType);
+    }
 }

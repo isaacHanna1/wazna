@@ -32,7 +32,6 @@ public class MarketCategoryController {
          List<MarketCategory> allActiveCategory  = marketCategoryService.allActiveCategory();
         model.addAttribute("category" , allActiveCategory);
         int defaultCatNum = allActiveCategory.get(0).getId();
-        System.out.println("the default cat is -> "+defaultCatNum);
         // by default send the category one
         model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(defaultCatNum,0,PAGE_SIZE));
         model.addAttribute("catCount",allActiveCategory.get(0));

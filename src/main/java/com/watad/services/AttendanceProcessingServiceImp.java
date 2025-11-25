@@ -46,9 +46,9 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
                 double addPoint = handleUserBounsService(qrCode,attendance,user);
                 handleUserPointTran(user , addPoint ,qrCode.getBonusType());
                 Profile profile         = user.getProfile();
-                int curchId             = profile.getChurch().getId();
+                int churchId             = profile.getChurch().getId();
                 int meetingID           = profile.getMeetings().getId();
-                double totalPoint       = userPointTransactionService.getTotalPointsByProfileIdAndSprintId(user.getProfile().getId(),sprintDataService.getSprintDataByIsActive(curchId,meetingID).getId());
+                double totalPoint       = userPointTransactionService.getTotalPointsByProfileIdAndSprintId(user.getProfile().getId(),sprintDataService.getSprintDataByIsActive(churchId,meetingID).getId());
                 return new PointsSummaryDTO(addPoint,totalPoint,user.getId(),profile.getFirstName(), profile.getLastName(), profile.getPhone());
             }
         return new PointsSummaryDTO(0.0 ,0.0);
@@ -88,15 +88,17 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         pointTransaction.setProfile(user.getProfile());
         pointTransaction.setTransferTo(null);
         Profile profile = user.getProfile();
-        int curchId    = profile.getChurch().getId();
-        int meetingID  = profile.getMeetings().getId();
-        pointTransaction.setSprintData(sprintDataService.getSprintDataByIsActive(curchId,meetingID));
+        int churchId    = profile.getChurch().getId();
+        int meetingID   = profile.getMeetings().getId();
+        pointTransaction.setSprintData(sprintDataService.getSprintDataByIsActive(churchId,meetingID));
         pointTransaction.setPoints(addPoint);
         pointTransaction.setActive(true);
         pointTransaction.setTransactionDate(LocalDateTime.now());
         pointTransaction.setUsedFor(bonusType.getDescription());
         pointTransaction.setTransactionType("Earn");
         pointTransaction.setChurch(profile.getChurch());
+        pointTransaction.setPointSource("SYSTEM");
+        pointTransaction.setAddedByProfileId(null); // even if the admin insert manually but the admin can not control the num of point  it based on the time
         pointTransaction.setMeetings(profile.getMeetings());
         userPointTransactionService.save(pointTransaction);
     }

@@ -24,4 +24,8 @@ public class BonusTypeRestController {
     public List<BonusTypeDto> getBonusType(@RequestParam(defaultValue = "All") String evaluationType){
         return  bonusTypeService.findAll(evaluationType);
     }
+    @GetMapping("/bonusType/All")
+    public List<BonusTypeDto> getBonusTypeActiveAndNotActive(@RequestParam(defaultValue = "All") String evaluationType){
+        return  bonusTypeService.findAllActiveAndNotActive(evaluationType);
+    }
 }

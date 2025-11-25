@@ -26,6 +26,8 @@ public class SprintData {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "meeting_id")
     private Meetings meetings;
+    @Column(name = "sprint_desc")
+    private String SprintDesc;
 
     public SprintData() {
     }
@@ -84,5 +86,13 @@ public class SprintData {
 
     public void setMeetings(Meetings meetings) {
         this.meetings = meetings;
+    }
+
+    public String getSprintDesc() {
+        return SprintDesc;
+    }
+
+    public void setSprintDesc(String sprintDesc) {
+        SprintDesc = sprintDesc;
     }
 }

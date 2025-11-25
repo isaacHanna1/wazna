@@ -14,12 +14,10 @@ import java.util.stream.Collectors;
 @Service
 public class UserPointTransactionServiceImp implements UserPointTransactionService {
     private final UserServices userServices ;
-    private final SprintDataService sprintDataService;
     private final UserPointTransactionDao userPointTransactionDao;
 
-    public UserPointTransactionServiceImp(UserServices userServices, SprintDataService sprintDataService, UserPointTransactionDao userPointTransactionDao) {
+    public UserPointTransactionServiceImp(UserServices userServices , UserPointTransactionDao userPointTransactionDao) {
         this.userServices = userServices;
-        this.sprintDataService = sprintDataService;
         this.userPointTransactionDao = userPointTransactionDao;
     }
 
@@ -46,16 +44,13 @@ public class UserPointTransactionServiceImp implements UserPointTransactionServi
     @Override
     public boolean transferPoint(int fromUserId, int toUserId, double point, String reason) {
 
-
-
         SprintData sprint       = userServices.getActiveSprint();
         Church church           = userServices.getLogInUserChurch();
         Meetings meeting        = userServices.getLogInUserMeeting();
         Profile  profileFrom    = userServices.findUserById(fromUserId).getProfile();
         Profile  profileTo      = userServices.findUserById(toUserId).getProfile();
         double currentBalance   = getTotalPointsByProfileIdAndSprintId(profileFrom.getId(),sprint.getId());
-        System.out.println("the current balance is "+currentBalance);
-        System.out.println("the point is  "+point);
+
         if(currentBalance>=point) {
             // 1. Add points to receiver
             UserPointTransaction toTransaction = new UserPointTransaction();
@@ -65,10 +60,12 @@ public class UserPointTransactionServiceImp implements UserPointTransactionServi
             toTransaction.setPoints(point);
             toTransaction.setTransactionType("TRANSFER_IN");
             toTransaction.setTransactionDate(LocalDateTime.now());
-            toTransaction.setProfile(profileTo); // we add the point to super server
+            toTransaction.setProfile(profileTo); // we add the point to treasurer server
             toTransaction.setTransferTo(profileFrom); // who sent the points
             toTransaction.setActive(true);
-            toTransaction.setUsedFor(reason + " from : " + profileFrom.getFirstName() + " " + profileFrom.getLastName());
+            toTransaction.setUsedFor(reason + " من  : " + profileFrom.getFirstName() + " " + profileFrom.getLastName());
+            toTransaction.setPointSource("MANUAL");
+            toTransaction.setAddedByProfileId(profileFrom.getId());
             save(toTransaction);
 
             // 2. Deduct points from sender
@@ -82,7 +79,9 @@ public class UserPointTransactionServiceImp implements UserPointTransactionServi
             fromTransaction.setProfile(profileFrom);
             fromTransaction.setTransferTo(profileTo); // who received the points
             fromTransaction.setActive(true);
-            fromTransaction.setUsedFor("Trasfer Out To "+profileTo.getFirstName()+" "+profileTo.getLastName()+" " +" For : "+ reason);
+            fromTransaction.setUsedFor(" تحويل من حساب "+profileTo.getFirstName()+" "+profileTo.getLastName()+" " +" سبب التحويل  : "+ reason);
+            fromTransaction.setPointSource("MANUAL");
+            fromTransaction.setAddedByProfileId(profileFrom.getId());
             save(fromTransaction);
         }
         else{

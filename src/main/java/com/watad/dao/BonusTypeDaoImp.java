@@ -96,6 +96,36 @@ public class BonusTypeDaoImp implements BonusTypeDao {
     }
 
     @Override
+    public List<BonusTypeDto> findAllActiveAndNotActive(int churchId, int meetingId, String evaluationType) {
+        LocalDate now = timeUtil.now_localDate();
+
+        StringBuilder jpql = new StringBuilder(
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive, b.activeFrom, b.activeTo) " +
+                        "FROM BonusType b JOIN b.bonusHead bh " +
+                        "WHERE "+
+                        "    b.church.id = :churchId " +
+                        "AND b.meetings.id = :meetingId "
+        );
+
+        // Add evaluationType filter only if not "All"
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            jpql.append("AND bh.evaluationType = :evaluationType ");
+        }
+
+        jpql.append("ORDER BY b.description")   ;
+
+        TypedQuery<BonusTypeDto> query = entityManager.createQuery(jpql.toString(), BonusTypeDto.class);
+        query.setParameter("churchId", churchId);
+        query.setParameter("meetingId", meetingId);
+
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            query.setParameter("evaluationType", evaluationType);
+        }
+
+        return query.getResultList();
+    }
+
+    @Override
     public BonusType findById(int id) {
         return  entityManager.find(BonusType.class , id);
     }

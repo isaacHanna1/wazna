@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <meta name="description" content="Daily Bounce Report for Wazna Youth Evaluation System">
+    <link th:href="@{/css/reports.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+    
+<!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+    <div class="report-container">
+        <!-- Header -->
+        <header class="report-header">
+            <div class="header-content">
+                <h1 class="header-title">تقرير الوزنات اليومي</h1>
+                <p class="header-subtitle">نظام وزنة لتقييم الشباب</p>
+            </div>
+        </header>
+
+        <!-- Filters Section -->
+        <section class="filters-section">
+            <form th:action="@{/report/generateDailyWaznaReport}" method="get" class="filters-grid">
+                <!-- Start Date -->
+                <div class="filter-group">
+                    <label for="startFromDate" class="filter-label">من تاريخ</label>
+                    <input type="date" id="startFromDate" name="startFromDate" class="filter-input" 
+                           th:value="${startDate ?: today}">
+                </div>
+                
+                <!-- End Date -->
+                <div class="filter-group">
+                    <label for="endToDate" class="filter-label">إلي تاريخ</label>
+                    <input type="date" id="endToDate" name="endToDate" class="filter-input" 
+                           th:value="${endDate ?: today}">
+                </div>
+                
+                <!-- Sprint Filter -->
+                <div class="filter-group">
+                    <label for="sprintId" class="filter-label">الموسم</label>
+                    <select id="sprintId" name="sprintId" class="filter-select" required>
+                        <option value="">اختر الموسم</option>
+                        <option th:each="sprint : ${sprints}" 
+                                th:value="${sprint.id}"
+                                th:text="${sprint.SprintDesc}"
+                                th:selected="${sprintId == sprint.id}">
+                        </option>
+                    </select>
+                </div>
+                
+                <!-- Youth Name (Profile ID) -->
+                <div class="filter-group" style="position: relative;">
+                    <label for="profileId" class="filter-label">اسم الشاب (رقم العضو)</label>
+                    <input type="text" id="userName" name="userName" class="filter-input" placeholder="الكل" th:value="${userName}">
+                    <input type="hidden" id="profileId" name="profileId" th:value="${profileId ?: 'ALL'}">
+                    <div id="userInfoBox" class="info-box" style="display: none;"></div>
+                </div>
+
+                <!-- Wazna Type -->
+                <div class="filter-group">
+                    <label for="waznaType" class="filter-label">نوع الوزنة</label>
+                    <select id="waznaType" name="waznaType" class="filter-select">
+                        <option value="ALL" th:selected="${waznaType == 'ALL'}">الكل</option>
+                        <option value="Earn" th:selected="${waznaType == 'Earn'}">إيجابية</option>
+                        <option value="Lose" th:selected="${waznaType == 'Lose'}">سلبية</option>
+                        <option value="TRANSFER_IN" th:selected="${waznaType == 'TRANSFER_IN'}">تحويل داخلي</option>
+                        <option value="TRANSFER_OUT" th:selected="${waznaType == 'TRANSFER_OUT'}">تحويل خارجي</option>
+                    </select>
+                </div>
+                <!-- Awarded BY (Added By Profile ID) -->
+                <div class="filter-group">
+                    <label for="point_source_type" class="filter-label">منحت بواسطة</label>
+                    <select id="point_source_type" name="point_source_type" class="filter-select">
+                        <option value="ALL" th:selected="${point_source_type == null or point_source_type == 'ALL'}">الكل</option>
+                        <option value="SYSTEM" th:selected="${point_source_type == 'SYSTEM'}">النظام</option>
+                        <option value="MANUAL" th:selected="${point_source_type == 'MANUAL'}">خادم</option>
+                    </select>
+                </div>
+                                
+                <!-- Search Button -->
+                <div class="search-btn-wrapper">
+                    <button type="submit" class="btn-no-width btn-primary">بحث</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Summary Section -->
+        <section th:if="${reports}" class="summary-section">
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <span class="summary-label">الفترة:</span>
+                    <span class="summary-value" th:text="${startDate} + ' إلى ' + ${endDate}"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">عدد السجلات:</span>
+                    <span class="summary-value" th:text="${totalRecords}"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">الموسم:</span>
+                    <span class="summary-value" th:text="${sprintId}"></span>
+                </div>
+            </div>
+        </section>
+            <!-- Main Table -->
+            <section class="table-section">
+                <div class="table-wrapper">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>الشاب/الشابة</th>
+                                <th>الصف</th>
+                                <th>نوع النقطة</th>
+                                <th>النقاط</th>
+                                <th>السبب</th>
+                                <th>منحت بواسطة</th>
+                                <th>التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic Data from Controller -->
+                            <tr th:each="report : ${reports}">
+                                <td class="youth-name" th:text="${report.profileName}">أحمد محمد</td>
+                                <td th:text="${report.serviceClass}">النظام</td>
+                                <td>
+                                    <!-- Transaction Type Logic in Thymeleaf - Match exact case from database -->
+                                    <span th:if="${report.transactionType == 'Earn'}" 
+                                        class="badge badge-positive">إيجابية</span>
+                                    <span th:if="${report.transactionType == 'Lose'}" 
+                                        class="badge badge-negative">خسارة</span>
+                                    <span th:if="${report.transactionType == 'TRANSFER_IN'}" 
+                                        class="badge badge-transfer">تحويل داخلي</span>
+                                    <span th:if="${report.transactionType == 'TRANSFER_OUT'}" 
+                                        class="badge badge-transfer">تحويل خارجي</span>
+                                    <span th:if="${report.transactionType != 'Earn' and 
+                                                report.transactionType != 'Lose' and 
+                                                report.transactionType != 'TRANSFER_IN' and 
+                                                report.transactionType != 'TRANSFER_OUT'}" 
+                                        class="badge badge-default" 
+                                        th:text="${report.transactionType}">نوع آخر</span>
+                                </td>
+                                <!-- Fixed points logic - use String comparison instead of parseInteger -->
+                                <td th:class="${report.points.startsWith('-')} ? 'points negative' : 'points positive'" 
+                                    th:text="${report.points.startsWith('-')} ? ${report.points} : '+' + ${report.points}">+5</td>
+                                <td th:text="${report.usedFor}">حضور مبكر للاجتماع</td>
+                                <td th:text="${report.addedByName}">النظام</td>
+                                <td class="time" th:text="${report.transactionDate}">24-11-2025</td>
+                            </tr>
+                            
+                            <!-- No Data Message -->
+                            <tr th:if="${reports != null and reports.empty}">
+                                <td colspan="7" class="no-data-message">
+                                    لا توجد بيانات للعرض
+                                </td>
+                            </tr>
+                            
+                            <!-- Initial State (when no search performed) -->
+                            <tr th:if="${reports == null}">
+                                <td colspan="7" class="no-data-message">
+                                    اختر المعايير واضغط بحث لعرض البيانات
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+    </div>
+
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/report.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+</body>
+</html>

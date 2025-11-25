@@ -14,4 +14,6 @@ public interface BonusTypeService {
     void createBonusType(BonusType bonusType);
     List<BonusTypeDto> findByDesc(String desc ,String evaluationType);
     void updateBonusType(BonusType bonusType);
+    List<BonusTypeDto> findAllActiveAndNotActive(String evaluationType);
+
 }

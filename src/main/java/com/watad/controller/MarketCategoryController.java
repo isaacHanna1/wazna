@@ -36,7 +36,7 @@ public class MarketCategoryController {
         model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(defaultCatNum,0,PAGE_SIZE));
         model.addAttribute("catCount",allActiveCategory.get(0));
         model.addAttribute("totalPages", (int) Math.ceil((double) marketItemService.countByCategory(defaultCatNum) / PAGE_SIZE));
-        model.addAttribute("categoryId","1");
+        model.addAttribute("categoryId",defaultCatNum);
         return "marketHome";
     }
     @GetMapping("/market/category/{id}")

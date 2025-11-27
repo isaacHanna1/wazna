@@ -11,7 +11,7 @@ public class UserBonus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "bonus_id")
     private int id ;
     @ManyToOne()
     @JoinColumn(name="profile_id")
@@ -45,6 +45,8 @@ public class UserBonus {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "meeting_id")
     private Meetings meetings;
+
+
     public UserBonus() {
     }
 
@@ -131,4 +133,14 @@ public class UserBonus {
     public void setBonceTypePoint(int bonceTypePoint) {
         this.bonceTypePoint = bonceTypePoint;
     }
+
+    public Meetings getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(Meetings meetings) {
+        this.meetings = meetings;
+    }
+
+
 }

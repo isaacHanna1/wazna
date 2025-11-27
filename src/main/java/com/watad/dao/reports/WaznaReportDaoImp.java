@@ -22,7 +22,7 @@ public class WaznaReportDaoImp implements WaznaReportDao {
     public List<DailyWaznaReport> viewReportOfWaznaAddedToUsers(int sprintId, int churchId,
                                                                 int meetingId, LocalDate startFromDate,
                                                                 LocalDate endToDate, String profileId,
-                                                                String point_source_type, String waznaType) {
+                                                                String point_source_type, String waznaType , String bounce_type_filter) {
 
         // Build dynamic SQL with named parameters
         StringBuilder nativeSql = new StringBuilder(
@@ -37,6 +37,8 @@ public class WaznaReportDaoImp implements WaznaReportDao {
                         "FROM profile p " +
                         "JOIN user_point_transaction ut ON p.profile_id = ut.profile_id " +
                         "LEFT JOIN profile adder ON ut.added_by_profile_id = adder.profile_id " +
+                        "left join user_bonus ub " +
+                        "on ut.bonus_id = ub.bonus_id  "+
                         "WHERE ut.sprint_id = :sprintId " +
                         "AND ut.church_id = :churchId " +
                         "AND ut.meeting_id = :meetingId " +
@@ -54,6 +56,10 @@ public class WaznaReportDaoImp implements WaznaReportDao {
         if (waznaType != null && !waznaType.equalsIgnoreCase("ALL") && !waznaType.isEmpty()) {
             nativeSql.append(" AND ut.transaction_type = :waznaType");
             System.out.println("  -> Adding waznaType filter: " + waznaType);
+        }
+        if (bounce_type_filter != null && !bounce_type_filter.equalsIgnoreCase("ALL") && !bounce_type_filter.isEmpty()) {
+            nativeSql.append(" AND ub.bonus_type_id = :bounce_type_filter");
+            System.out.println("  -> Adding bounce_type_filter filter: " + bounce_type_filter);
         }
 
         // Debug: Print final SQL
@@ -90,6 +96,10 @@ public class WaznaReportDaoImp implements WaznaReportDao {
             if (waznaType != null && !waznaType.equalsIgnoreCase("ALL") && !waznaType.isEmpty()) {
                 query.setParameter("waznaType", waznaType);
                 System.out.println("  waznaType: " + waznaType);
+            }
+            if (bounce_type_filter != null && !bounce_type_filter.equalsIgnoreCase("ALL") && !bounce_type_filter.isEmpty()) {
+                query.setParameter("bounce_type_filter", bounce_type_filter);
+                System.out.println("  bounce_type_filter : " + bounce_type_filter);
             }
 
             @SuppressWarnings("unchecked")

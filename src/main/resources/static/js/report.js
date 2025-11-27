@@ -1,60 +1,60 @@
-// // start the daily report
+// start the daily report
 
 
-// // this one for get ALl bounce active and not active 
-// // param 
-// // evaluationType   = PO (postive) , (NE) negaitve
-// async function getBonuceTypeActiveAndNotActive(evaluationType){
+// this one for get ALl bounce active and not active 
+// param 
+// evaluationType   = PO (postive) , (NE) negaitve
+async function getBonuceTypeActiveAndNotActive(evaluationType){
 
-//     const URL           = getBaseUrl();
-//     const fullURL       = `${URL}/api/bonusType/All?evaluationType=${evaluationType}`; 
-//     try {
-//         const response  = await fetch(fullURL, {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         }
-//         });
-//         if (!response.ok) {
-//         throw new Error("Internal Server Error");
-//         }
-//         const data = await response.json();
-//         return data
-//     } catch (error) {
-//         console.error("Failed to load churches:", error.message);
-//     }
-// }
+    const URL           = getBaseUrl();
+    const fullURL       = `${URL}/api/bonusType/All?evaluationType=${evaluationType}`; 
+    try {
+        const response  = await fetch(fullURL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+        });
+        if (!response.ok) {
+        throw new Error("Internal Server Error");
+        }
+        const data = await response.json();
+        return data
+    } catch (error) {
+        console.error("Failed to load churches:", error.message);
+    }
+}
 
-// const evaluationTypeFilter  = document.getElementById("evaluation-type-filter");
-// const bonusTypeFilter       = document.getElementById("bounce-type-filter");
+const evaluationTypeFilter  = document.getElementById("waznaType");
+const bonusTypeFilter       = document.getElementById("bounce-type-filter");
 
 
-// // When evaluation type changes → load bonus types
-// evaluationTypeFilter.addEventListener("change", async () => {
+// When evaluation type changes → load bonus types
+evaluationTypeFilter.addEventListener("change", async () => {
     
-//     const evaluationType            = evaluationTypeFilter.value;
-//     buildBounceType(evaluationType);
-// });
-// window.addEventListener("DOMContentLoaded", async () => {    
-//     buildBounceType("All");
-// });
+    const evaluationType            = evaluationTypeFilter.value;
+    buildBounceType(evaluationType);
+});
+window.addEventListener("DOMContentLoaded", async () => {    
+    buildBounceType("All");
+});
 
-// async function  buildBounceType(evaluationType){
-//     const bonusTypes                = await getBonuceTypeActiveAndNotActive(evaluationType);
-//     bonusTypeFilter.innerHTML       = "";
-//     const defaultOption             = document.createElement("option");
-//     defaultOption.value             = "All";
-//     defaultOption.textContent       = "الكل";
-//     bonusTypeFilter.appendChild(defaultOption);
+async function  buildBounceType(evaluationType){
+    const bonusTypes                = await getBonuceTypeActiveAndNotActive(evaluationType);
+    bonusTypeFilter.innerHTML       = "";
+    const defaultOption             = document.createElement("option");
+    defaultOption.value             = "All";
+    defaultOption.textContent       = "الكل";
+    bonusTypeFilter.appendChild(defaultOption);
 
-//     bonusTypes.forEach(b => {
-//         const option = document.createElement("option");
-//         option.value = b.id;          
-//         option.textContent = b.description;  
-//         bonusTypeFilter.appendChild(option);
-//     });
-// }
-// // end daily report 
+    bonusTypes.forEach(b => {
+        const option = document.createElement("option");
+        option.value = b.id;          
+        option.textContent = b.description;  
+        bonusTypeFilter.appendChild(option);
+    });
+}
+// end daily report 
 
 
 const userNameInput                     = document.getElementById('userName');

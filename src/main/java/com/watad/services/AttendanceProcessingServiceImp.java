@@ -43,8 +43,9 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
                 }
                 Attendance attendance = new Attendance();
                 handleAttendanceService(attendance,user,qrCode);
-                double addPoint = handleUserBounsService(qrCode,attendance,user);
-                handleUserPointTran(user , addPoint ,qrCode.getBonusType());
+                UserBonus userBonus = handleUserBounsService(qrCode,attendance,user);
+                double addPoint     = userBonus.getBouncePoint();
+                handleUserPointTran(user , addPoint ,qrCode.getBonusType(),userBonus);
                 Profile profile         = user.getProfile();
                 int churchId             = profile.getChurch().getId();
                 int meetingID           = profile.getMeetings().getId();
@@ -62,7 +63,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         attendanceService.save(attendance);
     }
 
-    private double handleUserBounsService(QrCode qrCode,Attendance attendance ,User user){
+    private UserBonus handleUserBounsService(QrCode qrCode,Attendance attendance ,User user){
 
         int bonusTypeId = qrCode.getBonusType().getId();
         BonusType bonusType = bonusTypeService.findById(bonusTypeId);
@@ -79,11 +80,11 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
             double addedPoint = YouthMeetingCalcPoints.calculatePoints(qrCode.getValidStart(), qrCode.getValidEnd(), points, attendance.getScannedAt());
             UserBonus userBonus = new UserBonus(user.getProfile(), bonusType, addedPoint, sprintData, user, sprintData.getPointPrice(), bonusType.getPoint() , qrCode.getMeetings());
             userBounsService.save(userBonus);
-            return  addedPoint;
+            return  userBonus;
         }
 
 
-    private void handleUserPointTran(User user , double addPoint,BonusType bonusType) {
+    private void handleUserPointTran(User user , double addPoint,BonusType bonusType,UserBonus userBonus) {
         UserPointTransaction pointTransaction = new UserPointTransaction();
         pointTransaction.setProfile(user.getProfile());
         pointTransaction.setTransferTo(null);
@@ -100,6 +101,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         pointTransaction.setPointSource("SYSTEM");
         pointTransaction.setAddedByProfileId(null); // even if the admin insert manually but the admin can not control the num of point  it based on the time
         pointTransaction.setMeetings(profile.getMeetings());
+        pointTransaction.setUserBonus(userBonus);
         userPointTransactionService.save(pointTransaction);
     }
 

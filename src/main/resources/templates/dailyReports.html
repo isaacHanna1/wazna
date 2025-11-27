@@ -65,8 +65,8 @@
                     <label for="waznaType" class="filter-label">نوع الوزنة</label>
                     <select id="waznaType" name="waznaType" class="filter-select">
                         <option value="ALL" th:selected="${waznaType == 'ALL'}">الكل</option>
-                        <option value="Earn" th:selected="${waznaType == 'Earn'}">إيجابية</option>
-                        <option value="Lose" th:selected="${waznaType == 'Lose'}">سلبية</option>
+                        <option value="PO" th:selected="${waznaType == 'PO'}">إيجابية</option>
+                        <option value="NE" th:selected="${waznaType == 'NE'}">سلبية</option>
                         <option value="TRANSFER_IN" th:selected="${waznaType == 'TRANSFER_IN'}">تحويل داخلي</option>
                         <option value="TRANSFER_OUT" th:selected="${waznaType == 'TRANSFER_OUT'}">تحويل خارجي</option>
                     </select>
@@ -78,6 +78,12 @@
                         <option value="ALL" th:selected="${point_source_type == null or point_source_type == 'ALL'}">الكل</option>
                         <option value="SYSTEM" th:selected="${point_source_type == 'SYSTEM'}">النظام</option>
                         <option value="MANUAL" th:selected="${point_source_type == 'MANUAL'}">خادم</option>
+                    </select>
+                </div>
+                <!-- bounce-type-filter -->
+                <div class="filter-group">
+                    <label for="bounce-type-filter" class="filter-label">تقيم علي</label>
+                    <select id="bounce-type-filter" name="bounce_type_filter" class="filter-select">
                     </select>
                 </div>
                                 

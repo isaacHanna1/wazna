@@ -47,7 +47,9 @@ public class UserPointTransaction {
     @Column(name = "added_by_profile_id")
     private Integer addedByProfileId;
 
-
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "bonus_id")
+    private UserBonus userBonus;
     public UserPointTransaction() {
     }
 
@@ -153,5 +155,13 @@ public class UserPointTransaction {
 
     public void setAddedByProfileId(Integer addedByProfileId) {
         this.addedByProfileId = addedByProfileId;
+    }
+
+    public UserBonus getUserBonus() {
+        return userBonus;
+    }
+
+    public void setUserBonus(UserBonus userBonus) {
+        this.userBonus = userBonus;
     }
 }

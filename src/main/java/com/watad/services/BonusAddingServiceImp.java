@@ -38,10 +38,10 @@ public class BonusAddingServiceImp implements BonusAddingService{
         SprintData sprintData = sprintDataService.getSprintDataByIsActive(churchId,meetingID); // get sprint data
         UserBonus userBonus   = new UserBonus(theProfile, bonusType, bonusType.getPoint(), sprintData, user, sprintData.getPointPrice(), bonusType.getPoint() , theProfile.getMeetings());
         userBounsService.save(userBonus);
-        handleUserPointTran(theProfile,bonusType.getPoint(),bonusType.getDescription());
+        handleUserPointTran(theProfile,bonusType.getPoint(),bonusType.getDescription(),userBonus);
     }
 
-    private void handleUserPointTran(Profile profile , double addPoint , String bonceTypeDesc) {
+    private void handleUserPointTran(Profile profile , double addPoint , String bonceTypeDesc,UserBonus userBonus) {
         UserPointTransaction pointTransaction = new UserPointTransaction(); // make object of transaction
         pointTransaction.setProfile(profile);  //set the profile the take point
         pointTransaction.setTransferTo(null); // this not transfer
@@ -62,6 +62,7 @@ public class BonusAddingServiceImp implements BonusAddingService{
         pointTransaction.setPointSource("MANUAL"); // add manual by admin leader server
         int loggedInProfileId =  userServices.getLogedInUserProfile().getId();
         pointTransaction.setAddedByProfileId(loggedInProfileId); // who added this
+        pointTransaction.setUserBonus(userBonus);
         userPointTransactionService.save(pointTransaction);
     }
 }

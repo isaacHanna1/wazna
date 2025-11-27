@@ -49,7 +49,8 @@ public class ReportController {
             @RequestParam(defaultValue = "ALL") String profileId,
             @RequestParam(defaultValue = "ALL") String point_source_type,
             @RequestParam(defaultValue = "ALL") String waznaType,
-            @RequestParam(defaultValue = "") String userName,
+            @RequestParam(defaultValue = "")    String userName,
+            @RequestParam(defaultValue = "ALL") String bounce_type_filter,
             Model model) {
 
         // Default to today if dates not provided
@@ -59,23 +60,22 @@ public class ReportController {
         int meetingId = userServices.getLogInUserMeeting().getId();
         int churchId = userServices.getLogInUserChurch().getId();
 
-        List<DailyWaznaReport> reports = waznaReportServices.viewReportOfWaznaAddedToUsers(
-                sprintId, startFromDate, endToDate,
-                profileId, point_source_type, waznaType
-        );
+        List<DailyWaznaReport> reports = waznaReportServices.viewReportOfWaznaAddedToUsers(sprintId, startFromDate, endToDate,profileId, point_source_type, waznaType,bounce_type_filter);
 
-        model.addAttribute("reports", reports);
-        model.addAttribute("sprintId", sprintId);
-        model.addAttribute("churchId", churchId);
-        model.addAttribute("meetingId", meetingId);
-        model.addAttribute("startDate", startFromDate);
-        model.addAttribute("endDate", endToDate);
-        model.addAttribute("waznaType", waznaType);
-        model.addAttribute("point_source_type", point_source_type);
-        model.addAttribute("totalRecords", reports.size());
-        model.addAttribute("userName", userName);
-        model.addAttribute("profileId", profileId);
+            model.addAttribute("reports", reports);
+            model.addAttribute("sprintId", sprintId);
+            model.addAttribute("churchId", churchId);
+            model.addAttribute("meetingId", meetingId);
+            model.addAttribute("startDate", startFromDate);
+            model.addAttribute("endDate", endToDate);
+            model.addAttribute("waznaType", waznaType);
+            model.addAttribute("point_source_type", point_source_type);
+            model.addAttribute("totalRecords", reports.size());
+            model.addAttribute("userName", userName);
+            model.addAttribute("profileId", profileId);
+            model.addAttribute("bounce_type_filter",bounce_type_filter);
 
+            System.out.println("the bounce_type_filter => "+bounce_type_filter);
         // Keep sprints for dropdown
         model.addAttribute("sprints", sprintDataService.findAll(churchId, meetingId));
 

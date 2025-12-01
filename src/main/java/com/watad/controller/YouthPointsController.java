@@ -72,11 +72,13 @@ public class YouthPointsController {
     }
 
     // Start view for point transaction summary
-    @GetMapping("/details")
-    public String transactionSummary(Model model){
-        double youthPoint = youthRankService.getYouthPoint();
-        String first_name = userServices.getLogedInUserProfile().getFirstName();
-        int profileId     = userServices.getLogedInUserProfile().getId();
+    @GetMapping("/details/{profileId}")
+    public String transactionSummary(Model model, @PathVariable int profileId){
+        int meetingId      = userServices.getLogInUserMeeting().getId();
+        int churchId       = userServices.getLogInUserChurch().getId();
+        int activeSprintId = userServices.getActiveSprint().getId();
+        double youthPoint  = youthRankService.getYouthPoint(profileId,churchId,meetingId,activeSprintId);
+        String first_name  = userServices.getLogedInUserProfile().getFirstName();
         model.addAttribute("balance",youthPoint);
         model.addAttribute("fName",first_name +"`s Transaction Details");
         model.addAttribute("transactionList",userPointTransactionService.getSummaryOfPoints(profileId));

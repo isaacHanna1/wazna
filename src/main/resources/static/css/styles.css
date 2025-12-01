@@ -1534,7 +1534,45 @@ list-style: none;
 .profile_manage .profiles::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
+.profile_manage .side-menu-container{
+  font-weight: bold;
+  color:var(--youth-primary);
+  cursor: pointer;
+}
+.profile_manage .side-menu-container::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0; 
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent var(--youth-primary);
+}
+.profile_manage .side-menu {
+    width: 100px;
+    top: -10px;
+    right: -99px;
+    position: absolute;
+    background-color: var(--youth-primary);
+    z-index: 6;
+}
+.profile_manage .side-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
+.profile_manage .side-menu ul li {
+    border-bottom: 1px solid #fff;
+}
+
+.profile_manage .side-menu ul li a {
+    color: #FFF !important;
+    display: block;
+    padding: 2px 1px;
+    font-size:10px;
+}
 /* Hover effects for better UX */
 .profile_manage .profiles .table_btn:hover {
     transform: translateY(-1px);
@@ -1879,7 +1917,6 @@ list-style: none;
 /*End Delete Confirmation*/ge .status span{
         font-size: 1.2em;
   }
-}
 
 /*The Style of Pop up for roles */
 /* Modal background overlay */

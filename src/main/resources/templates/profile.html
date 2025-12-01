@@ -41,7 +41,9 @@
     
     <div class="profile-stats">
       <div class="stat">
-        <a href="/youth/point/details"><span class="stat-value" th:text="${profileDto.Points}" >750</span></a>
+      <a th:href="@{/youth/point/details/{id}(id=${profileDto.id})}">
+        <span class="stat-value" th:text="${profileDto.Points}" >750</span>
+      </a>
         <span class="stat-label" >Wazna - وزنات</span>
       </div>
       <div class="stat">

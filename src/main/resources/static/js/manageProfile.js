@@ -294,3 +294,30 @@ window.addEventListener('click', function(event) {
         closeDeleteModal();
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const rows = document.querySelectorAll(".side-menu-container");
+
+    rows.forEach(row => {
+
+        row.addEventListener("click", function (event) {
+            event.stopPropagation();
+            const currentMenu = this.querySelector(".side-menu");
+            document.querySelectorAll(".side-menu").forEach(menu => {
+                if (menu !== currentMenu) {
+                    menu.classList.add("dis_none");
+                }
+            });
+            currentMenu.classList.toggle("dis_none");
+        });
+
+    });
+    document.addEventListener("click", function () {
+        document.querySelectorAll(".side-menu").forEach(menu => {
+            menu.classList.add("dis_none");
+        });
+    });
+
+});

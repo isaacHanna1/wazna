@@ -58,6 +58,11 @@ public class YouthRankServiceImp implements  YouthRankService{
     }
 
     @Override
+    public double getYouthPoint(int profileId, int churchId, int meetingId, int sprintId) {
+        return  youthRankDao.getYouthPoint(profileId,sprintId,churchId,meetingId);
+    }
+
+    @Override
     public int getSpecificYouthRank() {
         User user           = userServices.logedInUser();
         int theMeetingId    = userServices.getLogInUserMeeting().getId();

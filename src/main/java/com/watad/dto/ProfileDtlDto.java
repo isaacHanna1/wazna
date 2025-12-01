@@ -33,7 +33,7 @@ public class ProfileDtlDto {
     private int age;
     private int churchId;
     private int meetingId;
-    private int userId;
+        private int userId;
     private boolean isEnabled ; // staus of account in user table is enabled or not
     private String email;
     private String serviceClass;

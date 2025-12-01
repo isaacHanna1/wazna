@@ -98,15 +98,29 @@
                 <tbody>
             <tr th:each="profile, iterStat : ${profiles}">
                 <td th:text="${iterStat.index + 1}">1</td>
-                <td>
-                            <a th:if="${isChildRegisterionExists}"
-                            th:href="@{/child/EditProfile/{id}(id=${profile.id})}"
-                            th:text="${profile.firstName + ' ' + profile.lastName}">
-                            </a>
-                            <a th:unless="${isChildRegisterionExists}"
-                            th:href="@{/editProfile/{id}(id=${profile.id})}"
-                            th:text="${profile.firstName + ' ' + profile.lastName}">
-                            </a>
+                <td class="side-menu-container">
+                    <span th:text="${profile.firstName + ' ' + profile.lastName}"></span>   
+                            <div class="side-menu dis_none">
+                                <ul>
+                                    <!-- Show Profile -->
+                                    <li>
+                                        <a th:href="@{/profile/{userId}(userId=${profile.userId})}">
+                                            Show Profile
+                                        </a>
+                                    </li>
+                                    <!-- Edit Profile -->
+                                    <li>
+                                        <a th:if="${isChildRegisterionExists}"
+                                            th:href="@{/child/EditProfile/{id}(id=${profile.id})}">
+                                                Edit Profile
+                                        </a>
+                                        <a th:unless="${isChildRegisterionExists}"
+                                        th:href="@{/editProfile/{id}(id=${profile.id})}">
+                                            Edit Profile
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                 </td>
                 <td th:text="${profile.phone}">--</td>
                 <td th:text="${profile.serviceClass}">--</td>

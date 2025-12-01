@@ -81,8 +81,6 @@ public class ProfileController {
     }
 
 
-
-
     private void addDataToModel(Model model,Profile profile){
         model.addAttribute("profile",profile);
         model.addAttribute("stages",serviceStagesService.findAll());
@@ -119,14 +117,12 @@ public class ProfileController {
         return "redirect:/profile/"+userId;
     }
 
-
-
     // profile management for active or in active users
     @GetMapping("/profileManage")
     public String profileManagement(
             Model model,
             @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "30") int pageSize,
             @RequestParam(defaultValue = "false") String status,
             @RequestParam(defaultValue = "All") String gender,
             @RequestParam(required = false, defaultValue = "0") Integer searchProfileId,

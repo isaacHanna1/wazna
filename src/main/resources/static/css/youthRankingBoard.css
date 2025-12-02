@@ -416,6 +416,9 @@ footer p {
     header h1 {
         font-size: 24px;
     }
+    header #search{
+        width: 250px;
+    }
     
     header p {
         font-size: 14px;
@@ -450,6 +453,9 @@ footer p {
 }
 
 @media (max-width: 480px) {
+    header #search{
+        width: 200px;
+    }
     .youth-circle {
         width: 100px !important;
         height: 100px !important;

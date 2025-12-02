@@ -216,3 +216,7 @@ select.form-control {
     margin: 3px;
     width: 100%;
 }
+
+.user-data >label{
+    line-height: 50px;
+}

@@ -80,6 +80,18 @@
                         <option value="MANUAL" th:selected="${point_source_type == 'MANUAL'}">خادم</option>
                     </select>
                 </div>
+                <!--Classes-->
+                <div class ="filter-group">
+                    <label for="service_class" class="filter-label">فصل :</label>
+                    <select id="service_class" name="service_class" class="filter-select">
+                        <option value="">الكل</option>
+                        <option th:each="class: ${currentClasses}" 
+                            th:value    ="${class.key}" 
+                            th:text     ="${class.value}"
+                            th:selected="${service_class != null && class.key.toString().equals(service_class)}">
+                        </option>    
+                    </select>
+                </div>
                 <!-- bounce-type-filter -->
                 <div class="filter-group">
                     <label for="bounce-type-filter" class="filter-label">تقيم علي</label>

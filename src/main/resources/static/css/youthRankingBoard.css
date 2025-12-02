@@ -60,9 +60,28 @@
 /* Header Styling */
 header {
     padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 30px;
     position: sticky;
-    top: 0;
-    z-index: 100;
+}
+
+header #search{
+    width: 350px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+}
+header  .search_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 11px;
+}
+header  .search_container svg{ 
+    cursor: pointer ;
 }
 
 header h1 {
@@ -74,6 +93,8 @@ header h1 {
     background-color: var(--youth-primary);
     color: white;
     border-radius: 5px;
+    width: 100%;
+
 }
 
 header p {

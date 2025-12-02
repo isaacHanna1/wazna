@@ -22,7 +22,7 @@ public class WaznaReportDaoImp implements WaznaReportDao {
     public List<DailyWaznaReport> viewReportOfWaznaAddedToUsers(int sprintId, int churchId,
                                                                 int meetingId, LocalDate startFromDate,
                                                                 LocalDate endToDate, String profileId,
-                                                                String point_source_type, String waznaType , String bounce_type_filter) {
+                                                                String point_source_type, String waznaType , String bounce_type_filter , String service_class) {
 
         // Build dynamic SQL with named parameters
         StringBuilder nativeSql = new StringBuilder(
@@ -61,7 +61,10 @@ public class WaznaReportDaoImp implements WaznaReportDao {
             nativeSql.append(" AND ub.bonus_type_id = :bounce_type_filter");
             System.out.println("  -> Adding bounce_type_filter filter: " + bounce_type_filter);
         }
+        if(service_class !=null && !service_class.equalsIgnoreCase("ALL") & !service_class.isEmpty()){
+            nativeSql.append(" AND p.service_class = :service_class");
 
+        }
         // Debug: Print final SQL
         System.out.println("Final SQL: " + nativeSql.toString());
 
@@ -101,8 +104,11 @@ public class WaznaReportDaoImp implements WaznaReportDao {
                 query.setParameter("bounce_type_filter", bounce_type_filter);
                 System.out.println("  bounce_type_filter : " + bounce_type_filter);
             }
+            if(service_class !=null && !service_class.equalsIgnoreCase("ALL") & !service_class.isEmpty()) {
+                query.setParameter("service_class", service_class);
+            }
 
-            @SuppressWarnings("unchecked")
+                @SuppressWarnings("unchecked")
             List<Object[]> results = query.getResultList();
 
             // Debug: Print number of results

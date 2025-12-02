@@ -54,7 +54,12 @@ public class YouthPointsRestController {
     public List<YouthRankDto> gettingRankWithImage(@RequestParam(defaultValue = "0") int offset , @RequestParam(defaultValue = "20") int limt){
         return youthRankService.getRankedYouthWithImage(limt,offset);
     }
-    @GetMapping("youth/transaction/details/{profileId}")
+    // start Api for getting youth rank with images, name, class, rank
+    @GetMapping("/youth/rank/find")
+    public List<YouthRankDto> gettingRankWithImageByUserName(@RequestParam(defaultValue = "10") int limt , @RequestParam String userName){
+        return youthRankService.getRankedYouthWithImageByUserName(limt,userName);
+    }
+    @GetMapping("/youth/transaction/details/{profileId}")
     public  List<PointTransactionSummaryDto> transactionSummary(@PathVariable int profileId){
         List<PointTransactionSummaryDto> summaryOfPoints = userPointTransactionService.getSummaryOfPoints(profileId);
         return  summaryOfPoints;

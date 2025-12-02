@@ -52,7 +52,8 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                                    COALESCE(SUM(upt.points), 0) AS total_points,
                                    p.church_id,
                                    p.meeting_id,
-                                   u.user_name
+                                   u.user_name,
+                                   p.service_class
                                FROM
                                    profile p
                                LEFT JOIN
@@ -91,20 +92,23 @@ public class UserPointTransactionDaoImp implements  UserPointTransactionDao{
                 .setParameter("meeting_id",meeting_id).getResultList();
 
         for (Object[] row : result) {
-            ProfileDtlDto p   = new ProfileDtlDto();
-            int profileId     =   ((Number) row[0]).intValue();
-            String firstName  =   (String) row[1];
-            String lastName   =   (String) row[2];
-            String phone      =   (String) row[3];
-            double point      =   ((Double) row[4]).doubleValue();
-            String userName   =   (String) row[7];
+            ProfileDtlDto p             = new ProfileDtlDto();
+            int profileId               =   ((Number) row[0]).intValue();
+            String firstName            =   (String) row[1];
+            String lastName             =   (String) row[2];
+            String phone                =   (String) row[3];
+            double point                =   ((Double) row[4]).doubleValue();
+            String userName             =   (String) row[7];
+            String service_class        = (String) row[8];
             p.setId(profileId);
             p.setFirstName(firstName);
             p.setLastName(lastName);
             p.setPoints(point);
             p.setPhone(phone);
             p.setUserName(userName);
+            p.setServiceClass(service_class);
             listOfProfile.add(p);
+
         }
         return listOfProfile;
 

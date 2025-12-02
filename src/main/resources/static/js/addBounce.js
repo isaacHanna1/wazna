@@ -258,14 +258,16 @@ let elementConstruct = "<ul>";
 function selectTheUser(userStr){
 
     const user              = JSON.parse(decodeURIComponent(userStr));
-        console.log(user);
+    console.log(user);
     const infoBox           = document.getElementById('userInfoBox');
+    const serviceClass      = document.getElementById("userClass");
     userFullName.value      = '';
     userFullName.id         = '';
     userNameInput.value     = '';
     userFullName.value      = `${user.name}`;
     userFullName.id         = `${user.id}`;
     userNameInput.value     = `${user.userName}`;
+    serviceClass.innerText  = user.serviceClass ? `${user.serviceClass}` : '?';
     infoBox.style.display   = 'none';
     currentPointsDisplay.innerText =`${user.currentPoints}`;
     userNameInput.focus();
@@ -296,7 +298,8 @@ async function fetchUserDate(phone) {
                 phone: user.phone,
                 userName:user.userName,
                 name: fullName,
-                currentPoints: user.points || 0
+                currentPoints: user.points || 0,
+                serviceClass:user.serviceClass
             };
         });
 

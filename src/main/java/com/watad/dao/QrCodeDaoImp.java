@@ -48,7 +48,7 @@ public class QrCodeDaoImp  implements QrCodeDao{
               AND q.active   = true 
         """;
         return entityManager.createQuery(jpql, QrCode.class)
-                .setParameter("p_date", LocalDate.now())
+                .setParameter("p_date", localDate)
                 .setParameter("meetingId", mettingId)
                 .setParameter("churchId", churchId)
                 .getResultList();

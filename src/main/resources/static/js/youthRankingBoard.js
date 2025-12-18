@@ -1,7 +1,7 @@
-let offset      = 0;
-const limit     = 20;
-let loading     = false;
-let searchMode  = false;  
+let offset = 0;
+const limit = 20;
+let loading = false;
+let searchMode = false;
 
 
 
@@ -112,7 +112,7 @@ loadYouth();
 
 // scroll listener
 window.addEventListener("scroll", () => {
-    if (searchMode) return; 
+    if (searchMode) return;
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
         loadYouth();
     }
@@ -120,41 +120,41 @@ window.addEventListener("scroll", () => {
 
 
 /*Start the search */
-const searchInput       = document.getElementById("search");
+const searchInput = document.getElementById("search");
 searchInput.addEventListener("input", debounce(handleSearch, 500));
 async function handleSearch() {
     const query = searchInput.value.trim();
     if (query !== "") {
-        searchMode      = true; 
-        const response  = await fetch(`/api/youth/rank/find?userName=${encodeURIComponent(query)}`);
-        const list      = await response.json();
+        searchMode = true;
+        const response = await fetch(`/api/youth/rank/find?userName=${encodeURIComponent(query)}`);
+        const list = await response.json();
         const container = document.getElementById("youth-container");
         container.innerHTML = "";
         appendYouth(list);
         return;
     }
     searchMode = false;
-    offset = 0;                    
+    offset = 0;
     const container = document.getElementById("youth-container");
     container.innerHTML = "";
-    loadYouth();           
+    loadYouth();
 }
 
-function debounce(func , delayTime) {
-    let timeoutId ;
-    return function(...args){
-    clearTimeout(timeoutId);
-       timeoutId = setTimeout(()=>func.apply(this,args),delayTime)  // set timout retun setTimeOut ID => 
+function debounce(func, delayTime) {
+    let timeoutId;
+    return function (...args) {
+        clearTimeout(timeoutId);
+        // set timout retun setTimeOut ID => 
+        timeoutId = setTimeout(() => func.apply(this, args), delayTime);
     }
 }
 /*End the search */
 
-
 /* Start Clear btn */
 const clearBtn = document.getElementById("clearSearch");
-console.log(clearBtn);
 clearBtn.addEventListener("click", () => {
     searchInput.value = "";
     handleSearch();
 });
+
 /*ُEnd Clear Btn */

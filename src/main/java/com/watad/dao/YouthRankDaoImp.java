@@ -162,19 +162,6 @@ public class YouthRankDaoImp implements YouthRankDao  {
                 p.meeting_id, p.church_id, upt.sprint_id
             LIMIT :limit 
     """;
-        System.out.println("SQL is "+nativeSql);
-        // Print all parameters
-        System.out.println("=== SQL Query Parameters ===");
-        System.out.println("SQL Query: " + nativeSql);
-        System.out.println("Parameters:");
-        System.out.println("  meeting_id: " + meetingId);
-        System.out.println("  church_id: " + churchId);
-        System.out.println("  sprint_id: " + sprintId);
-        System.out.println("  allowed_roles: " + userRoles);
-        System.out.println("  limit: " + limit);
-        System.out.println("  userName (original): " + userName);
-        System.out.println("  userName (with wildcards): " + "%" + userName.trim() + "%");
-        System.out.println("=== End Parameters ===");
 
         List<Object[]> youth = entityManager.createNativeQuery(nativeSql)
                 .setParameter("meeting_id", meetingId)

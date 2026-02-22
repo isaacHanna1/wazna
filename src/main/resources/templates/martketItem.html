@@ -5,15 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Item</title>
   <link th:href="@{../../css/styles.css}" rel="stylesheet" />
-
-    <style>
-      /* Start Market Item adding item view */
-        .check-photo{
-          margin-left: 70%;
-          font-size: 12px;
-        }    
-      /* End Market Item */
-    </style>
 </head>
 <body>
 
@@ -54,8 +45,19 @@
         </select>
       </div>
 
+           <div class="form-group">
+               <label class="form-label" for="stockQuantity">Stock Quantity :</label>
+               <input class="form-input" type="number" id="stockQuantity" name="stockQuantity"
+                      th:field="*{stockQuantity}" th:value="${item.stockQuantity}" required>
+           </div>
+
+           <div class="form-group">
+               <label class="form-label" for="supplierName">Supplier Name :</label>
+               <input class="form-input" type="text" id="supplierName" name="supplierName"
+                      th:field="*{supplierName}" th:value="${item.supplierName}" required>
+           </div>
       <div class="form-group">
-          <label  class = "form-label" for="imgeName">Image : </label>
+          <label  class = "form-label" for="image">Image : </label>
           <input  class = "form-input" type="file" id="image" name="image"  >
           <input type="hidden" name="imageName" th:value="${imageName}" th:field="*{imageName}"/>
           <input type="hidden" name="status"        th:value="${item.status}" />

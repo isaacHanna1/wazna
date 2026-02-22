@@ -5,24 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link th:href="@{/css/market.css}" rel="stylesheet">
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
-  <title>Wazna Market</title>
+    <link th:href="@{/css/common/toast.css} " rel="stylesheet"/>
+    <title>Wazna Market</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 <body>
-      <!-- Include the navbar fragment -->
-  <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+<!--this for toast message-->
+<div id="toast-container"></div>
+
+<div  class="sticky" th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+  <div class="filter-menu">
+      <a class="filter-btn"
+         th:each="cat : ${category}"
+         th:text="${cat.description}"
+         th:href="@{/market/category/{id}(id=${cat.id}, page=0)}">
+      </a>
+  </div>
+  <div class="market-info-bar">
+      <div class="cart-wrapper">
+          <i class="fa-solid fa-cart-shopping cart-icon"></i>
+          <span class="cart-count">0</span>
+      </div>
+      <span>
+            <i class="fa-solid fa-coins"></i>
+            <span th:text="${points}">100</span>
+        </span>
+  </div>
 <div class="container-market">
   <div class="header">
     <h1>Wazna Market</h1>
     <p>Shop amazing items with your Wazna points!</p>
   </div>
 
-  <div class="filter-menu">   
-          <a class="filter-btn"
-            th:each="cat : ${category}"
-            th:text="${cat.description}"
-          th:href="@{/market/category/{id}(id=${cat.id}, page=0)}">
-</a>
-  </div>
+
 <div class="items-grid" id="itemsGrid" >
     <div class="item-card" th:each="item : ${itemMarket}" th:attr="data-category=${item.category.description}">
       <div class="item-image">
@@ -34,10 +52,21 @@
         <div class="item-description" th:text="${item.itemDesc}">Item description here</div>
         <div class="item-price">
           <div class="wazna-icon">
-              <img th:src="@{/uploads/sitePic/logo.png}"> 
+              <img th:src="@{/uploads/sitePic/logo.png}">
           </div>
           <span th:text="${item.points}">250</span>
         </div>
+          <div class="buy">
+              <button class="btn"
+                      type="button"
+                      th:attr="data-id=${item.id},
+                         data-name=${item.itemName},
+                         data-points=${item.points},
+                         data-image=@{/market/{imageUrl}(imageUrl=${item.imageName})}"
+                         onclick="openModal(this)">
+                  Buy
+              </button>
+          </div>
       </div>
     </div>
 </div>
@@ -51,8 +80,28 @@
         </li>
     </ul>
 </div>
+    <!--this model appear when click buy-->
+    <div id="buyModal" class="modal">
+        <div class="modal-content">
 
+            <span class="close" onclick="closeModal()">&times;</span>
 
-<script th:src="@{/js/nav.js}"></script>
+            <h3>هل أنت متأكد من شراء هذا المنتج؟</h3>
+
+            <img id="modalImage" src="" alt="Product Image" width="120">
+
+            <p><strong id="modalName"></strong></p>
+            <p>عدد الوزنات: <span id="modalPoints"></span></p>
+
+                <input type="hidden" name="productId" id="modalProductId">
+                <button onclick="closeModal()" class="cancel-btn">إلغاء</button>
+                <button type="submit" class="confirm-btn" onclick="addToCart(this)">تأكيد</button>
+
+        </div>
+    </div>
+    <script th:src="@{/js/jCommon/Common.js}"></script>
+    <script th:src="@{/js/jCommon/toast.js}"></script>
+    <script th:src="@{/js/nav.js}"></script>
+    <script th:src="@{/js/market.js}"></script>
 </body>
 </html>

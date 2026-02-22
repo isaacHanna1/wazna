@@ -3,7 +3,6 @@ package com.watad.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 

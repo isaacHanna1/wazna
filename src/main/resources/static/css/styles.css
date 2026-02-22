@@ -896,35 +896,28 @@ min-width: 8rem;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background for better contrast */
+  background-color: rgba(0, 0, 0, 0.7); 
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
-  background-color: #f8d7da; /* Light red background for error */
-  color: #721c24; /* Dark red text color */
+  background-color: var(--youth-white); 
+  color: var(--youth-primary); 
   padding: 20px;
   border-radius: 8px;
   max-width: 500px;
   width: 80%;
   position: relative;
-  border: 1px solid #f5c6cb; /* Border to match the error theme */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  border: 1px solid #f5c6cb; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .close {
-  color: #aaa;
+  color: var(--error-500);
   float: right;
   font-size: 28px;
   font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: #721c24; /* Change close button color to match error theme */
-  text-decoration: none;
   cursor: pointer;
 }
 
@@ -940,8 +933,8 @@ min-width: 8rem;
 /* Toast Styles */
 .toast-container {
   position: fixed;
-  bottom: 0;
-  right: 0;
+  top: 60px;
+  right: 5px;
   z-index: 100;
   width: 100%;
   max-width: 420px;

@@ -40,7 +40,6 @@ public class MarketController {
 
     @GetMapping("/add")
     public String createItemView(Model model){
-
         model.addAttribute("category" , marketCategoryService.allActiveCategory());
         model.addAttribute("item",new MarketItem());
         return "martketItem";

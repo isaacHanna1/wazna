@@ -45,7 +45,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
                 handleAttendanceService(attendance,user,qrCode);
                 UserBonus userBonus = handleUserBounsService(qrCode,attendance,user);
                 double addPoint     = userBonus.getBouncePoint();
-                handleUserPointTran(user , addPoint ,qrCode.getBonusType(),userBonus);
+                handleUserPointTran(user , addPoint ,qrCode.getBonusType().getDescription(),userBonus);
                 Profile profile         = user.getProfile();
                 int churchId             = profile.getChurch().getId();
                 int meetingID           = profile.getMeetings().getId();
@@ -84,7 +84,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         }
 
 
-    private void handleUserPointTran(User user , double addPoint,BonusType bonusType,UserBonus userBonus) {
+    private void handleUserPointTran(User user , double addPoint,String  usedFor,UserBonus userBonus) {
         UserPointTransaction pointTransaction = new UserPointTransaction();
         pointTransaction.setProfile(user.getProfile());
         pointTransaction.setTransferTo(null);
@@ -95,7 +95,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         pointTransaction.setPoints(addPoint);
         pointTransaction.setActive(true);
         pointTransaction.setTransactionDate(LocalDateTime.now());
-        pointTransaction.setUsedFor(bonusType.getDescription());
+        pointTransaction.setUsedFor(usedFor);
         pointTransaction.setTransactionType("Earn");
         pointTransaction.setChurch(profile.getChurch());
         pointTransaction.setPointSource("SYSTEM");

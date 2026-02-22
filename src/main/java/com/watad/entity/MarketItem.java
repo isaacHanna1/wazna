@@ -40,6 +40,12 @@ public class MarketItem {
     private Boolean status;
 
 
+    @Column(name = "stock_quantity")
+    private int stockQuantity ;
+
+    @Column(name = "supplierName")
+    private String supplierName;
+
     public MarketItem() {
     }
 
@@ -50,6 +56,10 @@ public class MarketItem {
         this.points = points;
         this.imageName = imageName;
         this.category = category;
+    }
+
+    public MarketItem(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -122,6 +132,22 @@ public class MarketItem {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     @Override

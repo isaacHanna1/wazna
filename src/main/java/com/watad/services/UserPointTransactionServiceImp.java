@@ -97,7 +97,6 @@ public class UserPointTransactionServiceImp implements UserPointTransactionServi
         Church church           = userServices.getLogInUserChurch();
         Meetings meeting        = userServices.getLogInUserMeeting();
         List<PointTransactionSummaryDto> summaryOfPoints = userPointTransactionDao.getSummaryOfPoints(profileId, sprint.getId(), church.getId(), meeting.getId());
-        System.out.println("the size of summaryOfPoints is "+summaryOfPoints.size());
         return  summaryOfPoints;
     }
 }

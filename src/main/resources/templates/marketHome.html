@@ -21,7 +21,8 @@
       <a class="filter-btn"
          th:each="cat : ${category}"
          th:text="${cat.description}"
-         th:href="@{/market/category/{id}(id=${cat.id}, page=0)}">
+         th:href="@{/market/category/{id}(id=${cat.id}, page=0)}"
+         th:classappend="${cat.id == categoryId} ? ' active' : ''">
       </a>
   </div>
   <div class="market-info-bar">

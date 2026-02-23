@@ -10,7 +10,7 @@ async function openModal(button) {
     document.getElementById("modalPoints").innerText = points;
     document.getElementById("modalImage").src = image;
 
-    document.getElementById("buyModal").style.display = "block";
+    document.getElementById("buyModal").style.display = "flex";
 }
 
 function closeModal() {

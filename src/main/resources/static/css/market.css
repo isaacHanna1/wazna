@@ -23,7 +23,14 @@
             overflow: hidden;
             margin-top: 150px;
         }
-
+        @media (max-width: 768px) {
+            .container-market {
+                margin-top: 320px; 
+            }
+            .market-info-bar {
+                top: 88px; /* just below navbar */
+            }
+        }
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -130,10 +137,8 @@
         }
 
         .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 40px;
+                gap: 20px;   
+                padding: 25px; 
         }
 
         .item-card {
@@ -143,6 +148,10 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             border: 1px solid #f0f0f0;
+            display: flex;    
+            flex-direction: column;
+            text-align: center;
+            margin: 15px 0;
         }
 
         .item-card:hover {
@@ -152,7 +161,7 @@
 
         .item-image {
             width: 100%;
-            height: 200px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -160,7 +169,7 @@
             position: relative;
         }
         .item-image img{
-            width: 200px;
+            width: 140px;
             height: 100%;
         }
         .item-category {
@@ -176,40 +185,36 @@
         }
 
         .item-content {
-            padding: 20px;
+            padding: 12px;
+            display: flex;           
+            flex-direction: column;  
+            flex: 1; 
         }
 
         .item-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            text-align: center;
+            font-size: 1rem;   
+            margin-bottom: 5px;
         }
 
         .item-description {
-            color: #6c757d;
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-            line-height: 1.5;
-            height: 70px;
-            text-align: center;
+            font-size: 0.85rem; 
+            margin-bottom: 10px;
+            min-height: 45px;
 
         }
 
         .item-price {
-            align-items: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--youth-primary);
+            font-size: 1.1rem;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-weight: bold;
+            color: var(--youth-primary);
         }
 
         .wazna-icon {
-            width: 64px;
-            height: 64px;
+            width: 40px;
+           height: 40px;
         }
         .wazna-icon img{
             width: 100%;
@@ -219,16 +224,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
+             margin-top: auto; 
         }
         .item-card .buy button{
-            background-color:rgba(102, 126, 234, 0.9);
+            width: 130px;  
+            height: 34px;  
+            font-size: 15px;
+            background: rgba(102, 126, 234, 0.9);
             color: #fff;
-            font-size: 14px;
-            transition: all 0.3s ease;
-                width: 179px;
-            height: 40px;
-            font-size: 18px;
-            font-size: 900;
+            cursor: pointer;
         }
         .item-card .buy button:hover{
             background-color:var(--youth-primary) ;
@@ -268,60 +272,3 @@
                 padding: 20px;
             }
         }
-
-
-        /*Model for buy */
-    .modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.6);
-}
-
-.modal-content {
-    background: white;
-    width: 350px;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-60%);
-}
-
-.close {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.confirm-btn {
-    background: var(--youth-primary);
-    color: white;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 6px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.cancel-btn {
-    background: red;
-    color: white;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 6px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-}

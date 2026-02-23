@@ -94,8 +94,10 @@
             <p>عدد الوزنات: <span id="modalPoints"></span></p>
 
                 <input type="hidden" name="productId" id="modalProductId">
-                <button onclick="closeModal()" class="cancel-btn">إلغاء</button>
-                <button type="submit" class="confirm-btn" onclick="addToCart(this)">تأكيد</button>
+                <div class="modal-buttons">
+                    <button type="submit" class="confirm-btn modal-btn" onclick="addToCart(this)">تأكيد</button>
+                    <button onclick="closeModal()" class="cancel-btn modal-btn">إلغاء</button>
+                </div>
 
         </div>
     </div>

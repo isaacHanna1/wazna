@@ -30,7 +30,7 @@ public class Cart {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private CartStatus status = CartStatus.OPEN; // the cart status so we can closed this item cannot be edit
+    private CartStatus status = CartStatus.PENDING; // the cart status so we can closed this item cannot be edit
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sprint_id")

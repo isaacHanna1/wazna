@@ -28,9 +28,10 @@
             <i th:class="${
                 tx.transactionType == 'Earn' ? 'fa fa-plus-circle text-green' :
                 (tx.transactionType == 'Lose' ? 'fa fa-minus-circle text-red' :
+                (tx.transactionType == 'Buy' ? 'fa fa-bag-shopping text-purple' :
                 (tx.transactionType == 'TRANSFER_OUT' ? 'fa fa-arrow-up text-red' :
                 (tx.transactionType == 'TRANSFER_IN' ? 'fa fa-arrow-down text-blue' :
-                'fa fa-question-circle text-gray')))
+                'fa fa-question-circle text-gray'))))
             }"></i>
             </div>
 

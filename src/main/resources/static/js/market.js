@@ -25,7 +25,7 @@ async function addToCart(btn) {
     // 1. grab the button and disable it
     const originalText = btn.innerText;
     btn.disabled = true;
-    btn.innerText = "⏳ جاري...";
+    btn.innerText = "⏳ Loading...";
 
     const marketItemId = document.getElementById("modalProductId").value;
     const cartItem = {

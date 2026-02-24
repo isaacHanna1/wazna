@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Wazna</title>
+
+    <!-- Your existing global CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <!-- Cart page CSS (new styles only) -->
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
+    
+    <!--Toast div css-->
+    <link th:href="@{/css/common/toast.css} " rel="stylesheet"/>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!--this for toast message-->
+<div id="toast-container"></div>
+
+<!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+<div class="container" style="margin-top:1.5rem;">
+
+    <!-- Page Header -->
+    <div class="cart-page-header">
+        <h1>
+            <i class="fa-solid fa-cart-shopping"></i>
+            My Cart
+        </h1>
+        <span class="sprint-badge">
+            <i class="fa-solid fa-flag-checkered"></i>
+            Sprint: <span th:text="${currentSprintName}">Sprint 3</span>
+        </span>
+    </div>
+
+    <!-- Summary Bar -->
+    <div class="cart-summary-bar">
+
+        <div class="summary-card">
+            <div class="summary-icon purple">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
+            <div class="summary-info">
+                <span>Total Items</span>
+                <strong th:text="${totalItems}">0</strong>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-icon purple">
+                <i class="fa-solid fa-coins"></i>
+            </div>
+            <div class="summary-info">
+                <span>Wazna Spent</span>
+                <strong th:text="${totalSpentPoints}">0</strong>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-icon green">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="summary-info">
+                <span>Delivered</span>
+                <strong th:text="${deliveredCount}">0</strong>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-icon yellow">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <div class="summary-info">
+                <span>Pending</span>
+                <strong th:text="${openCount}">0</strong>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Cart Grid -->
+    <div class="cart-grid" id="cartGrid">
+
+        <!-- Loop over cart items -->
+        <div class="cart-item-card"
+             th:each="cartItem : ${cartItems}"
+             th:attr="data-status=${cartItem.status}, data-name=${cartItem.item.name}">
+
+            <!-- Image + Status Ribbon -->
+            <div class="cart-item-img-wrap">
+                <img th:src="@{/market/{imageUrl}(imageUrl=${cartItem.item.imageUrl})}"
+                     th:alt="${cartItem.item.name}"
+                     onerror="this.src='https://placehold.co/400x170/e5deff/6E59A5?text=No+Image'">
+                     
+                <span class="status-ribbon"
+                      th:classappend="${cartItem.status}"
+                      th:text="${cartItem.status}">
+                </span>
+            </div>
+
+            <!-- Body -->
+            <div class="cart-item-body">
+
+                <div class="cart-item-name" th:text="${cartItem.item.name}">Item Name</div>
+
+                <div class="cart-item-meta">
+                    <span class="cart-item-qty">
+                        <i class="fa-solid fa-hashtag fa-xs"></i>
+                        Qty: <strong th:text="${cartItem.itemCount}">1</strong>
+                    </span>
+                    <span class="wazna-pill">
+                        <i class="fa-solid fa-coins fa-xs"></i>
+                        <span th:text="${cartItem.points}">50</span> pts
+                    </span>
+                </div>
+
+                <div class="purchase-date">
+                    <i class="fa-regular fa-calendar fa-xs"></i>
+                    <span th:text="${#temporals.format(cartItem.purchaseDate, 'dd MMM yyyy')}">01 Jan 2025</span>
+                </div>
+
+            </div>
+
+            <!-- Cancel Button -->
+            <button class="btn-cancel-order"
+                    th:disabled="${!cartItem.status.equals('PENDING')}"
+                    th:attr="onclick=|openCancelModal(${cartItem.id}, '${cartItem.item.name}', '${cartItem.item.imageUrl}', ${cartItem.points})|">
+                <i class="fa-solid fa-xmark"></i>
+                <span th:text="${cartItem.status.equals('PENDING')} ? 'Cancel Order' : 'Cannot Cancel'">Cancel Order</span>
+            </button>
+
+        </div>
+        <!-- end loop -->
+
+        <!-- Empty State -->
+        <div class="cart-empty" th:if="${#lists.isEmpty(cartItems)}">
+            <i class="fa-solid fa-cart-xmark"></i>
+            <p>You have no orders in this sprint yet.</p>
+        </div>
+
+    </div>
+    <!-- /cart-grid -->
+
+</div>
+<!-- /container -->
+<!-- ══════════════ CANCEL MODAL ══════════════ -->
+<div id="cancelModal" class="modal">
+    <div class="modal-content">
+
+        <span class="close" onclick="closeCancelModal()">&times;</span>
+
+        <h3>هل أنت متأكد من إلغاء هذا الطلب؟</h3>
+
+        <img id="cancelModalImage" src="" alt="Product Image" width="120">
+
+        <p><strong id="cancelModalName"></strong></p>
+        <p>عدد الوزنات: <span id="cancelModalPoints"></span></p>
+
+        <input type="hidden" id="cancelModalCartId">
+
+        <div class="modal-buttons">
+            <button onclick="closeCancelModal()" class="cancel-btn modal-btn">إلغاء</button>
+            <button class="confirm-btn modal-btn" onclick="confirmCancel(this)">تأكيد</button>
+        </div>
+
+    </div>
+</div>
+
+<script th:src="@{/js/jCommon/Common.js}"></script>
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
+<script th:src="@{/js/jCommon/toast.js}"></script>
+
+</body>
+</html>

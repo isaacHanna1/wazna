@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class CartRequest {
 
+    private int cartId;
+    private int userId;
     private int itemId;
     private int itemCount;
 }

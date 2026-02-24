@@ -27,8 +27,11 @@
   </div>
   <div class="market-info-bar">
       <div class="cart-wrapper">
+        <a th:href="@{/cart/home}">
           <i class="fa-solid fa-cart-shopping cart-icon"></i>
-          <span class="cart-count">0</span>
+          <span class="cart-count" th:text="${cartItemNum}">0</span>
+        </a>
+
       </div>
       <span>
             <i class="fa-solid fa-coins"></i>
@@ -96,8 +99,8 @@
 
                 <input type="hidden" name="productId" id="modalProductId">
                 <div class="modal-buttons">
-                    <button type="submit" class="confirm-btn modal-btn" onclick="addToCart(this)">تأكيد</button>
                     <button onclick="closeModal()" class="cancel-btn modal-btn">إلغاء</button>
+                    <button type="submit" class="confirm-btn modal-btn" onclick="addToCart(this)">تأكيد</button>
                 </div>
 
         </div>

@@ -3,6 +3,8 @@ package com.watad.dao;
 import com.watad.dto.MarketItemDto;
 import com.watad.entity.MarketItem;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,7 +87,17 @@ public class marketItemDaoImp implements MarketItemDao {
     @Override
     public MarketItemDto getElementById(int itemId) {
         String sql = """
-                    SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status) FROM MarketItem m WHERE 
+                    SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status, m.stockQuantity) FROM MarketItem m WHERE 
+                    m.id = :id 
+                """;
+        return  entityManager.createQuery(sql,MarketItemDto.class).setParameter("id",itemId).getSingleResult();
+    }
+
+    @Override
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public MarketItemDto getElementByIdWithLock(int itemId) {
+        String sql = """
+                    SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status, m.stockQuantity) FROM MarketItem m WHERE 
                     m.id = :id 
                 """;
         return  entityManager.createQuery(sql,MarketItemDto.class).setParameter("id",itemId).getSingleResult();
@@ -112,6 +124,14 @@ public class marketItemDaoImp implements MarketItemDao {
                        .setParameter("meeting_id",meetingId).getSingleResult();
                 return count.intValue();
 
+    }
+
+    public MarketItem findAndLock(int id){
+        return entityManager.find(
+                MarketItem.class,
+                id,
+                LockModeType.OPTIMISTIC
+        );
     }
 
 

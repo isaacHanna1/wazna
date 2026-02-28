@@ -5,6 +5,8 @@ import com.watad.dto.MarketItemDto;
 import com.watad.entity.Church;
 import com.watad.entity.MarketItem;
 import com.watad.entity.Meetings;
+import jakarta.persistence.OptimisticLockException;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,6 +100,8 @@ public class MarketItemServiceImp implements MarketItemService {
         return  marketItemDao.getElementById(id);
     }
 
+
+
     @Override
     public MarketItem getEntityItemById(int id) {
         return marketItemDao.getitemById(id);
@@ -129,5 +133,25 @@ public class MarketItemServiceImp implements MarketItemService {
         return marketItemDao.getMarketItemSize(church_id,meeting_id);
     }
 
+    @Transactional
+    public void updateStock(int itemId, int quantity) {
 
+        try {
+
+            MarketItem item = marketItemDao.getitemById(itemId);
+
+            if (item == null) {
+                throw new RuntimeException("Item not found");
+            }
+
+            if (item.getStockQuantity() + quantity < 0) {
+                throw new RuntimeException("Out of stock");
+            }
+
+            item.setStockQuantity(item.getStockQuantity() + quantity);
+
+        } catch (OptimisticLockException | StaleObjectStateException e) {
+            throw new RuntimeException("Stock was updated by another user. Try again.");
+        }
+    }
 }

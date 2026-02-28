@@ -1,8 +1,11 @@
 package com.watad.exceptions.handler;
 
 import com.watad.dto.response.ApiErrorResponse;
+import com.watad.exceptions.NotEnoughPointsException;
+import com.watad.exceptions.OutOFStock;
 import com.watad.exceptions.ProfileException;
 import com.watad.exceptions.QrCodeException;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -12,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Map;
 
 
 @ControllerAdvice
@@ -55,6 +59,39 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         model.addAttribute("errorMessage", "Profile Error: " + ex.getMessage());
         return "error";
     }
+    @ExceptionHandler(OutOFStock.class)
+    public ResponseEntity<ApiErrorResponse> handleOutOfStock(OutOFStock ex){
 
+        ApiErrorResponse response =
+                new ApiErrorResponse(
+                        "OUT_OF_STOCK",
+                        ex.getMessage(),
+                        HttpStatus.CONFLICT.value()
+                );
+
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(NotEnoughPointsException.class)
+    public ResponseEntity<ApiErrorResponse> handleNotEnoughPoints(NotEnoughPointsException ex){
+
+        ApiErrorResponse response =
+                new ApiErrorResponse(
+                        "NOT_ENOUGH_POINTS",
+                        ex.getMessage(),
+                        HttpStatus.BAD_REQUEST.value()
+                );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(StaleObjectStateException.class)
+    public ResponseEntity<?> handleOptimisticLock(StaleObjectStateException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of(
+                        "title", "Conflict",
+                        "message", "تم تعديل البيانات من مستخدم آخر. حاول مرة أخرى."
+                ));
+    }
 }
 

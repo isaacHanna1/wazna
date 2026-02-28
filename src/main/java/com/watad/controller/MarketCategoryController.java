@@ -31,13 +31,14 @@ public class MarketCategoryController {
 
     @GetMapping("market")
     public String getMarketHome(Model model){
-         List<MarketCategory> allActiveCategory  = marketCategoryService.allActiveCategory();
+        List<MarketCategory> allActiveCategory  = marketCategoryService.allActiveCategory();
         model.addAttribute("category" , allActiveCategory);
         int defaultCatNum = allActiveCategory.get(0).getId();
         int profileId     = userServices.logedInUser().getProfile().getId();
         int sprintId      = userServices.getActiveSprint().getId();
         double points     = userPointTransactionService.getTotalPointsByProfileIdAndSprintId(profileId, sprintId);
         Long cartItemCount = cartServices.countItemsBySprintAndUserAndStatus(CartStatus.PENDING);
+
         // by default send the category one
         model.addAttribute("itemMarket",marketItemService.findByCategoryWithPagination(defaultCatNum,0,PAGE_SIZE));
         model.addAttribute("catCount",allActiveCategory.get(0));

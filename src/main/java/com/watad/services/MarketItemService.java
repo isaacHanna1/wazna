@@ -19,4 +19,5 @@ public interface MarketItemService {
         public String updateStatus(List<MarketItemDto> list);
         public void upadteItem(MarketItem marketItem);
         public  int getMarketItemCount();
+        public void updateStock(int itemId, int quantity);
 }

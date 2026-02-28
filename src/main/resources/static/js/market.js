@@ -17,45 +17,58 @@ function closeModal() {
     document.getElementById("buyModal").style.display = "none";
 }
 
-
-
 async function addToCart(btn) {
-  
 
-    // 1. grab the button and disable it
     const originalText = btn.innerText;
     btn.disabled = true;
     btn.innerText = "⏳ Loading...";
 
+    let result = null; // ✅ define it here
+
     const marketItemId = document.getElementById("modalProductId").value;
+
     const cartItem = {
-        "itemId": marketItemId,
-        "itemCount": "1"
+        itemId: marketItemId,
+        itemCount: "1"
     };
 
     const baseURL = getBaseUrl();
+
     try {
+
         const response = await fetch(`${baseURL}/api/v1/cart`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cartItem)
         });
 
+        // SUCCESS
         if (response.ok) {
-            const result = await response.json();
+            result = await response.json();
             Toast.success('عملية ناجحة', 'تم الشراء بنجاح');
-            console.log(result);
-            updateCartAndPoints(result.points); 
-        } else {
-            const error = await response.text();
-            Toast.error('عملية خاطئة', 'لا توجد وزنات كافية لاتمام عملية الشراء');
+            updateCartAndPoints(result.points);
         }
+
+        // CONFLICT
+        else if (response.status === 409) {
+            const error = await response.json();
+            Toast.error("Conflict", "تم تعديل مخزون من قبل مستخدم اخر اعد محاولة !");
+        }
+
+        //  OTHER ERRORS
+        else {
+            const error = await response.json();
+            Toast.error(error.title || "Error", error.message || "حدث خطأ");
+        }
+
     } catch (err) {
         console.error("Fetch error:", err);
         Toast.error('عملية خاطئة', 'حدث خطأ اثناء عملية الشراء');
     } finally {
+
         btn.disabled = false;
         btn.innerText = originalText;
+        location.reload();
         closeModal();
     }
 }

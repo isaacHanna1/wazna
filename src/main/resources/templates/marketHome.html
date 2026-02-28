@@ -60,6 +60,13 @@
           </div>
           <span th:text="${item.points}">250</span>
         </div>
+
+            <!-- ADD Stock number avaliable -->
+          <div class="stock-badge" th:classappend="${item.stockQuantity == 0} ? ' out-of-stock' : ' in-stock'">
+              <i class="fa-solid fa-box"></i>
+              <span th:if="${item.stockQuantity > 0}" th:text="'المخزون: ' + ${item.stockQuantity}">Stock: 5</span>
+              <span th:if="${item.stockQuantity == 0}">نفذت الكمية</span>
+          </div>
           <div class="buy">
               <button class="btn"
                       type="button"

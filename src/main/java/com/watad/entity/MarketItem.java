@@ -46,6 +46,9 @@ public class MarketItem {
     @Column(name = "supplierName")
     private String supplierName;
 
+    @Version
+    private Integer version = 0;
+
     public MarketItem() {
     }
 
@@ -148,6 +151,14 @@ public class MarketItem {
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     @Override

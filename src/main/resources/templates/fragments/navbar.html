@@ -4,300 +4,326 @@
 
 <!-- fragments/navbar.html -->
 <head>
-    <link th:href="@{./css/styles.css}" rel="stylesheet" />
-    <title>Nav</title>
+  <link th:href="@{./css/styles.css}" rel="stylesheet" />
+  <title>Nav</title>
 </head>
+
 <body>
-<!--user name -->
+
+<!-- Backdrop overlay for mobile sidebar -->
+<div class="nav-overlay" id="nav-overlay"></div>
 
 <nav class="navbar" th:fragment="mainNavbar">
-    <a  th:href="@{/home}" class="navbar-brand">
-        <!-- Logo -->
-       <div class="logo">
-              <img th:src="@{/uploads/sitePic/logo.png}"> 
-        </div>
-        <span>WZNA</span>
-    </a>
 
-    <!-- Mobile menu button -->
-    <button id="mobile-menu-button" class="mobile-menu-button">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
+  <!-- Brand -->
+  <a th:href="@{/home}" class="navbar-brand">
+    <div class="logo">
+      <img th:src="@{/uploads/sitePic/logo.png}" alt="WZNA Logo">
+    </div>
+    <span>WZNA</span>
+  </a>
 
-    <!-- Nav links -->
-    <ul id="navbar-nav" class="navbar-nav">
-      <li class="nav-item">
-            <a th:href="@{/home}" class="nav-link">
-                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-              <span class="menu-name"> Home </span> 
-            </a>
-        </li>
-    <li class="nav-item protected-content">
-            <a th:href="@{/profile}" class="nav-link logout-button">
-                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-             <span class="menu-name">   Profile </span>
-            </a>
-    </li>
+  <!-- Mobile hamburger -->
+  <button id="mobile-menu-button" class="mobile-menu-button" aria-label="Toggle menu">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6"  x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Nav links -->
+  <ul id="navbar-nav" class="navbar-nav">
+
+    <!-- Home -->
     <li class="nav-item">
-            <a th:href="@{/market}" class="nav-link">
-                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <!-- Shopping cart icon -->
-                    <circle cx="9" cy="21" r="1"></circle>
-                    <circle cx="20" cy="21" r="1"></circle>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                </svg>
-               <span class="menu-name"> Market </span>
-         </a>
-    </li>
-    <li class="main-menu nav-item " sec:authorize="hasAnyRole('SERVER','CLASS_LEADER' , 'SERVICE_LEADER','TREASURER')">
-        <ul class="sub-menu">
-            <li class="nav-item protected-content" sec:authorize="hasAnyRole('CLASS_LEADER' , 'SERVICE_LEADER')">
-                <a th:href="@{/youth/point/add}" class="nav-link logout-button">
-                <span class="menu-name"> Add Wazna </span>
-                </a>
-            </li>
-            <!-- Add Attendance (new) -->
-            <li class="nav-item protected-content">
-                <a th:href="@{/manualAttandance}" class="nav-link logout-button ">
-                <span class="menu-name">   Add Attendance </span>
-                </a>
-            </li>
-        </ul>
-        <a href="#"  class="nav-link">
-            <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14"></path>
-                <path d="M12 5v14"></path>
+      <a th:href="@{/home}" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
-           <span class="menu-name">  Add </span>
-        </a>
+        <span class="menu-name">Home</span>
+      </a>
     </li>
-    
-    <li class="main-menu nav-item " sec:authorize="hasRole('YOUTH')">
-        <ul class="sub-menu">
-           <!-- <li class="nav-item protected-content" >
-                        <a th:href="@{/scan}" class="nav-link logout-button">
-                        <span class="menu-name">    Scan QR Code </span>
-                        </a>
-            </li> -->
-            <li class="nav-item protected-content" >
-                <a th:href="@{/youth/point/transfer}" class="nav-link logout-button d-flex align-items-center gap-2">
-                        <span class="menu-name">   Transfer Wazna </span>
-                 </a>
-            </li>
-                        <li class="nav-item protected-content" >
-                <a th:href="@{/youth/point/details}" class="nav-link logout-button d-flex align-items-center gap-2">
-                        <span class="menu-name"> History </span>
-                 </a>
-            </li>
-        </ul>
-        <a href="#"  class="nav-link">
-        <svg class="nav-icon icon" width="20" height="20" viewBox="0 0 24 24" fill="none" 
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4l4 16 4-14 4 14 4-16"></path>
-            </svg>
-           <span class="menu-name"> Waznaty </span>
-        </a>
-    </li> 
-    <li class="main-menu nav-item" sec:authorize="hasAnyRole('SERVER','CLASS_LEADER' , 'SERVICE_LEADER','TREASURER')">
-         <ul class="sub-menu">
-            <li class="nav-item" sec:authorize="hasAnyRole('CLASS_LEADER' , 'SERVICE_LEADER','TREASURE')">
-                <span class="nav-link" >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        style="margin-left: 5px;">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <span class="menu-name" >Meetings</span>
-                </span>
-                <ul class="sub-sub-menu">
-                    
-                    <li class="nav-item " >
-                        <a th:href="@{/qr/code}" class="nav-link">
-                            <span class="menu-name"> Create QR Code</span>
-                        </a>
-                    </li>
-                    <li class="nav-item " >
-                        <a th:href="@{/qr/viewEditQrCode?pageNum=1&pageSize=10}" class="nav-link">
-                            <span class="menu-name">  All Meetings </span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item" sec:authorize="hasAnyRole('CLASS_LEADER' , 'SERVICE_LEADER')" >
-                <span class="nav-link">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        style="margin-left: 5px;">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <span class="menu-name">Join Requests</span>
-                </span>
-                <ul class="sub-sub-menu">
-                    <li class="nav-item " >
-                        <a th:href="@{/profileManage?pageNum=1&pageSize=30&status=false&gender=All}" class="nav-link">
-                            <span class="menu-name">Access Control</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-             <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')" >
-                <span class="nav-link">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         style="margin-left: 5px;">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <span class="menu-name">Market Item</span>
-                </span>
-                 <ul class="sub-sub-menu">
-                     <li class="nav-item " >
-                         <a th:href="@{/market/add}" class="nav-link">
-                             <span class="menu-name">Create Item</span>
-                         </a>
-                     </li>
-                       <li class="nav-item " >
-                         <a th:href="@{/market/item/all?pageNum=1&pageSize=12}" class="nav-link">
-                             <span class="menu-name">All Items</span>
-                         </a>
-                     </li>
-                 </ul>
-             </li>
-                  <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER')">
-                    <span class="nav-link">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            style="margin-left: 5px;">
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                        <span class="menu-name">Evaluation</span>
-                    </span>
-                 <ul class="sub-sub-menu">
-                        <li class="nav-item " >
-                            <a th:href="@{/bonus/create}" class="nav-link">
-                                <span class="menu-name">Create Evaluation</span>
-                            </a>
-                        </li>
-                        <li class="nav-item " >
-                            <a th:href="@{/bonus/all}" class="nav-link">
-                                <span class="menu-name">ALL Evaluation</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
-            <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')">
-                <span class="nav-link">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         style="margin-left: 5px;">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <span class="menu-name">Events</span>
-                </span>
-                 <ul class="sub-sub-menu">
-                     <li class="nav-item " >
-                         <a th:href="@{/event/create}" class="nav-link">
-                             <span class="menu-name">Create Event</span>
-                         </a>
-                     </li>
-                       <li class="nav-item " >
-                         <a th:href="@{/event/view}" class="nav-link">
-                             <span class="menu-name">All Events</span>
-                         </a>
-                     </li>
-                 </ul>
-             </li>
-            <li class="nav-item" sec:authorize="hasAnyRole('SERVER','CLASS_LEADER' , 'SERVICE_LEADER','TREASURER')" >
-                <span class="nav-link">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" 
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        style="margin-left: 5px;">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <span class="menu-name">Reports</span>
-                </span>
-                <ul class="sub-sub-menu">
-                    <li class="nav-item " >
-                        <a th:href="@{/report/dailyReport}" class="nav-link">
-                            <span class="menu-name">التقرير اليومي</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="nav-item" sec:authorize="hasAnyRole('SERVER','CLASS_LEADER' , 'SERVICE_LEADER','TREASURER')">
-                <span class="nav-link">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         style="margin-left: 5px;">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                    <span class="menu-name">Register</span>
-                </span>
-                 <ul class="sub-sub-menu">
-                       <li class="nav-item " >
-                         <a th:href="@{/child/register}" class="nav-link">
-                             <span class="menu-name">Register Youth</span>
-                         </a>
-                     </li>
-                 </ul>
-             </li>
-
-         </ul>
-        <a href="#" class="nav-link">
-            <svg class="nav-icon icon" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-            <span class="menu-name">Manage</span>
-        </a>
+    <!-- Profile -->
+    <li class="nav-item protected-content">
+      <a th:href="@{/profile}" class="nav-link logout-button">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span class="menu-name">Profile</span>
+      </a>
     </li>
-        <li class="nav-item protected-content">
-            <form th:action="@{/youth/point/all/rank}" style="display: inline;">
-                <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer;">
-                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"></path>
-                    <line x1="12" y1="12" x2="12" y2="18"></line>
-                    <line x1="10" y1="14" x2="14" y2="14"></line>
-                </svg>
-                 <span class="menu-name">Heroes Arena </span>
-                </button>
-            </form>
+
+    <!-- Market -->
+    <li class="nav-item">
+      <a th:href="@{/market}" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="menu-name">Market</span>
+      </a>
+    </li>
+
+    <!-- Add -->
+    <li class="main-menu nav-item"
+        sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
+      <ul class="sub-menu">
+        <li class="nav-item protected-content"
+            sec:authorize="hasAnyRole('CLASS_LEADER','SERVICE_LEADER')">
+          <a th:href="@{/youth/point/add}" class="nav-link logout-button">
+            <span class="menu-name">Add Wazna</span>
+          </a>
         </li>
-        
         <li class="nav-item protected-content">
-            <form th:action="@{/logout}" method="post" style="display: inline;">
-                <button type="submit" class="nav-link" style="background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer;">
-                    <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 16l4-4-4-4"></path>
-                        <path d="M7 12h14"></path>
-                        <path d="M3 21V3"></path>
-                    </svg>
-                 <span class="menu-name">   Sign Out </span>
-                </button>
-            </form>
+          <a th:href="@{/manualAttandance}" class="nav-link logout-button">
+            <span class="menu-name">Add Attendance</span>
+          </a>
+        </li>
+      </ul>
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="M12 5v14"></path>
+        </svg>
+        <span class="menu-name">Add</span>
+      </a>
+    </li>
+
+    <!-- Waznaty -->
+    <li class="main-menu nav-item" sec:authorize="hasRole('YOUTH')">
+      <ul class="sub-menu">
+        <li class="nav-item protected-content">
+          <a th:href="@{/youth/point/transfer}" class="nav-link logout-button">
+            <span class="menu-name">Transfer Wazna</span>
+          </a>
+        </li>
+        <li class="nav-item protected-content">
+          <a th:href="@{/youth/point/details}" class="nav-link logout-button">
+            <span class="menu-name">History</span>
+          </a>
+        </li>
+      </ul>
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4l4 16 4-14 4 14 4-16"></path>
+        </svg>
+        <span class="menu-name">Waznaty</span>
+      </a>
+    </li>
+
+    <!-- Manage -->
+    <li class="main-menu nav-item"
+        sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
+      <ul class="sub-menu">
+
+        <!-- Meetings -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('CLASS_LEADER','SERVICE_LEADER','TREASURER')">
+          <span class="nav-link nav-link--parent">
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span class="menu-name">Meetings</span>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/qr/code}" class="nav-link">
+                <span class="menu-name">Create QR Code</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a th:href="@{/qr/viewEditQrCode?pageNum=1&pageSize=10}" class="nav-link">
+                <span class="menu-name">All Meetings</span>
+              </a>
+            </li>
+          </ul>
         </li>
 
-    </ul>
+        <!-- Join Requests -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('CLASS_LEADER','SERVICE_LEADER')">
+          <span class="nav-link nav-link--parent">
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span class="menu-name">Join Requests</span>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/profileManage?pageNum=1&pageSize=30&status=false&gender=All}" class="nav-link">
+                <span class="menu-name">Access Control</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Market Item -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')">
+          <span class="nav-link nav-link--parent">
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span class="menu-name">Market Item</span>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/market/add}" class="nav-link">
+                <span class="menu-name">Create Item</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a th:href="@{/market/item/all?pageNum=1&pageSize=12}" class="nav-link">
+                <span class="menu-name">All Items</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Evaluation -->
+        <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER')">
+          <span class="nav-link nav-link--parent">
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span class="menu-name">Evaluation</span>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/bonus/create}" class="nav-link">
+                <span class="menu-name">Create Evaluation</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a th:href="@{/bonus/all}" class="nav-link">
+                <span class="menu-name">All Evaluations</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Events -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')">
+          <span class="nav-link nav-link--parent">
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span class="menu-name">Events</span>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/event/create}" class="nav-link">
+                <span class="menu-name">Create Event</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a th:href="@{/event/view}" class="nav-link">
+                <span class="menu-name">All Events</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Reports -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
+          <span class="nav-link nav-link--parent">
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span class="menu-name">Reports</span>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/report/dailyReport}" class="nav-link">
+                <span class="menu-name">التقرير اليومي</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Register -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
+          <span class="nav-link nav-link--parent">
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <span class="menu-name">Register</span>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/child/register}" class="nav-link">
+                <span class="menu-name">Register Youth</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+      </ul><!-- /.sub-menu -->
+
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span class="menu-name">Manage</span>
+      </a>
+    </li>
+
+    <!-- Heroes Arena -->
+    <li class="nav-item protected-content">
+      <form th:action="@{/youth/point/all/rank}" style="display:inline;">
+        <button type="submit" class="nav-link nav-link--btn">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"></path>
+            <line x1="12" y1="12" x2="12" y2="18"></line>
+            <line x1="10" y1="14" x2="14" y2="14"></line>
+          </svg>
+          <span class="menu-name">Heroes Arena</span>
+        </button>
+      </form>
+    </li>
+
+    <!-- Sign Out -->
+    <li class="nav-item nav-item--signout protected-content">
+      <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit" class="nav-link nav-link--btn nav-link--danger">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 16l4-4-4-4"></path>
+            <path d="M7 12h14"></path>
+            <path d="M3 21V3"></path>
+          </svg>
+          <span class="menu-name">Sign Out</span>
+        </button>
+      </form>
+    </li>
+
+  </ul><!-- /.navbar-nav -->
 </nav>
+
 </body>
 </html>

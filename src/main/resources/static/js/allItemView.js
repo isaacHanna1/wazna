@@ -60,50 +60,49 @@ function changeStatus(obj){
 
 }
 async function exceute(btn){
-      let obj       = [];
-      let createObj = null;
-      let id        = 0;
-      let status    = false;
-      const tr      = document.querySelectorAll(".table tr"); 
-       btn.innerHTML = `<div class="loading-spinner"></div>Loading...`
-      tr.forEach((tr)=>{
-      const inputs = tr.querySelectorAll("input");
-      inputs.forEach(input => {
-        if(input.name.includes("id")){
-          id = input.value;
-         }else if(input.name.includes("status")){
-          status = input.value;
-         }
-    });
-        createObj = {id:`${id}`,status:`${status}`};
-        obj.push(createObj);
-});
-    const jsonString = JSON.stringify(obj);
-    console.log(jsonString);
-    const URL               =  getBaseUrl();
-    const fullURL           = `${URL}/market/item/update`;
 
-          try {
-            const response      = await fetch(fullURL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body:jsonString
+    let obj = [];
+
+    btn.innerHTML = `<div class="loading-spinner"></div>Loading...`;
+
+    const rows = document.querySelectorAll("#itemsTable tbody tr");
+
+    rows.forEach((row)=>{
+
+        const idInput     = row.querySelector("input[name^='id-']");
+        const statusInput = row.querySelector("input[name^='status-']");
+
+        if(idInput && statusInput){
+
+            obj.push({
+                id: idInput.value,
+                status: statusInput.checked  
             });
-            if (!response.ok) {
-                showToast("Error", "Internal Error Happening", "error");
-            }else{
-                showToast( "Update Status",`Updated Done Sucessfully`, "success", );
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            throw error;
-        }
-        finally{
-                   btn.innerHTML = ``;
-                   btn.textContent ="Exceute";
+
         }
 
+    });
+
+    const fullURL = `${getBaseUrl()}/market/item/update`;
+
+    try {
+
+        const response = await fetch(fullURL, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(obj)
+        });
+
+        if (!response.ok) {
+            showToast("Error", "Internal Error Happening", "error");
+        } else {
+            showToast("عملية ناجحة", "تم تعديل بنجاح", "success");
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        btn.textContent = "Execute";
+    }
 }
 

@@ -94,7 +94,7 @@
         }
         .market-info-bar {
             position: fixed;
-            top: 88px;
+            top: 68px;
             background-color: var(--youth-primary);
             color: white;
             padding: 12px 30px;

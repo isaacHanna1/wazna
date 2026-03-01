@@ -9,6 +9,13 @@ public class MarketItemDto {
     private boolean status ;
     private int stockQuantity ;
 
+    public MarketItemDto() {
+    }
+    public MarketItemDto(int id, boolean status) {
+        this.id = id;
+        this.status = status;
+    }
+
     public MarketItemDto(int id, String itemName, String itemDesc, double points, boolean status) {
         this.id = id;
         this.itemName = itemName;

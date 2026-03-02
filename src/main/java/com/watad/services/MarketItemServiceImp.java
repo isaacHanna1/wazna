@@ -47,7 +47,7 @@ public class MarketItemServiceImp implements MarketItemService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveItem(MarketItem item, MultipartFile file) throws IOException {
+    public void     saveItem(MarketItem item, MultipartFile file) throws IOException {
         String fileName = null;
         if ( item.getId() !=0) {
             MarketItem existsOne = marketItemDao.getitemById(item.getId());

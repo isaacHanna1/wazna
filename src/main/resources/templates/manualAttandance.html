@@ -10,12 +10,18 @@
       rel="stylesheet"
     />
         <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+            <!--Toast div css-->
+    <link th:href="@{/css/common/toast.css} " rel="stylesheet"/>
+    <meta charset="UTF-8">
   </head>
   <body>
+
+    <!--this for toast message-->
+   <div id="toast-container"></div>
+
     <!-- Include the navbar fragment -->
 <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
-    <!-- Toast Container -->
-    <div id="toast-container" class="toast-container"></div>
+
 
     <div class="app">
       <!-- Main Content -->
@@ -271,6 +277,7 @@
     <script th:src="@{/js/nav.js}"></script>
     <script th:src="@{/js/jCommon/Common.js}"></script>
     <script th:src="@{/js/manualAttandance.js}"></script>
+    <script th:src="@{/js/jCommon/toast.js}"></script>
     <script type="module" th:src="@{/js/QrReader.js}"></script>
   </body>
 </html>

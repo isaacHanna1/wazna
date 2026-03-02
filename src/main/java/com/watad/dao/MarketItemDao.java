@@ -14,7 +14,10 @@ public interface MarketItemDao {
     public List<MarketItemDto> getMarketItem(int churchId , int meetingId , int pageNum , int pageSize);
     public List<MarketItemDto> searchByItemNameOrDesc(String keyword, int churchId , int meetingId );
     public MarketItemDto getElementById(int itemId );
+    public MarketItemDto getElementByIdWithLock(int itemId );
     public MarketItem getitemById(int itemId );
     public void updateItem(MarketItem item);
     public int getMarketItemSize(int churchId , int meetingId);
+
+    public MarketItem findAndLock(int id);
 }

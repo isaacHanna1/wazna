@@ -5,6 +5,8 @@ import com.watad.dto.MarketItemDto;
 import com.watad.entity.Church;
 import com.watad.entity.MarketItem;
 import com.watad.entity.Meetings;
+import jakarta.persistence.OptimisticLockException;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +92,8 @@ public class MarketItemServiceImp implements MarketItemService {
     public List<MarketItemDto> searchByItemNameOrDesc(String keyword) {
         int church_id  = userServices.getLogInUserChurch().getId();
         int meeting_id = userServices.getLogInUserMeeting().getId();
+        System.out.println("the church id is "+church_id+" the meeting id "+meeting_id);
+        System.out.println("keyword "+keyword);
         return  marketItemDao.searchByItemNameOrDesc(keyword,church_id,meeting_id);
     }
 
@@ -97,6 +101,8 @@ public class MarketItemServiceImp implements MarketItemService {
     public MarketItemDto getItemById(int id) {
         return  marketItemDao.getElementById(id);
     }
+
+
 
     @Override
     public MarketItem getEntityItemById(int id) {
@@ -129,5 +135,25 @@ public class MarketItemServiceImp implements MarketItemService {
         return marketItemDao.getMarketItemSize(church_id,meeting_id);
     }
 
+    @Transactional
+    public void updateStock(int itemId, int quantity) {
 
+        try {
+
+            MarketItem item = marketItemDao.getitemById(itemId);
+
+            if (item == null) {
+                throw new RuntimeException("Item not found");
+            }
+
+            if (item.getStockQuantity() + quantity < 0) {
+                throw new RuntimeException("Out of stock");
+            }
+
+            item.setStockQuantity(item.getStockQuantity() + quantity);
+
+        } catch (OptimisticLockException | StaleObjectStateException e) {
+            throw new RuntimeException("Stock was updated by another user. Try again.");
+        }
+    }
 }

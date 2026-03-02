@@ -8,6 +8,7 @@ import com.watad.dto.cart.CartRespond;
 import com.watad.entity.*;
 import com.watad.enumValues.CartStatus;
 import com.watad.exceptions.NotEnoughPointsException;
+import com.watad.exceptions.OutOFStock;
 import com.watad.repo.CartRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,16 @@ public class CartServices {
         int sprintId        = userServices.getActiveSprint().getId();
         double reqPoints    = item.getPoints() * cartReq.getItemCount();
 
+        // ADD THIS
+        if (item.getStockQuantity() < cartReq.getItemCount()) {
+            throw new OutOFStock("الكمية المطلوبة غير متوفرة");
+        }
+
         if (!checkBalance(profileId, sprintId, reqPoints)) {
             throw new NotEnoughPointsException("ليس هناك وزنات كافية لاتمام عملية الشراء");
         }
+
+        marketItemService.updateStock(item.getId(),-cartReq.getItemCount());
 
         Cart cart = convertRequestToModelCart(cartReq);
         cart.setStatus(CartStatus.PENDING);
@@ -49,7 +57,6 @@ public class CartServices {
                 userServices.getActiveSprint(),
                 "BUY"
         );
-
         return convertModelToCartResponse(savedCart);
     }
 
@@ -75,6 +82,8 @@ public class CartServices {
                 userServices.getActiveSprint(),
                 "CANCEL"
         );
+        MarketItem marketItem = cart.getMarketItem();
+        marketItemService.updateStock(marketItem.getId(),cart.getItemCount());
     }
 
     public Long countItemsBySprintAndUserAndStatus(CartStatus cartStatus){
@@ -107,7 +116,7 @@ public class CartServices {
             cart.setMarketItem(new MarketItem(cartReq.getItemId()));
             cart.setItemCount(cartReq.getItemCount());
             cart.setWaznaPoints(marketItemService.getItemById(cartReq.getItemId()).getPoints());
-            cart.setStatus(CartStatus.DELIVERED);
+            cart.setStatus(CartStatus.PENDING);
             cart.setSprint(userServices.getActiveSprint());
             cart.setChurch(userServices.getLogInUserChurch());
             cart.setMeeting(userServices.getLogInUserMeeting());

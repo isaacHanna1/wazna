@@ -3,64 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Events</title>
-    <link th:href="@{/css/styles.css}" rel="stylesheet" />
-
+    <title>Events</title>
+    <link th:href="@{/css/styles.css}"        rel="stylesheet"/>
+    <link th:href="@{/css/common/tables.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-   <!-- Toast Container -->
-    <div id="toast-container" class="toast-container"></div>
-  <!-- Include the navbar fragment -->
-  <div th:insert="~{fragments/navbar :: mainNavbar}"></div>
-  <div class="container">
-      <h2 class="el-messiri heading text-center color-primary" >All Current Event </h2>
-        <table class="table mar-bottom-5px">
-          <thead>
-            <tr>
-              <th class="mob-hid" >SNo</th>
-              <th>Event Name</th>
-              <th class="mob-hid" >Event Description</th>
-              <th class="mob-hid">Is Paied</th>
-              <th>Price</th>
-              <th class="mob-hid" >Max Wazna</th>
-              <th>From Date</th>
-              <th class="mob-hid" >To Date</th>
-              <th>Active</th>
-              <th>Action</th    >
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="event, iterStat : ${events}">
-                    <td class="mob-hid" th:text="${iterStat.index + 1}"></td>
+
+<div id="toast-container" class="toast-container"></div>
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+<div class="container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2 class="el-messiri color-primary">
+            <i class="fa-solid fa-calendar-days"></i> All Current Events
+        </h2>
+        <a th:href="@{/event/create}" class="btn-no-width btn-primary">
+            <i class="fa-solid fa-plus"></i> Create Event
+        </a>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+        <table class="app-table" id="eventsTable">
+            <thead>
+                <tr>
+                    <th class="th-center mob-hid" onclick="sortTable('eventsTable', 0)">#</th>
+                    <th onclick="sortTable('eventsTable', 1)">Event Name</th>
+                    <th class="mob-hid">Description</th>
+                    <th class="th-center mob-hid">Paid</th>
+                    <th class="th-center" onclick="sortTable('eventsTable', 4)">Price</th>
+                    <th class="th-center mob-hid" onclick="sortTable('eventsTable', 5)">Max Wazna</th>
+                    <th class="th-center" onclick="sortTable('eventsTable', 6)">From</th>
+                    <th class="th-center mob-hid" onclick="sortTable('eventsTable', 7)">To</th>
+                    <th class="th-center">Status</th>
+                    <th class="th-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="event, iterStat : ${events}">
+
+                    <td class="td-center mob-hid" th:text="${iterStat.index + 1}"></td>
+
                     <td>
-                        <a th:href="@{/event/find/{id}(id=${event.id})}" th:text="${event.title}"></a>
+                        <a th:href="@{/event/find/{id}(id=${event.id})}"
+                           th:text="${event.title}"
+                           class="table-link"></a>
                     </td>
-                    <td class="mob-hid"  th:text="${event.description}"></td>
-                    <td class="mob-hid" th:text="${event.isPaid ? 'Yes' : 'No'}"></td>
-                    <td th:text="${event.price}"></td>
-                    <td class="mob-hid" th:text="${event.maxSpendPoint}"></td>
-                    <td th:text="${event.from_date}"></td>
-                    <td class="mob-hid"  th:text="${event.to_date}"></td>
-                    <td th:text="${event.eventActive ? 'Yes' : 'No'}"
-                        th:classappend="${!event.eventActive} ? 'red-font' : ''">
+
+                    <td class="mob-hid">
+                        <div>
+                            <span class="cell-truncate" th:text="${event.description}"></span>
+                            <button type="button" class="truncate-toggle"
+                                    onclick="toggleTruncate(this)"
+                                    th:if="${#strings.length(event.description) > 60}">more</button>
+                        </div>
                     </td>
-                    <td>
-                        <!-- Separate Form for each event -->
+
+                    <td class="td-center mob-hid">
+                        <span th:if="${event.isPaid}"  class="status-badge active">Yes</span>
+                        <span th:unless="${event.isPaid}" class="status-badge inactive">No</span>
+                    </td>
+
+                    <td class="td-center">
+                        <span th:if="${event.price > 0}" class="points-pill">
+                            <i class="fa-solid fa-tag fa-xs"></i>
+                            <span th:text="${event.price}"></span>
+                        </span>
+                        <span th:unless="${event.price > 0}" class="status-badge active">Free</span>
+                    </td>
+
+                    <td class="td-center mob-hid">
+                        <span class="points-pill">
+                            <i class="fa-solid fa-coins fa-xs"></i>
+                            <span th:text="${event.maxSpendPoint}"></span>
+                        </span>
+                    </td>
+
+                    <td class="td-center">
+                        <span class="status-badge pending" th:text="${event.from_date}"></span>
+                    </td>
+
+                    <td class="td-center mob-hid">
+                        <span class="status-badge pending" th:text="${event.to_date}"></span>
+                    </td>
+
+                    <td class="td-center">
+                        <span th:if="${event.eventActive}"  class="status-badge active">Active</span>
+                        <span th:unless="${event.eventActive}" class="status-badge inactive">Inactive</span>
+                    </td>
+
+                    <td class="td-center">
                         <form th:action="@{/event/changeStatus}" th:method="POST">
-                        <!-- Hidden inputs to pass event ID and current status -->
-                        <input type="hidden" name="eventId" th:value="${event.id}" />
-                        <input type="hidden" name="currentStatus" th:value="${event.eventActive}" />
-                        
-                        <!-- Button to submit the form for changing the status -->
-                        <button class="btn-primary btn" type="submit">Change Status</button>
+                            <input type="hidden" name="eventId"       th:value="${event.id}"/>
+                            <input type="hidden" name="currentStatus" th:value="${event.eventActive}"/>
+                            <button type="submit"
+                                    class="table-btn"
+                                    th:classappend="${event.eventActive} ? 'delete' : 'approve'">
+                                <i class="fa-solid fa-repeat fa-xs"></i>
+                                <span th:text="${event.eventActive} ? 'Deactivate' : 'Activate'"></span>
+                            </button>
                         </form>
                     </td>
-            </tr>
-          </tbody>
-        </table>
 
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
 
 <script th:src="@{/js/nav.js}"></script>
 <script th:src="@{/js/jCommon/Common.js}"></script>
+<script th:src="@{/js/jCommon/table.js}"></script>
 </body>
 </html>

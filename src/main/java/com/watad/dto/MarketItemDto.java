@@ -7,6 +7,14 @@ public class MarketItemDto {
     private String itemDesc;
     private double points ;
     private boolean status ;
+    private int stockQuantity ;
+
+    public MarketItemDto() {
+    }
+    public MarketItemDto(int id, boolean status) {
+        this.id = id;
+        this.status = status;
+    }
 
     public MarketItemDto(int id, String itemName, String itemDesc, double points, boolean status) {
         this.id = id;
@@ -14,6 +22,14 @@ public class MarketItemDto {
         this.itemDesc = itemDesc;
         this.points = points;
         this.status = status;
+    }
+    public MarketItemDto(int id, String itemName, String itemDesc, double points, boolean status , int stockQuantity) {
+        this.id = id;
+        this.itemName = itemName;
+        this.itemDesc = itemDesc;
+        this.points = points;
+        this.status = status;
+        this.stockQuantity = stockQuantity;
     }
 
     public int getId() {
@@ -65,5 +81,13 @@ public class MarketItemDto {
                 ", points=" + points +
                 ", status=" + status +
                 '}';
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }

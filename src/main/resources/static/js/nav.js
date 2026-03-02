@@ -1,141 +1,153 @@
+/**
+ * nav.js — Navbar interactions
+ * Desktop : pure CSS hover (position:absolute)
+ * Mobile  : icon-only sidebar (66px), dropdowns fly LEFT via JS
+ */
 document.addEventListener('DOMContentLoaded', function () {
+
   var btn     = document.getElementById('mobile-menu-button');
   var nav     = document.getElementById('navbar-nav');
   var overlay = document.getElementById('nav-overlay');
 
   if (!btn || !nav) return;
 
-  var SIDEBAR_W = 66;
+  var SIDEBAR_W = 56;   // matches .navbar-nav width on mobile
+  var SUBMENU_W = 200;  // matches .sub-menu width on mobile
 
   function isMobile() { return window.innerWidth <= 900; }
 
-  /* ── Sidebar ── */
-  function openNav()  { nav.classList.add('open');    if (overlay) overlay.classList.add('visible'); }
-  function closeNav() { nav.classList.remove('open'); if (overlay) overlay.classList.remove('visible'); closeAll(); }
-  function closeAll() { nav.querySelectorAll('.touch-open').forEach(function(el){ el.classList.remove('touch-open'); }); }
+  /* ── Sidebar open / close ── */
+  function openNav() {
+    nav.classList.add('open');
+    if (overlay) overlay.classList.add('visible');
+  }
+  function closeNav() {
+    nav.classList.remove('open');
+    if (overlay) overlay.classList.remove('visible');
+    closeAllDropdowns();
+  }
+  function closeAllDropdowns() {
+    nav.querySelectorAll('.touch-open').forEach(function (el) {
+      el.classList.remove('touch-open');
+      // clear JS-set coords
+      var sub = el.querySelector(':scope > .sub-menu, :scope > .sub-sub-menu');
+      if (sub) { sub.style.top = ''; sub.style.right = ''; }
+    });
+  }
 
-  btn.addEventListener('click', function(e) {
+  btn.addEventListener('click', function (e) {
     e.stopPropagation();
     nav.classList.contains('open') ? closeNav() : openNav();
   });
+
   if (overlay) overlay.addEventListener('click', closeNav);
-  document.addEventListener('click', function(e) {
+
+  document.addEventListener('click', function (e) {
     if (!nav.contains(e.target) && !btn.contains(e.target)) closeNav();
   });
-  nav.addEventListener('click', function(e) { e.stopPropagation(); });
-  window.addEventListener('resize', function() { if (!isMobile()) closeAll(); });
 
-  /* ════════════════════════════════
-     POSITION HELPERS
-     Strategy: make the menu visible (block) with opacity:0 first,
-     measure it, set coordinates, then restore opacity.
-     This ensures getBoundingClientRect() returns real dimensions.
-  ════════════════════════════════ */
+  nav.addEventListener('click', function (e) { e.stopPropagation(); });
 
-  function showAndPosition(menu, setCoords) {
-    // Temporarily show to allow measurement
-    menu.style.opacity  = '0';
-    menu.style.display  = 'block';
-    setCoords(menu);
-    menu.style.opacity  = '';
-    menu.style.display  = '';  // let CSS hover/touch-open control display
+  window.addEventListener('resize', function () {
+    if (!isMobile()) closeAllDropdowns();
+  });
+
+  /* ══════════════════════
+     POSITION HELPER
+     Places a fixed dropdown to the LEFT of the sidebar.
+     Uses `right` offset from viewport edge.
+     Clamps top so it never overflows viewport.
+  ══════════════════════ */
+  function positionDropdown(dropdown, triggerRect, rightOffset) {
+    var vpH   = window.innerHeight;
+    var menuH = dropdown.offsetHeight || 200;
+
+    // Align top with trigger icon top
+    var idealTop = triggerRect.top;
+    // Clamp within viewport
+    var top = Math.min(idealTop, vpH - menuH - 8);
+    top = Math.max(top, 8);
+
+    dropdown.style.top   = top + 'px';
+    dropdown.style.right = rightOffset + 'px';
+    dropdown.style.left  = '';  // clear any stale left value
   }
 
-  /* Level 1: position sub-menu below trigger item */
-  function positionSub(triggerItem, sub) {
-    var r = triggerItem.getBoundingClientRect();
-    if (isMobile()) {
-      sub.style.top   = r.top + 'px';
-      sub.style.right = SIDEBAR_W + 'px';
-      sub.style.left  = 'auto';
-    } else {
-      sub.style.top   = (r.bottom + 4) + 'px';
-      sub.style.right = (window.innerWidth - r.right) + 'px';
-      sub.style.left  = 'auto';
-    }
-  }
+  /* ══════════════════════
+     LEVEL 1 — main-menu tap
+  ══════════════════════ */
+  var mainMenus = Array.prototype.slice.call(nav.querySelectorAll('.main-menu'));
 
-  /* Level 2: position sub-sub-menu to the left of the sub-menu */
-  function positionSubSub(triggerRow, subsub, parentSub) {
-    var rowRect = triggerRow.getBoundingClientRect();
-
-    if (isMobile()) {
-      // Mobile: right = sidebar(66) + sub-menu min-width(175) = 241px
-      subsub.style.top   = rowRect.top + 'px';
-      subsub.style.right = (SIDEBAR_W + 175) + 'px';  // 241px
-      subsub.style.left  = 'auto';
-    } else {
-      // Desktop: sub-menu IS visible when this runs — measure it directly
-      var subRect = parentSub.getBoundingClientRect();
-      subsub.style.top   = rowRect.top + 'px';
-      subsub.style.right = (window.innerWidth - subRect.left + 4) + 'px';
-      subsub.style.left  = 'auto';
-    }
-  }
-
-  /* ── Level 1: main-menu items ── */
-  var mainItems = Array.prototype.slice.call(nav.querySelectorAll('.main-menu'));
-
-  mainItems.forEach(function(item) {
-    var sub = item.querySelector(':scope > .sub-menu');
+  mainMenus.forEach(function (menu) {
+    var sub = menu.querySelector(':scope > .sub-menu');
     if (!sub) return;
 
-    item.addEventListener('mouseenter', function() {
-      positionSub(item, sub);
-    });
-
-    item.addEventListener('touchstart', function(e) {
+    menu.addEventListener('touchstart', function (e) {
       if (!isMobile()) return;
-      var isOpen = item.classList.contains('touch-open');
-      mainItems.forEach(function(o) { if (o !== item) o.classList.remove('touch-open'); });
-      nav.querySelectorAll('.sub-menu > .nav-item.touch-open').forEach(function(o){ o.classList.remove('touch-open'); });
-      if (isOpen) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      var isOpen = menu.classList.contains('touch-open');
+
+      // Close all level-1
+      mainMenus.forEach(function (m) {
+        m.classList.remove('touch-open');
+        var s = m.querySelector(':scope > .sub-menu');
+        if (s) { s.style.top = ''; s.style.right = ''; }
+      });
+      // Close all level-2
+      nav.querySelectorAll('.sub-menu > .nav-item.touch-open').forEach(function (item) {
         item.classList.remove('touch-open');
-      } else {
-        positionSub(item, sub);
-        item.classList.add('touch-open');
-        e.preventDefault();
+        var ss = item.querySelector(':scope > .sub-sub-menu');
+        if (ss) { ss.style.top = ''; ss.style.right = ''; }
+      });
+
+      if (!isOpen) {
+        // Make visible briefly to measure height
+        sub.style.visibility = 'visible';
+        sub.style.opacity    = '0';
+        var rect = menu.getBoundingClientRect();
+        positionDropdown(sub, rect, SIDEBAR_W);
+        sub.style.visibility = '';
+        sub.style.opacity    = '';
+        menu.classList.add('touch-open');
       }
     }, { passive: false });
   });
 
-  /* ── Level 2: sub-menu rows with sub-sub-menus ── */
-  nav.querySelectorAll('.sub-menu > .nav-item').forEach(function(item) {
-    var subsub    = item.querySelector(':scope > .sub-sub-menu');
-    var parentSub = item.closest('.sub-menu');
-    if (!subsub || !parentSub) return;
+  /* ══════════════════════
+     LEVEL 2 — sub-menu item tap
+  ══════════════════════ */
+  nav.querySelectorAll('.sub-menu > .nav-item').forEach(function (item) {
+    var subsub = item.querySelector(':scope > .sub-sub-menu');
+    if (!subsub) return;
 
-    item.addEventListener('mouseenter', function() {
-      positionSubSub(item, subsub, parentSub);
-    });
-
-    item.addEventListener('touchstart', function(e) {
+    item.addEventListener('touchstart', function (e) {
       if (!isMobile()) return;
+      e.stopPropagation();
+      e.preventDefault();
+
       var isOpen = item.classList.contains('touch-open');
+
+      // Close siblings
       if (item.parentElement) {
-        item.parentElement.querySelectorAll(':scope > .nav-item.touch-open').forEach(function(o){
-          if (o !== item) o.classList.remove('touch-open');
+        item.parentElement.querySelectorAll(':scope > .nav-item.touch-open').forEach(function (o) {
+          o.classList.remove('touch-open');
+          var ss = o.querySelector(':scope > .sub-sub-menu');
+          if (ss) { ss.style.top = ''; ss.style.right = ''; }
         });
       }
-      if (isOpen) {
-        item.classList.remove('touch-open');
-      } else {
-        positionSubSub(item, subsub, parentSub);
+
+      if (!isOpen) {
+        subsub.style.visibility = 'visible';
+        subsub.style.opacity    = '0';
+        var rect = item.getBoundingClientRect();
+        positionDropdown(subsub, rect, SIDEBAR_W + SUBMENU_W);
+        subsub.style.visibility = '';
+        subsub.style.opacity    = '';
         item.classList.add('touch-open');
-        e.stopPropagation();
-        e.preventDefault();
       }
     }, { passive: false });
   });
 
-  /* Reposition on scroll (sticky navbar shifts) */
-  window.addEventListener('scroll', function() {
-    mainItems.forEach(function(item) {
-      var sub = item.querySelector(':scope > .sub-menu');
-      if (!sub) return;
-      if (item.matches(':hover') || item.classList.contains('touch-open')) {
-        positionSub(item, sub);
-      }
-    });
-  }, { passive: true });
 });

@@ -117,43 +117,41 @@ body {
   margin: 0 auto;
   padding: 1.5rem;
 }
+
+
 /* ════════════════════════════════
    5. NAVBAR
 ════════════════════════════════ */
 
 :root {
-  --nav-glow:      rgba(110, 89, 165, 0.28);
-  --nav-border:    rgba(110, 89, 165, 0.11);
-  --nav-pill-bg:   rgba(110, 89, 165, 0.07);
-  --nav-danger-bg: rgba(220, 38, 38, 0.07);
+  --nav-glow:      rgba(110,89,165,.28);
+  --nav-border:    rgba(110,89,165,.12);
+  --nav-pill-bg:   rgba(110,89,165,.07);
+  --nav-danger-bg: rgba(220,38,38,.07);
   --nav-sidebar-w: 66px;
-  --nav-font:      'Outfit', 'Segoe UI', sans-serif;
-  --nav-trans:     .2s cubic-bezier(.4, 0, .2, 1);
+  --nav-font:      'Outfit','Segoe UI',sans-serif;
+  --nav-trans:     .2s cubic-bezier(.4,0,.2,1);
 }
 
-/* ── Backdrop overlay ── */
+/* Mobile backdrop */
 .nav-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(26, 31, 44, 0.5);
+  display: none; position: fixed; inset: 0;
+  background: rgba(26,31,44,.5);
   backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
   z-index: 998;
 }
 .nav-overlay.visible { display: block; }
 
-/* ════════════════════
-   NAVBAR BAR
-   NO filter, NO backdrop-filter, NO transform —
-   any of these would make it a containing block
-   and trap position:absolute children inside it.
-════════════════════ */
+/* ── Navbar bar ──
+   NO filter/backdrop-filter/transform here —
+   those create a stacking context that traps
+   position:absolute children inside the bar.
+*/
 .navbar {
   font-family: var(--nav-font);
   background: #fff;
   border-bottom: 1px solid var(--nav-border);
-  box-shadow: 0 2px 12px rgba(110, 89, 165, 0.08);
+  box-shadow: 0 2px 12px rgba(110,89,165,.08);
   padding: 0 1.75rem;
   height: 68px;
   display: flex;
@@ -162,46 +160,38 @@ body {
   position: sticky;
   top: 0;
   z-index: 500;
+  /* overflow must be VISIBLE so dropdowns can escape the bar */
+  overflow: visible;
 }
 
-/* Brand */
+/* ── Brand ── */
 .navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  font-family: var(--nav-font);
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: var(--youth-primary);
-  text-decoration: none;
-  transition: opacity var(--nav-trans);
+  display: flex; align-items: center; gap: .5rem;
+  font-family: var(--nav-font); font-weight: 700; font-size: 1.3rem;
+  color: var(--youth-primary); text-decoration: none;
+  transition: opacity var(--nav-trans); flex-shrink: 0;
 }
 .navbar-brand:hover { opacity: .8; }
-
 .navbar .logo {
-  width: 64px; height: 64px;
-  background: none; border-radius: 0; box-shadow: none;
-  overflow: visible; flex-shrink: 0;
+  width: 64px; height: 64px; background: none; border-radius: 0;
+  box-shadow: none; overflow: visible; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
 }
 .navbar .logo img { width: 100%; height: 100%; object-fit: contain; }
 
-/* Nav list */
+/* ── Nav list ── */
 .navbar-nav {
-  display: flex;
-  list-style: none;
-  gap: .1rem;
-  align-items: center;
-  margin: 0; padding: 0;
+  display: flex; list-style: none; gap: .1rem;
+  align-items: center; margin: 0; padding: 0; height: 100%;
+  overflow: visible; /* must be visible — clips fixed children otherwise */
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
+/* nav-item: static by default so fixed dropdowns go to viewport */
+.navbar .nav-item  { display: flex; align-items: center; position: static; }
+/* only .main-menu is the positioning anchor on desktop */
+.navbar .main-menu { position: relative; height: 100%; }
 
-/* Nav link — scoped inside .navbar */
+/* ── Nav links ── */
 .navbar .nav-link {
   display: flex; align-items: center; gap: .45rem;
   padding: .46rem .78rem;
@@ -216,181 +206,270 @@ body {
   background: linear-gradient(135deg, var(--youth-primary), var(--youth-secondary));
   color: #fff; box-shadow: 0 3px 14px var(--nav-glow);
 }
-.navbar .nav-link.active .nav-icon { stroke: #fff; }
 
+/* Button-style links (forms inside nav) */
 .navbar .nav-link--btn {
   font-family: var(--nav-font); font-size: .82rem; font-weight: 500;
   background: none; border: none; padding: .46rem .78rem;
-  color: #5a5470; cursor: pointer; display: flex; align-items: center;
-  gap: .45rem; border-radius: 10px; line-height: 1;
+  color: #5a5470; cursor: pointer;
+  display: flex; align-items: center; gap: .45rem;
+  border-radius: 10px; line-height: 1;
   transition: color var(--nav-trans), background var(--nav-trans);
 }
 .navbar .nav-link--btn:hover { background: var(--nav-pill-bg); color: var(--youth-primary); }
-
 .navbar .nav-link--danger:hover { background: var(--nav-danger-bg) !important; color: #dc2626 !important; }
 .navbar .nav-link--danger:hover .nav-icon { stroke: #dc2626; }
 
-.navbar .nav-icon { width: 18px; height: 18px; flex-shrink: 0; transition: transform var(--nav-trans); }
+/* Icons */
+.navbar .nav-icon {
+  width: 18px; height: 18px; flex-shrink: 0;
+  transition: transform var(--nav-trans);
+}
 .navbar .nav-link:hover .nav-icon,
 .navbar .nav-link--btn:hover .nav-icon { transform: scale(1.1); }
 
-/* Chevron */
+/* Dropdown chevron */
 .navbar .main-menu > .nav-link::after {
-  content: '';
-  display: inline-block;
-  width: 0; height: 0;
+  content: ''; display: inline-block; width: 0; height: 0;
   margin-left: .3rem;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
+  border-left: 3px solid transparent; border-right: 3px solid transparent;
   border-top: 4px solid currentColor;
-  opacity: .5;
-  transition: transform var(--nav-trans);
-  flex-shrink: 0;
+  opacity: .5; transition: transform var(--nav-trans); flex-shrink: 0;
 }
 .navbar .main-menu:hover > .nav-link::after { transform: rotate(-180deg); }
 
 /* ════════════════════════════════
-   DROPDOWN MENUS
-   Both .sub-menu and .sub-sub-menu use position:fixed
-   with coordinates set entirely by JS (navbar.js).
-   This bypasses the sticky/stacking-context problem
-   completely — fixed elements are always relative
-   to the viewport, not any CSS ancestor.
+   DROPDOWNS — DESKTOP
+   position: absolute so they sit
+   relative to .main-menu/.nav-item
+   and never go off-viewport.
 ════════════════════════════════ */
 .navbar .sub-menu,
 .navbar .sub-sub-menu {
-  display: none;
+  /* hidden until hover / touch-open */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease, visibility .15s ease, transform .15s ease;
+  transform: translateY(-4px);
+
   list-style: none;
-  position: fixed;   /* JS sets top/left/right */
+  position: absolute;
   background: #fff;
   border: 1px solid var(--nav-border);
   border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(110, 89, 165, 0.15);
+  box-shadow: 0 8px 28px rgba(110,89,165,.15);
   padding: .35rem;
-  min-width: 175px;
+  min-width: 185px;
   z-index: 9999;
 }
 
-/* Show states */
-.navbar .main-menu:hover > .sub-menu,
-.navbar .main-menu.touch-open > .sub-menu { display: block; }
-
-.navbar .sub-menu .nav-item:hover > .sub-sub-menu,
-.navbar .sub-menu .nav-item.touch-open > .sub-sub-menu { display: block; }
-
-/* Fade in */
-.navbar .sub-menu { animation: navDrop .15s ease both; }
-.navbar .sub-sub-menu { animation: navDrop .13s ease both; }
-@keyframes navDrop {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Level-1 dropdown: below the trigger */
+.navbar .sub-menu {
+  top: calc(100% + 2px);
+  right: 0;
 }
 
-/* Items inside dropdowns */
+/* Invisible hover bridge so mouse can travel down */
+.navbar .sub-menu::before {
+  content: ''; position: absolute;
+  top: -8px; left: 0; right: 0; height: 8px;
+}
+
+/* Level-2 dropdown: to the left of parent row */
+.navbar .sub-sub-menu {
+  top: -6px;
+  right: calc(100% + 4px);
+  min-width: 175px;
+}
+.navbar .sub-sub-menu::before {
+  content: ''; position: absolute;
+  top: 0; bottom: 0; right: -8px; width: 8px;
+}
+
+/* ── Show on desktop hover ── */
+.navbar .main-menu:hover > .sub-menu {
+  visibility: visible; opacity: 1;
+  pointer-events: auto; transform: translateY(0);
+}
+.navbar .sub-menu .nav-item:hover > .sub-sub-menu {
+  visibility: visible; opacity: 1;
+  pointer-events: auto; transform: translateY(0);
+}
+
+/* ── Show on mobile touch (JS adds .touch-open) ── */
+.navbar .main-menu.touch-open > .sub-menu,
+.navbar .sub-menu .nav-item.touch-open > .sub-sub-menu {
+  visibility: visible; opacity: 1;
+  pointer-events: auto; transform: translateY(0);
+}
+
+/* Dropdown items */
 .navbar .sub-menu > .nav-item,
 .navbar .sub-sub-menu > .nav-item { display: block; position: relative; }
 
 .navbar .sub-menu > .nav-item + .nav-item,
 .navbar .sub-sub-menu > .nav-item + .nav-item {
-  border-top: 1px solid rgba(110, 89, 165, 0.06);
+  border-top: 1px solid rgba(110,89,165,.06);
   margin-top: .1rem; padding-top: .1rem;
 }
 
 .navbar .sub-menu .nav-link,
 .navbar .sub-sub-menu .nav-link {
   font-size: .8rem; padding: .4rem .65rem;
-  border-radius: 8px; width: 100%; color: #4a4668; white-space: nowrap;
+  border-radius: 8px; width: 100%;
+  color: #4a4668; white-space: nowrap;
+  display: flex; align-items: center; gap: .4rem;
 }
 .navbar .sub-menu .nav-link:hover,
-.navbar .sub-sub-menu .nav-link:hover { background: var(--nav-pill-bg); color: var(--youth-primary); }
+.navbar .sub-sub-menu .nav-link:hover {
+  background: var(--nav-pill-bg); color: var(--youth-primary);
+}
 
-/* Parent row with nested sub-sub */
-.navbar .nav-link--parent { justify-content: space-between; cursor: default; }
+/* Parent row that opens a sub-sub-menu */
+.navbar .nav-link--parent {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; gap: .45rem; padding: .4rem .65rem;
+  font-size: .8rem; color: #4a4668; border-radius: 8px;
+  white-space: nowrap; cursor: default;
+  transition: background var(--nav-trans), color var(--nav-trans);
+}
 .navbar .nav-link--parent:hover { background: var(--nav-pill-bg); color: var(--youth-primary); }
-.navbar .sub-arrow { opacity: .4; flex-shrink: 0; transition: transform var(--nav-trans), opacity var(--nav-trans); }
-.navbar .sub-menu .nav-item:hover > .nav-link--parent .sub-arrow { transform: rotate(180deg); opacity: 1; }
+.navbar .sub-arrow {
+  opacity: .4; flex-shrink: 0;
+  transition: transform var(--nav-trans), opacity var(--nav-trans);
+}
+.navbar .sub-menu .nav-item:hover > .nav-link--parent .sub-arrow {
+  transform: rotate(180deg); opacity: 1;
+}
 
 /* ════════════════════════════════
-   HAMBURGER
+   HAMBURGER BUTTON
 ════════════════════════════════ */
 .mobile-menu-button {
   display: none; align-items: center; justify-content: center;
   background: var(--nav-pill-bg); border: 1px solid var(--nav-border);
   border-radius: 10px; padding: .48rem; cursor: pointer;
-  color: var(--youth-primary); transition: background var(--nav-trans), box-shadow var(--nav-trans);
+  color: var(--youth-primary);
+  transition: background var(--nav-trans), box-shadow var(--nav-trans);
 }
 .mobile-menu-button:hover { background: var(--youth-accent); box-shadow: 0 2px 10px var(--nav-glow); }
 .mobile-menu-button svg { display: block; }
 
 /* ════════════════════════════════
-   MOBILE SIDEBAR
+   USER INFO
+════════════════════════════════ */
+.user-info {
+  display: flex; align-items: center;
+  margin-left: .75rem; padding-left: .75rem;
+  border-left: 1px solid var(--gray-200); gap: .4rem; flex-shrink: 0;
+}
+.user-name { font-size: .82rem; font-weight: 600; color: var(--youth-primary); }
+.points-badge {
+  display: inline-flex; align-items: center; gap: .25rem;
+  background: var(--youth-accent); color: var(--youth-primary);
+  font-size: .72rem; font-weight: 700;
+  padding: .2rem .55rem; border-radius: 9999px;
+}
+.user-info.mobile, .user-info.desktop { display: none; }
+@media (min-width: 901px) { .user-info.desktop { display: flex; } }
+
+/* ════════════════════════════════
+   MOBILE SIDEBAR  (≤ 900px)
 ════════════════════════════════ */
 @media (max-width: 900px) {
-
   .mobile-menu-button { display: flex; }
+  .user-info.mobile   { display: flex; }
+  .user-info          { display: none; }
+  .navbar             { padding: 0 1.25rem; }
 
+  /* Icon-only strip from the right */
   .navbar-nav {
-    position: fixed;
-    top: 0; right: 0;
-    height: 100dvh;
-    width: var(--nav-sidebar-w);
+    position: fixed; top: 0; right: 0; height: 100dvh;
+    width: 56px;
     flex-direction: column;
     align-items: center;
-    gap: .05rem;
+    gap: 0;
     background: #fff;
     border-left: 1px solid var(--nav-border);
-    box-shadow: -4px 0 24px rgba(110, 89, 165, 0.1);
-    padding: .75rem .3rem 1.5rem;
+    box-shadow: -4px 0 24px rgba(110,89,165,.1);
+    padding: .4rem .2rem .5rem;
     overflow: visible;
     z-index: 1000;
     transform: translateX(100%);
     opacity: 0;
     pointer-events: none;
-    transition: transform .28s cubic-bezier(.4, 0, .2, 1), opacity .25s ease;
+    transition: transform .28s cubic-bezier(.4,0,.2,1), opacity .25s ease;
   }
 
+  /* Accent stripe */
   .navbar-nav::before {
-    content: '';
-    display: block; width: 80%; height: 3px;
+    content: ''; display: block; width: 70%; height: 3px;
     background: linear-gradient(90deg, var(--youth-primary), var(--youth-secondary));
-    border-radius: 2px; margin-bottom: .9rem; flex-shrink: 0;
+    border-radius: 2px; margin-bottom: .3rem; flex-shrink: 0;
   }
 
   .navbar-nav.open { transform: translateX(0); opacity: 1; pointer-events: all; }
 
+  /* Centered icon items — kill inherited desktop height */
   .navbar-nav > .nav-item,
-  .navbar-nav > .main-menu {
-    display: flex; align-items: center; justify-content: center; width: 100%;
+  .navbar-nav > .main-menu,
+  .navbar .main-menu {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: auto !important;
+    padding: 0 !important; margin: 0 !important;
+    line-height: 1;
   }
 
+  /* Icon-only — hide all text */
   .navbar-nav .menu-name { display: none; }
+
+  /* Square icon buttons — no margin, no padding, tight */
   .navbar-nav .nav-link,
   .navbar-nav .nav-link--btn {
-    justify-content: center; padding: 0; width: 44px; height: 44px; border-radius: 10px;
+    justify-content: center; padding: 0;
+    width: 38px; height: 34px; border-radius: 8px;
+    font-size: .82rem; margin: 0;
   }
-  .navbar-nav .nav-icon { margin: 0; width: 20px; height: 20px; }
+  .navbar-nav .nav-icon { margin: 0; width: 17px; height: 17px; flex-shrink: 0; }
 
+  /* Hide desktop chevron */
   .navbar .main-menu > .nav-link::after { display: none; }
 
-  /* On mobile, sub-menus open to the LEFT of sidebar */
-  /* JS sets: top from getBoundingClientRect, right from sidebar width */
-  .navbar .sub-menu {
-    border-radius: 12px 0 0 12px;
-    animation: none;
-  }
+  /* ── Mobile dropdowns ──
+     position:fixed, coords set by nav.js.
+     They fly out LEFT of the sidebar.     */
+  .navbar .sub-menu,
   .navbar .sub-sub-menu {
+    position: fixed !important;
+    top: auto !important;
+    right: 55px !important;
+    left: auto !important;
+    bottom: auto !important;
+    /* wide enough to never clip text */
+    width: calc(100vw - 56px - 8px);
+    max-width: 145px;
+    min-width: 120px;
     border-radius: 12px 0 0 12px;
-    animation: none;
+    transform: none !important;
+    box-shadow: -4px 4px 20px rgba(110,89,165,.2);
+  }
+    .navbar .sub-sub-menu {
+      right: 170px !important;
+    }
+
+  /* sub-sub is narrower since it stacks further left */
+  .navbar .sub-sub-menu {
+    width: calc(100vw - 56px - 8px);
+    max-width: 145px;
   }
 
-  /* Show text in dropdowns on mobile */
+  /* Show text labels INSIDE the flyout menus */
   .navbar-nav .sub-menu .menu-name,
   .navbar-nav .sub-sub-menu .menu-name { display: block; }
 }
 
-@media (max-width: 480px) {
-  .navbar { padding: 0 1rem; }
-}
+@media (max-width: 480px) { .navbar { padding: 0 1rem; } }
 
 /* ════════════════════════════════
    6. BUTTONS
@@ -435,6 +514,12 @@ body {
   justify-content: center;
   padding: 2rem 1rem;
   background: linear-gradient(135deg, rgb(226,221,255) 0%, rgb(242,239,255) 100%);
+}
+
+
+/* Config pages that sit below navbar */
+.auth-container.has-navbar {
+  min-height: calc(100vh - 80px);
 }
 
 /* Sign-in/up logo above form */

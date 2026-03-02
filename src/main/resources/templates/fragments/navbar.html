@@ -74,9 +74,17 @@
       </a>
     </li>
 
-    <!-- Add -->
+    <!-- Add — trigger FIRST, then sub-menu -->
     <li class="main-menu nav-item"
         sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="M12 5v14"></path>
+        </svg>
+        <span class="menu-name">Add</span>
+      </a>
       <ul class="sub-menu">
         <li class="nav-item protected-content"
             sec:authorize="hasAnyRole('CLASS_LEADER','SERVICE_LEADER')">
@@ -90,18 +98,17 @@
           </a>
         </li>
       </ul>
+    </li>
+
+    <!-- Waznaty — trigger FIRST, then sub-menu -->
+    <li class="main-menu nav-item" sec:authorize="hasRole('YOUTH')">
       <a href="#" class="nav-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14"></path>
-          <path d="M12 5v14"></path>
+          <path d="M4 4l4 16 4-14 4 14 4-16"></path>
         </svg>
-        <span class="menu-name">Add</span>
+        <span class="menu-name">Waznaty</span>
       </a>
-    </li>
-
-    <!-- Waznaty -->
-    <li class="main-menu nav-item" sec:authorize="hasRole('YOUTH')">
       <ul class="sub-menu">
         <li class="nav-item protected-content">
           <a th:href="@{/youth/point/transfer}" class="nav-link logout-button">
@@ -114,29 +121,30 @@
           </a>
         </li>
       </ul>
+    </li>
+
+    <!-- Manage — trigger FIRST, then sub-menu -->
+    <li class="main-menu nav-item"
+        sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
       <a href="#" class="nav-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 4l4 16 4-14 4 14 4-16"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
-        <span class="menu-name">Waznaty</span>
+        <span class="menu-name">Manage</span>
       </a>
-    </li>
-
-    <!-- Manage -->
-    <li class="main-menu nav-item"
-        sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
       <ul class="sub-menu">
 
-        <!-- Meetings -->
+        <!-- Meetings — trigger FIRST, then sub-sub-menu -->
         <li class="nav-item"
             sec:authorize="hasAnyRole('CLASS_LEADER','SERVICE_LEADER','TREASURER')">
           <span class="nav-link nav-link--parent">
+            <span class="menu-name">Meetings</span>
             <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span class="menu-name">Meetings</span>
           </span>
           <ul class="sub-sub-menu">
             <li class="nav-item">
@@ -156,11 +164,11 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('CLASS_LEADER','SERVICE_LEADER')">
           <span class="nav-link nav-link--parent">
+            <span class="menu-name">Join Requests</span>
             <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span class="menu-name">Join Requests</span>
           </span>
           <ul class="sub-sub-menu">
             <li class="nav-item">
@@ -175,11 +183,11 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')">
           <span class="nav-link nav-link--parent">
+            <span class="menu-name">Market Item</span>
             <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span class="menu-name">Market Item</span>
           </span>
           <ul class="sub-sub-menu">
             <li class="nav-item">
@@ -198,11 +206,11 @@
         <!-- Evaluation -->
         <li class="nav-item" sec:authorize="hasAnyRole('SERVICE_LEADER')">
           <span class="nav-link nav-link--parent">
+            <span class="menu-name">Evaluation</span>
             <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span class="menu-name">Evaluation</span>
           </span>
           <ul class="sub-sub-menu">
             <li class="nav-item">
@@ -222,11 +230,11 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('SERVICE_LEADER','TREASURER')">
           <span class="nav-link nav-link--parent">
+            <span class="menu-name">Events</span>
             <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span class="menu-name">Events</span>
           </span>
           <ul class="sub-sub-menu">
             <li class="nav-item">
@@ -246,11 +254,11 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
           <span class="nav-link nav-link--parent">
+            <span class="menu-name">Reports</span>
             <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span class="menu-name">Reports</span>
           </span>
           <ul class="sub-sub-menu">
             <li class="nav-item">
@@ -265,11 +273,11 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
           <span class="nav-link nav-link--parent">
+            <span class="menu-name">Register</span>
             <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span class="menu-name">Register</span>
           </span>
           <ul class="sub-sub-menu">
             <li class="nav-item">
@@ -281,15 +289,6 @@
         </li>
 
       </ul><!-- /.sub-menu -->
-
-      <a href="#" class="nav-link">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
-        <span class="menu-name">Manage</span>
-      </a>
     </li>
 
     <!-- Heroes Arena -->

@@ -118,8 +118,8 @@ async function markPersent() {
     const user               = await response.json();
     updateAttendanceTable(user);
     btn_attendance.innerHTML = btnInnerHtml;
-    Toast.success("تم تسجيل الحضور بنجاح!",
-    `تم تسجيل حضور ${user.firstName} وإضافة ${user.points} وزنة إلى رصيده.`);
+    Toast.success("Attendance recorded successfully!",
+        ` ${user.firstName} has been marked present and earned ${user.points} Wazna points.`);
      } catch (error) {
         Toast.error('عملية خاطئة', error.message);
         btn_attendance.disabled = false;

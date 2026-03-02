@@ -92,6 +92,8 @@ public class MarketItemServiceImp implements MarketItemService {
     public List<MarketItemDto> searchByItemNameOrDesc(String keyword) {
         int church_id  = userServices.getLogInUserChurch().getId();
         int meeting_id = userServices.getLogInUserMeeting().getId();
+        System.out.println("the church id is "+church_id+" the meeting id "+meeting_id);
+        System.out.println("keyword "+keyword);
         return  marketItemDao.searchByItemNameOrDesc(keyword,church_id,meeting_id);
     }
 

@@ -71,17 +71,25 @@ public class marketItemDaoImp implements MarketItemDao {
     }
 
     @Override
-    public List<MarketItemDto> searchByItemNameOrDesc(String keyword, int churchId , int meetingId ) {
+    public List<MarketItemDto> searchByItemNameOrDesc(String keyword, int churchId, int meetingId) {
         String sql = """
-                  SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status) FROM MarketItem m WHERE 
-                   m.church.id       = :church_id
-                   AND m.meeting.id  = :meeting_id
-                   AND (m.itemDesc   LIKE :keyword OR m.itemName LIKE :keyword)
-                """;
-        List<MarketItemDto> items = entityManager.createQuery(sql,MarketItemDto.class).setParameter("church_id",churchId)
-                .setParameter("meeting_id",meetingId)
-                .setParameter("keyword","%" + keyword + "%").setMaxResults(5).getResultList();
-        return  items;
+              SELECT new com.watad.dto.MarketItemDto(m.id, m.itemName, m.itemDesc, m.points, m.status) 
+              FROM MarketItem m 
+              WHERE m.church.id    = :church_id
+              AND m.meeting.id     = :meeting_id
+              AND m.itemName LIKE  :keyword
+            """;
+
+        List<MarketItemDto> result = entityManager.createQuery(sql, MarketItemDto.class)
+                .setParameter("church_id", churchId)
+                .setParameter("meeting_id", meetingId)
+                .setParameter("keyword", "%" + keyword + "%")
+                .setMaxResults(5)
+                .getResultList();
+
+        System.out.println("Query returned: " + result.size() + " rows for keyword: " + keyword);
+
+        return result;
     }
 
     @Override

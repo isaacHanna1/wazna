@@ -67,17 +67,17 @@
                     <tr th:each="qr, iterStat : ${qrCodeList}" th:object="${qrCodeFormWrapper}">
 
                         <td class="td-center mob-hid" th:text="${iterStat.index + 1}"></td>
-
                         <td>
-                            <span class="cell-truncate" th:text="${qr.code}"></span>
+                            <a th:href="@{/qr/edit/{id}(id=${qr.id})}">
+                                <span class="cell-truncate" th:text="${qr.code}"></span>
+                            </a>
                         </td>
-                                                <td>
+                        <td>
                             <span class="cell-truncate" th:text="${qr.description}"></span>
                         </td>  
                         <td class="td-center">
                             <span class="status-badge pending" th:text="${qr.validDate}"></span>
                         </td>
-
                         <td class="td-center mob-hid" th:text="${qr.validStart}"></td>
                         <td class="td-center mob-hid" th:text="${qr.validEnd}"></td>
 

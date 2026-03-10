@@ -110,6 +110,12 @@ public class CartServices {
                 .mapToDouble(cartRespons ->cartRespons.getItemCount()*cartRespons.getPoints())
                 .sum();
     }
+
+    @Transactional
+    public void updateStatusOfCartId(int cartId , CartStatus cartStatus){
+        cartRepository.changeStatusOfCartItem(cartStatus,cartId);
+    }
+
         public Cart convertRequestToModelCart(CartRequest cartReq) {
 
             Cart cart = new Cart();

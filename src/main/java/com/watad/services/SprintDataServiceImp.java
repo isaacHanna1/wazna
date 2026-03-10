@@ -1,6 +1,7 @@
 package com.watad.services;
 
 import com.watad.dao.SprintDataDao;
+import com.watad.dto.sprint.SprintResponse;
 import com.watad.entity.SprintData;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,15 @@ public class SprintDataServiceImp implements  SprintDataService{
     @Override
     public List<SprintData> findAll(int churchId, int meetingId) {
         return sprintDataDao.findAll(churchId,meetingId);
+    }
+
+    @Override
+    public List<SprintResponse> findAllDto(int churchId, int meetingId) {
+       return sprintDataDao.findAll(churchId,meetingId)
+               .stream()
+               .map(sprint-> SprintResponse.builder()
+                       .id(sprint.getId())
+                       .name(sprint.getSprintDesc()).build())
+               .toList();
     }
 }

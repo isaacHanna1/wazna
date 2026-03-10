@@ -2,14 +2,18 @@ package com.watad.services;
 
 import com.watad.dao.QrCodeDao;
 import com.watad.dto.QRCodeDto;
+import com.watad.dto.bonusType.BonusTypeResponse;
+import com.watad.dto.church.ChurchResponse;
+import com.watad.dto.meeting.MeetingResponse;
+import com.watad.dto.qrMeeting.QrMeetingDtoRequest;
+import com.watad.dto.qrMeeting.QrMeetingDtoResponse;
+import com.watad.entity.BonusType;
 import com.watad.entity.Church;
 import com.watad.entity.Meetings;
 import com.watad.entity.QrCode;
 import com.watad.exceptions.QrCodeException;
-import jakarta.persistence.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,10 +27,12 @@ public class QrCodeServiceImp implements  QrCodeService{
 
     private final QrCodeDao qrCodeDao;
     private final UserServices userServices;
+    private final BonusTypeService bonusTypeService;
 
-    public QrCodeServiceImp(QrCodeDao qrCodeDao, UserServices userServices) {
+    public QrCodeServiceImp(QrCodeDao qrCodeDao, UserServices userServices, BonusTypeService bonusTypeService) {
         this.qrCodeDao = qrCodeDao;
         this.userServices = userServices;
+        this.bonusTypeService = bonusTypeService;
     }
 
     @Override
@@ -98,13 +104,67 @@ public class QrCodeServiceImp implements  QrCodeService{
     @Override
     @Transactional
     public void update(QRCodeDto dto) {
-        QrCode qrCode = findById(dto.getId());
+        QrCode qrCode = findEntityById(dto.getId());
+        System.out.println("the id is qr code  "+dto.getId());
         qrCode.setActive(dto.isActive());
         qrCodeDao.update(qrCode);
     }
 
     @Override
-    public QrCode findById(int id) {
+    @Transactional
+    public void update(QrMeetingDtoRequest dto) {
+        QrCode qrCode = dtoToModel(dto);
+        qrCodeDao.update(qrCode);
+    }
+
+    @Override
+    public QrMeetingDtoResponse findDtoById(int id) {
+        int churchId            = userServices.getLogInUserChurch().getId();
+        int meetingID           = userServices.getLogInUserMeeting().getId();
+        QrCode  qrCode          =  qrCodeDao.findById(id,churchId,meetingID);
+        return modelToDto(qrCode);
+    }
+
+    private QrMeetingDtoResponse modelToDto(QrCode qrCode) {
+
+        QrMeetingDtoResponse qrMeetingDtoResponse = new QrMeetingDtoResponse();
+        qrMeetingDtoResponse.setId(qrCode.getId());
+        qrMeetingDtoResponse.setCode(qrCode.getCode());
+        qrMeetingDtoResponse.setDescription(qrCode.getDescription());
+        qrMeetingDtoResponse.setValidDate(qrCode.getValidDate());
+        qrMeetingDtoResponse.setValidStart(qrCode.getValidStart());
+        qrMeetingDtoResponse.setValidEnd(qrCode.getValidEnd());
+        qrMeetingDtoResponse.setActive(qrCode.isActive());
+        BonusTypeResponse bonusTypeResponse = new BonusTypeResponse();
+        if (qrCode.getBonusType() != null) {
+            bonusTypeResponse.setId(qrCode.getBonusType().getId());
+            bonusTypeResponse.setDescription(qrCode.getBonusType().getDescription());
+            qrMeetingDtoResponse.setBonusType(bonusTypeResponse);
+        }
+        qrMeetingDtoResponse.setBonusType(bonusTypeResponse);
+
+        return  qrMeetingDtoResponse;
+    }
+    private QrCode dtoToModel(QrMeetingDtoRequest dto) {
+        QrCode qrCode =  findEntityById(dto.getId());
+        qrCode.setCode(dto.getCode());
+        qrCode.setDescription(dto.getDescription());
+        qrCode.setValidDate(dto.getValidDate());
+        qrCode.setValidStart(dto.getValidStart());
+        qrCode.setValidEnd(dto.getValidEnd());
+        qrCode.setActive(dto.isActive());
+        System.out.println("the bonus type id "+dto.getBonusTypeId());
+        BonusType bonusType  = bonusTypeService.findById(dto.getBonusTypeId());
+        Church church        = userServices.getLogInUserChurch();
+        Meetings meeting     = userServices.getLogInUserMeeting();
+        qrCode.setBonusType(bonusType);
+        qrCode.setChurch(church);
+        qrCode.setMeetings(meeting);
+        return qrCode;
+    }
+
+        @Override
+    public QrCode findEntityById(int id) {
         int churchId            = userServices.getLogInUserChurch().getId();
         int meetingID           = userServices.getLogInUserMeeting().getId();
         return  qrCodeDao.findById(id,churchId,meetingID);

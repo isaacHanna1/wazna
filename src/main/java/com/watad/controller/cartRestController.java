@@ -1,7 +1,5 @@
 package com.watad.controller;
 
-
-
 import com.watad.dto.cart.CartRequest;
 import com.watad.dto.cart.CartRespond;
 import com.watad.enumValues.CartStatus;
@@ -37,4 +35,13 @@ public class cartRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/{cartId}/status")
+    public ResponseEntity<Void> updateCartItem(
+            @PathVariable int cartId,
+            @RequestParam CartStatus status) {
+        cartServices.updateStatusOfCartId(cartId, status);
+        return ResponseEntity.ok().build();
+    }
+
 }

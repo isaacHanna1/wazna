@@ -1,5 +1,6 @@
 package com.watad.dao;
 
+import com.watad.dto.qrMeeting.QrMeetingDtoRequest;
 import com.watad.entity.QrCode;
 
 import java.time.LocalDate;
@@ -15,4 +16,5 @@ public interface QrCodeDao {
      void update(QrCode qrCode);
      QrCode findById(int id, int churchId,int meetingId);
      List<QrCode> findAll(LocalDate from , LocalDate to ,int churchId , int meetingId);
+
 }

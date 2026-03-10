@@ -2,6 +2,8 @@ package com.watad.controller;
 
 import com.watad.Common.TimeUtil;
 import com.watad.dto.QRCodeDto;
+import com.watad.dto.qrMeeting.QrMeetingDtoRequest;
+import com.watad.dto.qrMeeting.QrMeetingDtoResponse;
 import com.watad.entity.QrCode;
 import com.watad.services.BonusAddingService;
 import com.watad.services.BonusTypeService;
@@ -102,11 +104,9 @@ public class QrCodeController {
     private int numOfPages(int pageSize ,LocalDate from , LocalDate to) {
         int numOfPages = 1;
         int numOfRow = qrCodeService.findAll(from , to).size();
-
         if (numOfRow > 0 && pageSize > 0) {
             numOfPages = (numOfRow + pageSize - 1) / pageSize;
         }
-
         return numOfPages;
     }
 
@@ -119,6 +119,20 @@ public class QrCodeController {
         model.addAttribute("numOfPages",numOfPages(pageSize,from,to));
         model.addAttribute("currentPage", pageNum);
 
+    }
+    @GetMapping("/edit/{qrCodeId}")
+        public String  updateSingleQrData(@PathVariable int qrCodeId,Model model){
+        QrMeetingDtoResponse qr = qrCodeService.findDtoById(qrCodeId);
+        model.addAttribute("qr",qr);
+        model.addAttribute("bonusType",bonusTypeService.findAll("PO"));
+        return "QrCodeMeetingEdit";
+    }
+
+    @PostMapping("/edit")
+    public String qrMeetingUpdate(QrMeetingDtoRequest request , Model model){
+        qrCodeService.update(request);
+        model.addAttribute("bonusType",bonusTypeService.findAll("PO"));
+        return "redirect:/qr/edit/" + request.getId();
     }
 
 

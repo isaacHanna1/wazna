@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit QR Code</title>
+  <link th:href="@{../../css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Include the navbar fragment -->
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<div class="auth-container">
+  <div class="auth-form">
+    <h2 class="auth-title">Edit QR Code</h2>
+    <form th:action="@{/qr/edit}" method="post" th:object="${qr}">
+
+      <!-- Method override for PUT -->
+      <input type="hidden" name="_method" value="PUT">
+
+      <!-- Hidden ID -->
+      <input type="hidden" th:field="*{id}">
+
+      <div class="form-group">
+        <label class="form-label" for="QrCode">QR Code:</label>
+        <input class="form-input" type="text" id="QrCode" name="code" th:field="*{code}" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="QrCodeDesc">QR Code Description:</label>
+        <input class="form-input" type="text" id="QrCodeDesc" name="description" th:field="*{description}" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="ValidDate">Meeting Day:</label>
+        <input class="form-input" type="date" id="ValidDate"
+               name="validDate"
+               th:value="${#temporals.format(qr.validDate, 'yyyy-MM-dd')}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="StartTime">Start Time:</label>
+        <input class="form-input" type="time" id="StartTime"
+               name="validStart"
+               th:value="${#temporals.format(qr.validStart, 'HH:mm')}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="endTime">End Time:</label>
+        <input class="form-input" type="time" id="endTime"
+               name="validEnd"
+               th:value="${#temporals.format(qr.validEnd, 'HH:mm')}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bounceType">Bounce Type:</label>
+        <select class="form-input" id="bounceType" name="bonusTypeId" required>
+          <option value="" disabled th:selected="${qr.bonusType == null}">Select</option>
+          <option th:each="bonusType : ${bonusType}"
+                  th:value="${bonusType.id}"
+                  th:text="${bonusType.description}"
+                  th:selected="${qr.bonusType != null and bonusType.id == qr.bonusType.id}">
+          </option>
+        </select>
+      </div>
+
+        <div class="form-group">
+            <label class="form-label" for="active">Active:</label>
+            <input type="checkbox" th:field="*{active}">
+        </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+
+    </form>
+  </div>
+</div>
+
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+
+
+</body>
+</html>

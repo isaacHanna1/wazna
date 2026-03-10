@@ -25,6 +25,6 @@ public class marketDashBoardController {
         int meetingId  = userServices.getLogInUserMeeting().getId();
         List<SprintResponse> allSprints = sprintDataService.findAllDto(churchId,meetingId);
         model.addAttribute("sprints",allSprints);
-        return "marketdashboard";
+        return "market_dashboard";
     }
 }

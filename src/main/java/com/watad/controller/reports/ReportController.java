@@ -5,6 +5,7 @@ import com.watad.services.SprintDataService;
 import com.watad.services.UserServices;
 import com.watad.services.YouthServiceClass;
 import com.watad.services.reports.WaznaReportServices;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/report")
+@RequiredArgsConstructor
 public class ReportController {
 
     private final SprintDataService sprintDataService;
@@ -25,19 +27,12 @@ public class ReportController {
     private final WaznaReportServices waznaReportServices;
     private final YouthServiceClass youthServiceClass;
 
-    public ReportController(SprintDataService sprintDataService, UserServices userServices, WaznaReportServices waznaReportServices, YouthServiceClass youthServiceClass) {
-        this.sprintDataService   = sprintDataService;
-        this.userServices        = userServices;
-        this.waznaReportServices = waznaReportServices;
-        this.youthServiceClass   = youthServiceClass;
-    }
 
     @GetMapping("/dailyReport")
     public String viewDailyReport(Model model) {
         int meetingId = userServices.getLogInUserMeeting().getId();
-        int churchId = userServices.getLogInUserChurch().getId();
+        int churchId  = userServices.getLogInUserChurch().getId();
         Map<Integer, String> currentClassByStage = youthServiceClass.getCurrentClassByStage();
-
         model.addAttribute("sprints", sprintDataService.findAll(churchId, meetingId));
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("churchId", churchId);
@@ -58,17 +53,30 @@ public class ReportController {
             @RequestParam(defaultValue = "")    String userName,
             @RequestParam(defaultValue = "ALL") String bounce_type_filter,
             @RequestParam(defaultValue = "") String service_class,
+            @RequestParam(defaultValue = "0") int pageNum,
+            @RequestParam(defaultValue = "70") int pageSize,
             Model model) {
 
         // Default to today if dates not provided
         if (startFromDate == null) startFromDate = LocalDate.now();
-        if (endToDate == null) endToDate = LocalDate.now();
+        if (endToDate     == null) endToDate     = LocalDate.now();
 
-        int meetingId = userServices.getLogInUserMeeting().getId();
-        int churchId = userServices.getLogInUserChurch().getId();
+        int meetingId                            = userServices.getLogInUserMeeting().getId();
+        int churchId                             = userServices.getLogInUserChurch().getId();
         Map<Integer, String> currentClassByStage = youthServiceClass.getCurrentClassByStage();
+        List<DailyWaznaReport> reports           = waznaReportServices
+                                                    .viewReportOfWaznaAddedToUsers(sprintId,
+                                                            startFromDate, endToDate,
+                                                            profileId, point_source_type,
+                                                            waznaType,bounce_type_filter,
+                                                            service_class,pageNum,pageSize);
 
-        List<DailyWaznaReport> reports = waznaReportServices.viewReportOfWaznaAddedToUsers(sprintId, startFromDate, endToDate,profileId, point_source_type, waznaType,bounce_type_filter,service_class);
+        int totalRecords = waznaReportServices.countReports(sprintId, startFromDate, endToDate,
+                profileId, point_source_type,
+                waznaType, bounce_type_filter, service_class);
+
+        int numOfPages = (int) Math.ceil((double) totalRecords / pageSize);
+
 
             model.addAttribute("reports", reports);
             model.addAttribute("sprintId", sprintId);
@@ -84,11 +92,10 @@ public class ReportController {
             model.addAttribute("bounce_type_filter",bounce_type_filter);
             model.addAttribute("currentClasses",currentClassByStage);
             model.addAttribute("service_class",service_class);
-
-
-            System.out.println("the bounce_type_filter => "+bounce_type_filter);
-        // Keep sprints for dropdown
-        model.addAttribute("sprints", sprintDataService.findAll(churchId, meetingId));
+            model.addAttribute("numOfPages",        numOfPages);
+            model.addAttribute("currentPage",       pageNum);
+            // Keep sprints for dropdown
+            model.addAttribute("sprints", sprintDataService.findAll(churchId, meetingId));
 
         return "dailyReports";
     }

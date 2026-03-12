@@ -294,6 +294,9 @@ a.qr-link:hover {
 }
 .page-header .btn-no-width { margin-top: 0; }
 
+.page-header i{
+    padding: 0 10px;
+}
 
 /* ════════════════════════════════
    11. SEARCH BAR (text search)

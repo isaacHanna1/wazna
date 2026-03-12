@@ -62,9 +62,9 @@
                         <td class="td-center mob-hid" th:text="${iterStat.index + 1}"></td>
 
                         <td>
-                            <a th:href="@{/market/item/{id}(id=${item.id})}"
-                               th:text="${item.itemName}"
-                               class="table-link"></a>
+                            <a th:href="@{/market/item/{id}(id=${item.id}, pageNum=${pageNum}, pageSize=${pageSize})}"
+                            th:text="${item.itemName}"
+                            class="table-link"></a>
                         </td>
 
                         <td class="mob-hid">

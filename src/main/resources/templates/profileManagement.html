@@ -32,7 +32,7 @@
         <div class="filter form-element mar-bottom-5px">
             <form class="flex flx-wrap flex-mob gap-5 just-con-bet manage_filter">
                 <div class="searchContainer">
-                    <input type="text" placeholder="Search by UserName " class="input" id ="searchBox" name="keyword" th:value="${keyword}" autocomplete="off">
+                    <input type="text" placeholder="Search by UserName " class="form-input" id ="searchBox" name="keyword" th:value="${keyword}" autocomplete="off">
                     <input type="hidden" th:value="${searchProfileId}" name="searchProfileId" id ="searchProfileId"/>
                     <input type="hidden" th:value="${meetingId}" name="meetingId" id = "meetingId"/>
                     <input type="hidden" th:value="${churchId}" name="churchId"   id = "churchId"/>
@@ -43,7 +43,7 @@
                 </div>
                 <div>
                     <!--Filter by Status-->
-                    <select class="input" name="status">
+                    <select class="form-input" name="status">
                         <option value="All"   th:selected="${status} == 'All'">All Status</option>
                         <option value="true"  th:selected="${status} == 'true'">Active</option>
                         <option value="false" th:selected="${status} == 'false'">Inactive</option>
@@ -51,7 +51,7 @@
                 </div>
                     <!--Filter by Gender-->
                 <div>
-                        <select class="input" name="gender">
+                        <select class="form-input" name="gender">
                             <option value="All"    th:selected="${gender} == 'All'">All Gender</option>
                             <option value="Male"   th:selected="${gender} == 'Male'">Male</option>
                             <option value="Female" th:selected="${gender} == 'Female'">Female</option>
@@ -59,7 +59,7 @@
                 </div>
                 <!--Filter by service Class-->
                  <div>
-                        <select name="serviceClass" class="input">
+                        <select name="serviceClass" class="form-input">
                             <option value="All"> كل الفصول</option>
                             <th:block th:each="entry : ${serviceClass}">
                                 <option th:value="${entry.key}" th:text="${entry.value}"
@@ -69,7 +69,7 @@
                 </div>
                 <!--Filter by Role-->
                 <div>
-                        <select name="searchRole" class="input">
+                        <select name="searchRole" class="form-input">
                             <option value="All"> كل الصلاحيات</option>
                             <th:block th:each="role : ${roleList}">
                                 <option th:value="${role.id}" th:text="${role.name}"

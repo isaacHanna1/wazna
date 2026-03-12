@@ -499,7 +499,9 @@ body {
 .link { color: var(--youth-primary); font-weight: 500; text-decoration: none; }
 .link:hover { color: var(--youth-secondary); text-decoration: underline; }
 
-
+.btn-primary i{
+  padding: 0 10px;
+}
 /* ════════════════════════════════
    7. CONFIG / AUTH FORMS
    Used by: create-qr, edit-qr,
@@ -1160,10 +1162,10 @@ textarea.form-input {
 .profile_manage .profiles .table td:nth-child(2) { position: sticky; left: 0; background-color: white; z-index: 5; box-shadow: 2px 0 5px rgba(0,0,0,.1); min-width: 150px; }
 .profile_manage .profiles .table th:nth-child(2) { position: sticky; left: 0; z-index: 15; box-shadow: 2px 0 5px rgba(0,0,0,.1); min-width: 150px; }
 .profile_manage .profiles .table thead th { position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 2px -1px rgba(0,0,0,.1); }
-.profile_manage .profiles .table thead th:nth-child(2) { position: sticky; top: 0; left: 0; z-index: 25; box-shadow: 2px 2px 5px rgba(0,0,0,.1); }
+.profile_manage .profiles .table thead th:nth-child(2) { position: sticky; top: 0; left: 0; z-index: 25; box-shadow: 2px 2px 5px rgba(0,0,0,.1); background-color: var(--youth-primary);}
 .profile_manage .profiles .table th:nth-child(1),
 .profile_manage .profiles .table td:nth-child(1) { position: sticky; left: 0; z-index: 10; min-width: 60px; }
-.profile_manage .profiles .table td:nth-child(1) { z-index: 5; }
+.profile_manage .profiles .table td:nth-child(1) { z-index: 5; background-color: var(--youth-primary); color: #fff; font-weight: bold;}
 .profile_manage .profiles .table th:nth-child(2),
 .profile_manage .profiles .table td:nth-child(2) { left: 60px; }
 .profile_manage .profiles .table_btn { width: auto; min-width: 3.5em; padding: 6px 8px; font-weight: bold; font-size: .85em; margin: 2px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
@@ -1180,7 +1182,7 @@ textarea.form-input {
 .profile_manage .side-menu { width: 100px; top: -10px; right: -99px; position: absolute; background-color: var(--youth-primary); z-index: 6; }
 .profile_manage .side-menu ul { list-style: none; padding: 0; margin: 0; }
 .profile_manage .side-menu ul li { border-bottom: 1px solid #fff; }
-.profile_manage .side-menu ul li a { color: #FFF; display: block; padding: 2px 1px; font-size: 10px; }
+.profile_manage .side-menu ul li a { color: #FFF !important; display: block; padding: 2px 1px; font-size: 10px; }
 
 @media (max-width: 768px) {
   .profile_manage .status > .card { width: 100%; margin-bottom: 10px; padding: 15px 0; font-size: .85em; }
@@ -1190,7 +1192,7 @@ textarea.form-input {
   .profile_manage .profiles .table th,
   .profile_manage .profiles .table td { padding: 6px 4px; }
   .profile_manage .profiles .table th:nth-child(1),
-  .profile_manage .profiles .table td:nth-child(1) { min-width: 50px; left: 0; background-color: white; }
+  .profile_manage .profiles .table td:nth-child(1) { min-width: 50px; left: 0; background-color: var(--youth-primary); color: #fff; }
   .profile_manage .profiles .table th:nth-child(2),
   .profile_manage .profiles .table td:nth-child(2) { min-width: 120px; left: 50px; }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.lang.reflect.MalformedParametersException;
@@ -39,19 +40,29 @@ public class MarketController {
     }
 
     @GetMapping("/add")
-    public String createItemView(Model model){
-        model.addAttribute("category" , marketCategoryService.allActiveCategory());
-        model.addAttribute("item",new MarketItem());
+    public String createItemView(Model model) {
+        model.addAttribute("category", marketCategoryService.allActiveCategory());
+        model.addAttribute("item",     new MarketItem());
+        model.addAttribute("isEdit",   false);
+        model.addAttribute("pageNum",  1);
+        model.addAttribute("pageSize", 12);
         return "martketItem";
     }
 
     @PostMapping("/add")
-    public String addItem( @ModelAttribute("item") MarketItem item,  Model model,
-                           @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
-        marketItemService.saveItem(item,image);
-        return "redirect:/market/item/all?pageNum=1&pageSize=10";
-    }
+    public String addItem(
+            @ModelAttribute("item") MarketItem item,
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            @RequestParam(defaultValue = "1")  int pageNum,
+            @RequestParam(defaultValue = "12") int pageSize,
+            RedirectAttributes redirectAttributes) throws IOException {
 
+        marketItemService.saveItem(item, image);
+        redirectAttributes.addFlashAttribute("msg",  "Item added successfully");
+        redirectAttributes.addFlashAttribute("type", "success");
+
+        return String.format("redirect:/market/item/all?pageNum=%d&pageSize=%d", pageNum, pageSize);
+    }
     @GetMapping("/item/all")
     public String getAllItem(Model model ,@RequestParam int pageNum , @RequestParam int pageSize){
         List<MarketItemDto> marketItems =  marketItemService.getMarketItem(pageNum,pageSize);
@@ -98,10 +109,17 @@ public class MarketController {
     }
 
     @GetMapping("/item/{itemId}")
-    public String  getItemView(@PathVariable int itemId , Model model){
-        MarketItem  marketItem = marketItemService.getEntityItemById(itemId);
-        model.addAttribute("item",marketItem);
-        model.addAttribute("category" , marketCategoryService.allActiveCategory());
+    public String getItemView(
+            @PathVariable int itemId,
+            @RequestParam(defaultValue = "1")  int pageNum,
+            @RequestParam(defaultValue = "12") int pageSize,
+            Model model) {
+
+        MarketItem marketItem = marketItemService.getEntityItemById(itemId);
+        model.addAttribute("item",     marketItem);
+        model.addAttribute("category", marketCategoryService.allActiveCategory());
+        model.addAttribute("pageNum",  pageNum);
+        model.addAttribute("pageSize", pageSize);
         return "martketItem";
     }
 

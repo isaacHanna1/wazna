@@ -59,7 +59,7 @@ public class marketItemDaoImp implements MarketItemDao {
     @Override
     public List<MarketItemDto> getMarketItem(int churchId , int meetingId , int pageNum , int pageSize) {
         String sql = """
-                SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status) FROM MarketItem m WHERE 
+                SELECT new com.watad.dto.MarketItemDto(m.id,m.itemName,m.itemDesc , m.points , m.status ,m.stockQuantity) FROM MarketItem m WHERE 
                        m.church.id       = :church_id
                    AND m.meeting.id      = :meeting_id
                 order by m.id desc

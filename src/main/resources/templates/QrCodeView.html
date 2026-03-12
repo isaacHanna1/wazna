@@ -68,7 +68,11 @@
 
                         <td class="td-center mob-hid" th:text="${iterStat.index + 1}"></td>
                         <td>
-                            <a th:href="@{/qr/edit/{id}(id=${qr.id})}">
+                            <a th:href="@{/qr/edit/{id}(id=${qr.id}, 
+                                fromDate=${start}, 
+                                toDate=${end},
+                                pageNum=${pageNum},
+                                pageSize=${pageSize})}">
                                 <span class="cell-truncate" th:text="${qr.code}"></span>
                             </a>
                         </td>

@@ -10,5 +10,12 @@ public interface WaznaReportServices {
 
     public List<DailyWaznaReport> viewReportOfWaznaAddedToUsers(int sprintId, LocalDate startFromDate,
                                                                 LocalDate endToDate, String profileId,
-                                                                String point_source_type, String waznaType , String bounce_type_filter, String service_class);
+                                                                String point_source_type, String waznaType ,
+                                                                String bounce_type_filter, String service_class,
+                                                                int limit , int offset);
+    public int countReports(int sprintId,
+                            LocalDate startFromDate, LocalDate endToDate,
+                            String profileId, String point_source_type,
+                            String waznaType, String bounce_type_filter,
+                            String service_class);
 }

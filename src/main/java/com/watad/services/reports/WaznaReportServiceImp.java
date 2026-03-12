@@ -23,7 +23,8 @@ public class WaznaReportServiceImp implements WaznaReportServices {
     public List<DailyWaznaReport> viewReportOfWaznaAddedToUsers(int sprintId,
                                                                 LocalDate startFromDate,
                                                                 LocalDate endToDate, String profileId,
-                                                                String point_source_type, String waznaType,String bounce_type_filter,String service_class) {
+                                                                String point_source_type, String waznaType,
+                                                                String bounce_type_filter,String service_class,int pageNum , int pageSize) {
         int churchId  = userServices.getLogInUserChurch().getId();
         int meetingId = userServices.getLogInUserMeeting().getId();
 
@@ -35,7 +36,16 @@ public class WaznaReportServiceImp implements WaznaReportServices {
         return waznaReportDao.viewReportOfWaznaAddedToUsers(
                 sprintId, churchId, meetingId,
                 startFromDate, endToDate,
-                profileId, point_source_type, waznaType , bounce_type_filter,service_class
+                profileId, point_source_type, waznaType , bounce_type_filter,service_class,pageNum,pageSize
         );
     }
+
+    @Override
+    public int countReports(int sprintId, LocalDate startFromDate, LocalDate endToDate, String profileId, String point_source_type, String waznaType, String bounce_type_filter, String service_class) {
+        int churchId  = userServices.getLogInUserChurch().getId();
+        int meetingId = userServices.getLogInUserMeeting().getId();
+        return waznaReportDao.countReports(sprintId,churchId,meetingId,startFromDate,endToDate,profileId,point_source_type,waznaType,bounce_type_filter,service_class);
+    }
+
+
 }

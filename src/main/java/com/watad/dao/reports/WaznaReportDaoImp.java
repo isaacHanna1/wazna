@@ -22,7 +22,9 @@ public class WaznaReportDaoImp implements WaznaReportDao {
     public List<DailyWaznaReport> viewReportOfWaznaAddedToUsers(int sprintId, int churchId,
                                                                 int meetingId, LocalDate startFromDate,
                                                                 LocalDate endToDate, String profileId,
-                                                                String point_source_type, String waznaType , String bounce_type_filter , String service_class) {
+                                                                String point_source_type, String waznaType ,
+                                                                String bounce_type_filter , String service_class,
+                                                                int pageNum , int pageSize) {
 
         // Build dynamic SQL with named parameters
         StringBuilder nativeSql = new StringBuilder(
@@ -65,8 +67,7 @@ public class WaznaReportDaoImp implements WaznaReportDao {
             nativeSql.append(" AND p.service_class = :service_class");
 
         }
-        // Debug: Print final SQL
-        System.out.println("Final SQL: " + nativeSql.toString());
+        nativeSql.append(" LIMIT :limit OFFSET :offset ");
 
         try {
             Query query = entityManager.createNativeQuery(nativeSql.toString());
@@ -77,14 +78,8 @@ public class WaznaReportDaoImp implements WaznaReportDao {
             query.setParameter("meetingId", meetingId);
             query.setParameter("startDate", startFromDate.atStartOfDay());
             query.setParameter("endDate", endToDate.atTime(23, 59, 59));
-
-            // Debug: Print parameter values
-            System.out.println("Parameter Values:");
-            System.out.println("  sprintId: " + sprintId);
-            System.out.println("  churchId: " + churchId);
-            System.out.println("  meetingId: " + meetingId);
-            System.out.println("  startDate: " + startFromDate.atStartOfDay());
-            System.out.println("  endDate: " + endToDate.atTime(23, 59, 59));
+            query.setParameter("limit",  pageSize);
+            query.setParameter("offset", (pageNum - 1) * pageSize);
 
             // Set optional parameters only if needed
             if (profileId != null && !profileId.equalsIgnoreCase("ALL") && !profileId.isEmpty()) {
@@ -111,8 +106,7 @@ public class WaznaReportDaoImp implements WaznaReportDao {
                 @SuppressWarnings("unchecked")
             List<Object[]> results = query.getResultList();
 
-            // Debug: Print number of results
-            System.out.println("Number of results from database: " + results.size());
+
 
             // Convert Object[] to DailyWaznaReport
             List<DailyWaznaReport> reports = new ArrayList<>();
@@ -142,5 +136,65 @@ public class WaznaReportDaoImp implements WaznaReportDao {
             e.printStackTrace();
             throw new RuntimeException("Error fetching daily reports: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public int countReports(int sprintId, int churchId, int meetingId,
+                            LocalDate startFromDate, LocalDate endToDate,
+                            String profileId, String point_source_type,
+                            String waznaType, String bounce_type_filter,
+                            String service_class) {
+
+        StringBuilder nativeSql = new StringBuilder(
+                "SELECT COUNT(*) " +
+                        "FROM profile p " +
+                        "JOIN user_point_transaction ut ON p.profile_id = ut.profile_id " +
+                        "LEFT JOIN profile adder ON ut.added_by_profile_id = adder.profile_id " +
+                        "LEFT JOIN user_bonus ub ON ut.bonus_id = ub.bonus_id " +
+                        "WHERE ut.sprint_id = :sprintId " +
+                        "AND ut.church_id = :churchId " +
+                        "AND ut.meeting_id = :meetingId " +
+                        "AND ut.transaction_date BETWEEN :startDate AND :endDate"
+        );
+
+        if (profileId != null && !profileId.equalsIgnoreCase("ALL") && !profileId.isEmpty())
+            nativeSql.append(" AND p.profile_id = :profileId");
+
+        if (point_source_type != null && !point_source_type.equalsIgnoreCase("ALL") && !point_source_type.isEmpty())
+            nativeSql.append(" AND ut.point_source_type = :point_source_type");
+
+        if (waznaType != null && !waznaType.equalsIgnoreCase("ALL") && !waznaType.isEmpty())
+            nativeSql.append(" AND ut.transaction_type = :waznaType");
+
+        if (bounce_type_filter != null && !bounce_type_filter.equalsIgnoreCase("ALL") && !bounce_type_filter.isEmpty())
+            nativeSql.append(" AND ub.bonus_type_id = :bounce_type_filter");
+
+        if (service_class != null && !service_class.equalsIgnoreCase("ALL") && !service_class.isEmpty())
+            nativeSql.append(" AND p.service_class = :service_class");
+
+        Query query = entityManager.createNativeQuery(nativeSql.toString());
+
+        query.setParameter("sprintId",  sprintId);
+        query.setParameter("churchId",  churchId);
+        query.setParameter("meetingId", meetingId);
+        query.setParameter("startDate", startFromDate.atStartOfDay());
+        query.setParameter("endDate",   endToDate.atTime(23, 59, 59));
+
+        if (profileId != null && !profileId.equalsIgnoreCase("ALL") && !profileId.isEmpty())
+            query.setParameter("profileId", Integer.parseInt(profileId));
+
+        if (point_source_type != null && !point_source_type.equalsIgnoreCase("ALL") && !point_source_type.isEmpty())
+            query.setParameter("point_source_type", point_source_type);
+
+        if (waznaType != null && !waznaType.equalsIgnoreCase("ALL") && !waznaType.isEmpty())
+            query.setParameter("waznaType", waznaType);
+
+        if (bounce_type_filter != null && !bounce_type_filter.equalsIgnoreCase("ALL") && !bounce_type_filter.isEmpty())
+            query.setParameter("bounce_type_filter", bounce_type_filter);
+
+        if (service_class != null && !service_class.equalsIgnoreCase("ALL") && !service_class.isEmpty())
+            query.setParameter("service_class", service_class);
+
+        return ((Number) query.getSingleResult()).intValue();
     }
 }

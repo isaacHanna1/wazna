@@ -112,5 +112,32 @@ public class QrCodeDaoImp  implements QrCodeDao{
         }
         return  qrCodeList;
     }
+    @Override
+    public List<QrCode> findInRangeAndBonusType(int churchId, int meetingId,
+                                                LocalDate fromDate, LocalDate toDate, int bonusId) {
+        String hql = """
+        FROM QrCode q
+        WHERE q.meetings.id = :meetingId
+          AND q.church.id = :churchId
+          AND q.validDate >= :fromDate
+          AND q.validDate <= :toDate
+          AND q.bonusType.id = :bonusId
+    """;
+
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("meetingId", meetingId);
+        query.setParameter("churchId", churchId);
+        query.setParameter("fromDate", fromDate);
+        query.setParameter("toDate", toDate);
+        query.setParameter("bonusId", bonusId);
+
+        List<QrCode> qrCodeList = query.getResultList();
+        if (qrCodeList == null) {
+            qrCodeList = new ArrayList<>();
+        }
+
+        return qrCodeList;
+    }
+
 
 }

@@ -21,4 +21,5 @@ public interface QrCodeService {
     QrCode findEntityById(int id);
     QrMeetingDtoResponse findDtoById(int id);
     List<QrCode>  findAll(LocalDate from , LocalDate to);
+    List<QrMeetingDtoResponse>  findInRangeAndBonusType(LocalDate fromDate , LocalDate toDate,int bonusTypeID);
 }

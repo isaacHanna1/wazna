@@ -41,7 +41,6 @@ public class ReportController {
 
         return "dailyReports";
     }
-
     @GetMapping("/generateDailyWaznaReport")
     public String generateWaznaReport(
             @RequestParam int sprintId,

@@ -5,6 +5,7 @@ import com.watad.dto.BonusTypeDto;
 import com.watad.entity.BonusType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -94,6 +95,25 @@ public class BonusTypeDaoImp implements BonusTypeDao {
 
         return query.getResultList();
     }
+
+    @Override
+    public List<BonusType> findAll(int churchId, int meetingId, String evaluationType, boolean active) {
+        String hql = "FROM BonusType b " +
+                "WHERE b.isActive = :active " +
+                "AND b.church.id = :churchId " +
+                "AND b.meetings.id = :meetingId " +
+                "AND b.bonusHead.evaluationType = :evaluationType";
+
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("churchId", churchId);
+        query.setParameter("meetingId", meetingId);
+        query.setParameter("active", active);
+        query.setParameter("evaluationType", evaluationType);
+
+        return query.getResultList();
+    }
+
+
 
     @Override
     public List<BonusTypeDto> findAllActiveAndNotActive(int churchId, int meetingId, String evaluationType) {

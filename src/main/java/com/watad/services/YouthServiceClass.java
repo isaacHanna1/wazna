@@ -1,5 +1,6 @@
 package com.watad.services;
 
+import com.watad.dto.serviceClass.ServiceClassResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,5 +50,21 @@ public class YouthServiceClass {
         int serviceStageId = userServices.getLogedInUserProfile().getServiceStage().getId();
         return this.getServicesClassByStage(serviceStageId);
     }
+
+    public List<ServiceClassResponse> findAll() {
+        int serviceStageId = userServices.getLogedInUserProfile().getServiceStage().getId();
+        Map<Integer, String> servicesClassByStage = getServicesClassByStage(serviceStageId);
+
+        List<ServiceClassResponse> responseList = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : servicesClassByStage.entrySet()) {
+            ServiceClassResponse response = new ServiceClassResponse();
+            response.setKey(entry.getKey());
+            response.setValue(entry.getValue());
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
+
 
 }

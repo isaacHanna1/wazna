@@ -38,7 +38,7 @@
 
         @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
         @JoinColumn( name = "church_id")
-        private Church church ;
+            private Church church ;
 
         @Column(name = "is_active")
         private boolean active;

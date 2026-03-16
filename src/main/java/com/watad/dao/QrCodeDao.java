@@ -16,5 +16,5 @@ public interface QrCodeDao {
      void update(QrCode qrCode);
      QrCode findById(int id, int churchId,int meetingId);
      List<QrCode> findAll(LocalDate from , LocalDate to ,int churchId , int meetingId);
-
+     List<QrCode> findInRangeAndBonusType (int churchId , int meetingId , LocalDate fromDate , LocalDate toDate , int bonusId);
 }

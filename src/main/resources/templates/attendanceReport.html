@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance Report</title>
+
+  <link th:href="@{/css/styles.css}"          rel="stylesheet"/>
+  <link th:href="@{/css/attendanceReport.css}" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+
+<div id="toast-container" class="toast-container"></div>
+<div th:insert="~{fragments/navbar :: mainNavbar}"></div>
+
+<div class="report-page">
+
+  <!-- ── Page Header ── -->
+  <div class="report-page-header no-print">
+    <div class="report-page-header-icon">
+      <i class="fas fa-chart-bar"></i>
+    </div>
+    <div>
+      <h1>Attendance Report</h1>
+      <p>Date Range &rarr; Bonus Type &rarr; QR Code &rarr; Generate</p>
+    </div>
+  </div>
+
+  <!-- ══════════════ STEPS BAR ══════════════ -->
+  <div class="steps-bar no-print">
+    <div class="rpt-step active" id="rptStep1">
+      <div class="rpt-step-circle">1</div>
+      <span class="rpt-step-label">Date Range</span>
+    </div>
+    <div class="rpt-step-line" id="rptLine1"></div>
+
+    <div class="rpt-step" id="rptStep2">
+      <div class="rpt-step-circle">2</div>
+      <span class="rpt-step-label">Bonus Type</span>
+    </div>
+    <div class="rpt-step-line" id="rptLine2"></div>
+
+    <div class="rpt-step" id="rptStep3">
+      <div class="rpt-step-circle">3</div>
+      <span class="rpt-step-label">QR Code</span>
+    </div>
+    <div class="rpt-step-line" id="rptLine3"></div>
+
+    <div class="rpt-step" id="rptStep4">
+      <div class="rpt-step-circle">4</div>
+      <span class="rpt-step-label">Report</span>
+    </div>
+  </div>
+
+  <!-- ══════════════ FILTER CARD ══════════════ -->
+  <div class="rpt-card no-print">
+    <div class="rpt-card-header">
+      <i class="fas fa-filter"></i>
+      <h2>Filter Options</h2>
+    </div>
+    <div class="rpt-card-body">
+
+      <!-- Row 1: Date range — NO apply button, triggers on change -->
+      <div class="filter-grid-date">
+
+        <div class="rpt-form-group">
+          <label class="rpt-form-label" for="rptDateFrom">
+            <i class="fas fa-calendar-alt"></i> From
+          </label>
+          <input type="date" class="rpt-form-input" id="rptDateFrom"/>
+        </div>
+
+        <div class="rpt-date-sep">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+
+        <div class="rpt-form-group">
+          <label class="rpt-form-label" for="rptDateTo">
+            <i class="fas fa-calendar-alt"></i> To
+          </label>
+          <input type="date" class="rpt-form-input" id="rptDateTo"/>
+        </div>
+
+      </div><!-- /date row -->
+
+      <!-- date validation message -->
+      <div id="rptDateError" class="rpt-alert rpt-alert-error" style="display:none; margin-top:.5rem;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="rptDateErrorText"></span>
+      </div>
+
+      <hr class="filter-divider"/>
+
+      <!-- Row 2: Bonus Type + QR Code + Service Class -->
+      <div class="filter-grid-4">
+
+        <!-- Bonus Type -->
+        <div class="rpt-form-group">
+          <label class="rpt-form-label" for="rptBonusTypeSelect">
+            <i class="fas fa-star"></i> Bonus Type
+          </label>
+          <div class="rpt-field-wrap">
+            <select class="rpt-form-input" id="rptBonusTypeSelect" disabled>
+              <option value="">— Select date range first —</option>
+            </select>
+            <div class="rpt-field-spinner" id="rptBonusSpinner"></div>
+          </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="rpt-form-group">
+          <label class="rpt-form-label" for="rptQrSelect">
+            <i class="fas fa-qrcode"></i> QR Code / Meeting
+          </label>
+          <div class="rpt-field-wrap">
+            <select class="rpt-form-input" id="rptQrSelect" disabled>
+              <option value="">— Select bonus type first —</option>
+            </select>
+            <div class="rpt-field-spinner" id="rptQrSpinner"></div>
+          </div>
+        </div>
+
+        <!-- Service Class filter -->
+        <div class="rpt-form-group">
+          <label class="rpt-form-label" for="rptServiceClassFilter">
+            <i class="fas fa-layer-group"></i> Service Class
+          </label>
+          <div class="rpt-field-wrap">
+            <select class="rpt-form-input" id="rptServiceClassFilter" disabled>
+              <option value="">— All classes —</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Role filter — hardcoded: All / خدام / مخدومين -->
+        <div class="rpt-form-group">
+          <label class="rpt-form-label" for="rptRoleFilter">
+            <i class="fas fa-users-cog"></i> Role
+          </label>
+          <div class="rpt-field-wrap">
+            <select class="rpt-form-input" id="rptRoleFilter">
+              <option value="">الكل</option>
+              <option value="ROLE_SERVER">خدام</option>
+              <option value="ROLE_YOUTH">مخدومين</option>
+            </select>
+          </div>
+        </div>
+
+      </div><!-- /row2 -->
+
+      <!-- QR info bar -->
+      <div id="rptQrInfo" class="rpt-alert rpt-alert-info" style="display:none;">
+        <i class="fas fa-info-circle"></i>
+        <span id="rptQrInfoText"></span>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="rpt-action-row">
+        <button class="rpt-btn-generate" id="rptGenerateBtn" disabled>
+          <i class="fas fa-file-alt"></i> Generate Report
+        </button>
+        <button class="rpt-btn-secondary" id="rptExportBtn" disabled>
+          <i class="fas fa-file-csv"></i> Export CSV
+        </button>
+        <button class="rpt-btn-secondary" id="rptPrintBtn" disabled>
+          <i class="fas fa-print"></i> Print
+        </button>
+      </div>
+
+    </div><!-- /rpt-card-body -->
+  </div><!-- /filter card -->
+
+
+  <!-- ══════════════ REPORT OUTPUT CARD ══════════════ -->
+  <div class="rpt-card">
+    <div class="rpt-card-header">
+      <i class="fas fa-table"></i>
+      <h2 id="rptReportTitle">Report</h2>
+    </div>
+    <div class="rpt-card-body">
+
+      <!-- 1. Empty state -->
+      <div class="rpt-state-box" id="rptEmptyState">
+        <i class="fas fa-inbox" style="color:var(--youth-accent);"></i>
+        <p>
+          Pick a <strong>date range</strong>, select a
+          <strong>bonus type</strong> and a <strong>QR code</strong>,
+          then click <strong>Generate Report</strong>.
+        </p>
+      </div>
+
+      <!-- 2. Loading -->
+      <div class="rpt-state-box" id="rptLoadingState" style="display:none;">
+        <i class="fas fa-circle-notch fa-spin" style="color:var(--youth-primary); opacity:1;"></i>
+        <p>Loading attendance data…</p>
+      </div>
+
+      <!-- 3. Error -->
+      <div id="rptErrorState" class="rpt-alert rpt-alert-error" style="display:none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="rptErrorText">An error occurred.</span>
+      </div>
+
+      <!-- 4. Report content -->
+      <div id="rptContent" style="display:none;">
+
+        <div class="rpt-stats-grid" id="rptStatsGrid"></div>
+
+        <div class="rpt-search-row no-print">
+          <div class="rpt-search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              class="rpt-search-input"
+              id="rptSearchInput"
+              placeholder="Search by name, phone, service…"
+            />
+          </div>
+          <span class="rpt-count-label" id="rptCountLabel"></span>
+        </div>
+
+        <div class="rpt-table-wrap">
+          <table class="rpt-table">
+            <thead>
+              <tr>
+                <th style="width:46px;">#</th>
+                <th style="text-align:left; min-width:180px;">Full Name</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Service Class</th>
+                <th>Status</th>
+                <th>Scanned At</th>
+              </tr>
+            </thead>
+            <tbody id="rptTbody"></tbody>
+          </table>
+        </div>
+
+      </div><!-- /rptContent -->
+
+    </div>
+  </div><!-- /report card -->
+
+</div><!-- /report-page -->
+
+<script th:src="@{/js/nav.js}"></script>
+<script th:src="@{/js/jCommon/Common.js}"></script>
+<script th:src="@{/js/attendanceReport.js}"></script>
+
+</body>
+</html>

@@ -177,6 +177,21 @@ public class QrCodeServiceImp implements  QrCodeService{
         return  qrCodeDao.findAll(from , to,churchId,meetingID);
     }
 
+    @Override
+    public List<QrMeetingDtoResponse> findInRangeAndBonusType(LocalDate fromDate, LocalDate toDate, int bonusTypeID) {
+        int churchId            = userServices.getLogInUserChurch().getId();
+        int meetingID           = userServices.getLogInUserMeeting().getId();
+        return  qrCodeDao.findInRangeAndBonusType(churchId,meetingID,fromDate,toDate,bonusTypeID)
+                .stream()
+                .map(qrCode -> {
+                    QrMeetingDtoResponse qrMeetingDtoResponse = new QrMeetingDtoResponse();
+                    qrMeetingDtoResponse.setId(qrCode.getId());
+                    qrMeetingDtoResponse.setCode(qrCode.getCode());
+                    qrMeetingDtoResponse.setDescription(qrCode.getDescription());
+                    return qrMeetingDtoResponse;
+                }).toList();
+    }
+
 
     @Override
     public QRCodeDto findQrCodeByCode(String code) {

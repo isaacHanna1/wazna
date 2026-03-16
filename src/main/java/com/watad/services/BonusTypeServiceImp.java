@@ -2,6 +2,7 @@ package com.watad.services;
 
 import com.watad.dao.BonusTypeDao;
 import com.watad.dto.BonusTypeDto;
+import com.watad.dto.bonusType.BonusTypeResponse;
 import com.watad.entity.BonusType;
 import com.watad.entity.Church;
 import com.watad.entity.Meetings;
@@ -34,11 +35,38 @@ public class BonusTypeServiceImp implements  BonusTypeService{
         int meetingId       = userServices.getLogInUserMeeting().getId();
         return bonusTypeDao.findAll(churchId,meetingId);
     }
+
+    @Override
+    public List<BonusTypeResponse> findAll(String evaluationType, boolean active) {
+        int churchId        = userServices.getLogInUserChurch().getId();
+        int meetingId       = userServices.getLogInUserMeeting().getId();
+        return  bonusTypeDao.findAll(churchId,meetingId,evaluationType,active)
+                .stream()
+                .map(bonusType -> {
+                    BonusTypeResponse bonusTypeResponse = new BonusTypeResponse();
+                    bonusTypeResponse.setId(bonusType.getId());
+                    bonusTypeResponse.setDescription(bonusType.getDescription());
+                    return bonusTypeResponse;
+                }).toList();
+    }
+
     @Override
     public List<BonusTypeDto> findAll(String evaluationType) {
         int churchId        = userServices.getLogInUserChurch().getId();
         int meetingId       = userServices.getLogInUserMeeting().getId();
         return bonusTypeDao.findAll(churchId,meetingId,evaluationType);
+    }
+
+    @Override
+    public List<BonusTypeResponse> findActiveBonus(String evaluationType) {
+        return findAll(evaluationType)
+                .stream()
+                .map(bonusTypeDto -> {
+                    BonusTypeResponse bonusTypeResponse = new BonusTypeResponse();
+                    bonusTypeResponse.setId(bonusTypeDto.getId());
+                    bonusTypeResponse.setDescription(bonusTypeDto.getDescription());
+                    return  bonusTypeResponse;
+                }).toList();
     }
 
 

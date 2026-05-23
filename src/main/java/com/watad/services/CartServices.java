@@ -7,11 +7,15 @@ import com.watad.dto.cart.CartRequest;
 import com.watad.dto.cart.CartRespond;
 import com.watad.entity.*;
 import com.watad.enumValues.CartStatus;
+import com.watad.exceptions.ApiException;
+import com.watad.exceptions.ErrorCode;
 import com.watad.exceptions.NotEnoughPointsException;
 import com.watad.exceptions.OutOFStock;
 import com.watad.repo.CartRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartServices {
 
     private final CartRepository cartRepository;
@@ -35,10 +40,14 @@ public class CartServices {
         int sprintId        = userServices.getActiveSprint().getId();
         double reqPoints    = item.getPoints() * cartReq.getItemCount();
 
+
+        log.info("stock quantity {} ",item.getStockQuantity());
+        log.info("cart item count  {} ",cartReq.getItemCount());
         // ADD THIS
         if (item.getStockQuantity() < cartReq.getItemCount()) {
-            throw new OutOFStock("الكمية المطلوبة غير متوفرة");
+            throw new ApiException(ErrorCode.OUT_OF_STOCK, HttpStatus.BAD_REQUEST);
         }
+
 
         if (!checkBalance(profileId, sprintId, reqPoints)) {
             throw new NotEnoughPointsException("ليس هناك وزنات كافية لاتمام عملية الشراء");

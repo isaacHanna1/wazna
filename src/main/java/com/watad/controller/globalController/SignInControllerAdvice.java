@@ -1,17 +1,13 @@
 package com.watad.controller.globalController;
 
 
-import com.watad.entity.User;
-import com.watad.exceptions.ProfileException;
 import com.watad.security.CustomUserDetails;
 import com.watad.services.CustomUserDetailsService;
 import com.watad.services.YouthRankService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice

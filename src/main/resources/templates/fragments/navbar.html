@@ -298,6 +298,24 @@
           </ul>
         </li>
 
+        <!-- Quiz -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('SERVER','CLASS_LEADER','SERVICE_LEADER','TREASURER')">
+          <span class="nav-link nav-link--parent">
+            <span class="menu-name">Register</span>
+            <svg class="sub-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </span>
+          <ul class="sub-sub-menu">
+            <li class="nav-item">
+              <a th:href="@{/child/register}" class="nav-link">
+                <span class="menu-name">Quiz</span>
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul><!-- /.sub-menu -->
     </li>
 

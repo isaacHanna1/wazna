@@ -97,8 +97,6 @@ public class AuthController {
         model.addAttribute("profile",profile);
         model.addAttribute(("dioceses"),diocesesService.findAll());
         model.addAttribute("stages",serviceStagesService.findAll());
-        //model.addAttribute("church",churchService.findAll());
-        //model.addAttribute("meeting",meetingService.findAll());
     }
 
     @InitBinder

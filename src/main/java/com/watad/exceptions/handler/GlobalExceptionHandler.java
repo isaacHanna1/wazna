@@ -1,10 +1,7 @@
 package com.watad.exceptions.handler;
 
 import com.watad.dto.response.ApiErrorResponse;
-import com.watad.exceptions.NotEnoughPointsException;
-import com.watad.exceptions.OutOFStock;
-import com.watad.exceptions.ProfileException;
-import com.watad.exceptions.QrCodeException;
+import com.watad.exceptions.*;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +21,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(QrCodeException.class)
     public ResponseEntity<ApiErrorResponse> hanldeQRException(QrCodeException ex){
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse("QR ERROR ", ex.getMessage() ,  HttpStatus.BAD_REQUEST.value());
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse("QR ERROR ", ex.getMessage() ,  HttpStatus.BAD_REQUEST.value(), System.currentTimeMillis());
         return  new ResponseEntity<>(apiErrorResponse,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<ApiErrorResponse> hanldeSqlIntegrityConstraint(SQLIntegrityConstraintViolationException ex){
         String message  = detemineTheMessage(ex);
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse("ERROR ", message ,  HttpStatus.BAD_REQUEST.value());
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse("ERROR ", message ,  HttpStatus.BAD_REQUEST.value(), System.currentTimeMillis());
         return  new ResponseEntity<>(apiErrorResponse,HttpStatus.BAD_REQUEST);
     }
 
@@ -59,17 +56,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         model.addAttribute("errorMessage", "Profile Error: " + ex.getMessage());
         return "error";
     }
-    @ExceptionHandler(OutOFStock.class)
-    public ResponseEntity<ApiErrorResponse> handleOutOfStock(OutOFStock ex){
-
-        ApiErrorResponse response =
-                new ApiErrorResponse(
-                        "OUT_OF_STOCK",
-                        ex.getMessage(),
-                        HttpStatus.CONFLICT.value()
-                );
-
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
+        ApiErrorResponse response = new ApiErrorResponse(
+                ex.getErrorCode().getCode(),
+                ex.getMessage(),
+                ex.getHttpStatus().value(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(ex.getHttpStatus()).body(response);
     }
     @ExceptionHandler(NotEnoughPointsException.class)
     public ResponseEntity<ApiErrorResponse> handleNotEnoughPoints(NotEnoughPointsException ex){
@@ -78,7 +73,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 new ApiErrorResponse(
                         "NOT_ENOUGH_POINTS",
                         ex.getMessage(),
-                        HttpStatus.BAD_REQUEST.value()
+                        HttpStatus.BAD_REQUEST.value(),
+                        System.currentTimeMillis()
                 );
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -90,7 +86,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of(
                         "title", "Conflict",
-                        "message", "تم تعديل البيانات من مستخدم آخر. حاول مرة أخرى."
+                        "message", "ديل البيانات من مستخدم آخر. حاول مرة أخرى."
                 ));
     }
 }

@@ -3,13 +3,12 @@ const userList       = document.getElementById("suggestUsers");
 const btn_attendance = document.getElementById("attendance-btn");
 const baseURL        = getBaseUrl();
 
-// ── FIX: exclude meetingCode select so native dropdown opens correctly ──
 document.addEventListener("click", function (event) {
   const meetingCode = document.getElementById("meetingCode");
   if (
     !userList.contains(event.target) &&
     !searchInput.contains(event.target) &&
-    event.target !== meetingCode        // ← was missing, caused select to not open
+    event.target !== meetingCode
   ) {
     userList.innerHTML     = "";
     userList.style.display = "none";
@@ -96,19 +95,25 @@ async function markPersent() {
   try {
     btn_attendance.disabled  = true;
     const btnInnerHtml       = btn_attendance.innerHTML;
-    btn_attendance.innerHTML = `<div class="loading-spinner"></div>Recording Attendance...`;
+    btn_attendance.innerHTML = `<div class="loading-spinner"></div>Recording…`;
 
     let meetingCode = document.getElementById("meetingCode").value;
     if (meetingCode === "") {
-        
-    Toast.error('عملية خاطئة', 'كود الاجتماع فارغ! ');
+      Toast.error('عملية خاطئة', 'كود الاجتماع فارغ! ');
       btn_attendance.innerHTML = btnInnerHtml;
       btn_attendance.disabled  = false;
       return;
     }
-
     let userId     = document.getElementById("user_Id").value;
-    const response = await fetch(baseURL + `/api/scanner/${meetingCode}/${userId}`);
+    let manualTime = document.getElementById("manualTime")?.value;
+
+    let url = baseURL + `/api/scanner/${meetingCode}/${userId}`;
+    if (manualTime) {
+      url += `?time=${manualTime}`;
+    }
+    console.log("base URL ", url);
+    const response = await fetch(url);
+
     if (!response.ok) {
       const errorData          = await response.json();
       btn_attendance.innerHTML = btnInnerHtml;
@@ -120,11 +125,11 @@ async function markPersent() {
     btn_attendance.innerHTML = btnInnerHtml;
     Toast.success("Attendance recorded successfully!",
         ` ${user.firstName} has been marked present and earned ${user.points} Wazna points.`);
-     } catch (error) {
-        Toast.error('عملية خاطئة', error.message);
-        btn_attendance.disabled = false;
-        return;
-    }
+  } catch (error) {
+    Toast.error('عملية خاطئة', error.message);
+    btn_attendance.disabled = false;
+    return;
+  }
   btn_attendance.disabled = false;
 }
 
@@ -140,7 +145,7 @@ function updateAttendanceTable(user) {
     <td class="table-cell hidden-mobile">${rowNum}</td>
     <td class="table-cell hidden-mobile">${user.userId}</td>
     <td class="table-cell">${user.firstName} ${user.lastName}</td>
-    <td class="table-cell">${user.points}</td>
+    <td class="table-cell"><span>+${user.points}</span></td>
     <td class="table-cell">${user.balance}</td>
     <td class="table-cell hidden-mobile">${currentTime}</td>
   `;
@@ -153,13 +158,13 @@ function displayEmptyUser() {
   userDisplay.className = "user-display empty";
   userDisplay.innerHTML = `
     <div class="empty-state">
-      <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
         <circle cx="9" cy="7" r="4"/>
         <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
-      <p>Search for a user to display their information</p>
+      <p>Select a user to continue</p>
     </div>
   `;
 }

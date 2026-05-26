@@ -39,5 +39,14 @@ public class ManaulAttandanceController {
         model.addAttribute("isChildRegisterionExists", isChildRegisterionExists);
         return "manualAttandance";
     }
+    @GetMapping("/overrideAttendance")
+    public  String overrideAttendance(Model model) {
+
+        List<String> data       = qrCodeService.getActiveByDate(timeUtil.now_localDate());
+
+        model.addAttribute("codes",data);
+
+        return "attendanceOverride";
+    }
 
 }

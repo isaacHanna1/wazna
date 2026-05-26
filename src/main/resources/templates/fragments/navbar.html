@@ -50,7 +50,7 @@
 
     <!-- Profile -->
     <li class="nav-item protected-content">
-      <a th:href="@{/profile}" class="nav-link logout-button">
+      <a th:href="@{/profile}" class="nav-link ">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -88,13 +88,18 @@
       <ul class="sub-menu">
         <li class="nav-item protected-content"
             sec:authorize="hasAnyRole('CLASS_LEADER','SERVICE_LEADER')">
-          <a th:href="@{/youth/point/add}" class="nav-link logout-button">
+          <a th:href="@{/youth/point/add}" class="nav-link ">
             <span class="menu-name">Add Wazna</span>
           </a>
         </li>
         <li class="nav-item protected-content">
-          <a th:href="@{/manualAttandance}" class="nav-link logout-button">
-            <span class="menu-name">Add Attendance</span>
+          <a th:href="@{/manualAttandance}" class="nav-link ">
+            <span class="menu-name">Attendance</span>
+          </a>
+        </li>
+        <li class="nav-item protected-content">
+          <a th:href="@{/overrideAttendance}" class="nav-link ">
+            <span class="menu-name">Missed Scans</span>
           </a>
         </li>
       </ul>
@@ -111,12 +116,12 @@
       </a>
       <ul class="sub-menu">
         <li class="nav-item protected-content">
-          <a th:href="@{/youth/point/transfer}" class="nav-link logout-button">
+          <a th:href="@{/youth/point/transfer}" class="nav-link ">
             <span class="menu-name">Transfer Wazna</span>
           </a>
         </li>
         <li class="nav-item protected-content">
-          <a th:href="@{/youth/point/details}" class="nav-link logout-button">
+          <a th:href="@{/youth/point/details}" class="nav-link ">
             <span class="menu-name">History</span>
           </a>
         </li>

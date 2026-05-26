@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 
 @Component
@@ -19,5 +20,9 @@ public class TimeUtil {
 
     public LocalDate now_localDate(){
         return LocalDate.now(ZoneId.of(appTimeZone));
+    }
+
+    public LocalTime now_localTime(){
+        return LocalTime.now(ZoneId.of(appTimeZone));
     }
 }

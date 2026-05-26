@@ -1,11 +1,13 @@
 package com.watad.controller;
 
 
+import com.watad.Common.TimeUtil;
 import com.watad.dto.PointsSummaryDTO;
 import com.watad.entity.User;
 import com.watad.exceptions.QrCodeException;
 import com.watad.services.AttendanceProcessingService;
 import com.watad.services.UserServices;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,15 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class ScanController {
 
     private final  UserServices userServices;
     private final AttendanceProcessingService processingService ;
-
-    public ScanController(UserServices userServices, AttendanceProcessingService processingService) {
-        this.userServices = userServices;
-        this.processingService = processingService;
-    }
+    private final TimeUtil timeUtil;
 
     @GetMapping("/scan")
     public String scanPage(Model model){
@@ -39,12 +38,14 @@ public class ScanController {
     }
 
     @GetMapping("/scan/{code}")
-    public String checkCodeWeb(@PathVariable String code,
+    public String attendance(@PathVariable String code,
                                Model model) {
         try {
             User user;
                 user = userServices.logedInUser();
-            PointsSummaryDTO pointsSummaryDTO = processingService.attendanceProcessing(user, code);
+
+                // when user scan with mobile so the date must be Now not entered manual
+            PointsSummaryDTO pointsSummaryDTO = processingService.attendanceProcessing(user, code,timeUtil.now_localDate(),timeUtil.now_localTime());
             model.addAttribute("points", pointsSummaryDTO.getPoints());
             model.addAttribute("balance", pointsSummaryDTO.getBalance());
             return "pointsNotification";

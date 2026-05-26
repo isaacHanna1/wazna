@@ -5,13 +5,22 @@ import com.watad.Common.YouthMeetingCalcPoints;
 import com.watad.dto.PointsSummaryDTO;
 import com.watad.entity.*;
 import com.watad.exceptions.QrCodeException;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 
 @Service
+@AllArgsConstructor
 public  class AttendanceProcessingServiceImp implements AttendanceProcessingService{
 
+    private static final Logger log = LoggerFactory.getLogger(AttendanceProcessingServiceImp.class);
     private final AttendanceService attendanceService;
     private final QrCodeService qrCodeService;
     private final BonusTypeService bonusTypeService;
@@ -20,30 +29,27 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
     private final UserPointTransactionService userPointTransactionService;
 
 
-    public AttendanceProcessingServiceImp(AttendanceService attendanceService, QrCodeService qrCodeService,BonusTypeService bonusTypeService,SprintDataService sprintDataService ,UserBounsService userBounsService , UserPointTransactionService userPointTransactionService) {
-        this.attendanceService = attendanceService;
-        this.qrCodeService = qrCodeService;
-        this.bonusTypeService = bonusTypeService;
-        this.sprintDataService = sprintDataService;
-        this.userBounsService = userBounsService;
-        this.userPointTransactionService = userPointTransactionService;
-    }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PointsSummaryDTO attendanceProcessing(User user , String code) {
+    public PointsSummaryDTO attendanceProcessing(User user, String code, LocalDate theTakenDate, LocalTime scannedAt) {
+
         // Validation is based on Egypt local time.
         // The ZoneId is applied in the isValid() method,
         // and the Attendance class also checks the scannedAt time accordingly.
-        boolean isvalid = qrCodeService.isValid(code);
-               if(isvalid){
+
+        System.out.println("Im called ");
+        boolean isValid = qrCodeService.isValid(code,theTakenDate,scannedAt);
+               if(isValid){
                 QrCode qrCode = qrCodeService.findByCode(code);
                 if(qrCode.getMeetings().getId() != user.getProfile().getMeetings().getId()){
                     throw new QrCodeException("Sorry, this QR Code is not linked to your current meeting.");
                 }
                 Attendance attendance = new Attendance();
+                System.out.println("the scanned time is "+scannedAt);
+                // to handle manual attendance
+                attendance.setScannedAt(scannedAt);
                 handleAttendanceService(attendance,user,qrCode);
-                UserBonus userBonus = handleUserBounsService(qrCode,attendance,user);
+                UserBonus userBonus = handleUserBonusService(qrCode,attendance,user);
                 double addPoint     = userBonus.getBouncePoint();
                 handleUserPointTran(user , addPoint ,qrCode.getBonusType().getDescription(),userBonus);
                 Profile profile         = user.getProfile();
@@ -63,19 +69,20 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         attendanceService.save(attendance);
     }
 
-    private UserBonus handleUserBounsService(QrCode qrCode,Attendance attendance ,User user){
+    private UserBonus handleUserBonusService(QrCode qrCode,Attendance attendance ,User user){
 
         int bonusTypeId = qrCode.getBonusType().getId();
         BonusType bonusType = bonusTypeService.findById(bonusTypeId);
         Profile profile     = user.getProfile();
-        int curchId         = profile.getChurch().getId();
+        int churchId         = profile.getChurch().getId();
         int meetingID       = profile.getMeetings().getId();
-        SprintData sprintData = sprintDataService.getSprintDataByIsActive(curchId,meetingID);
+        SprintData sprintData = sprintDataService.getSprintDataByIsActive(churchId,meetingID);
         if (bonusType == null || sprintData == null) {
             System.out.println("User or QR code cannot be null or empty");
             throw new IllegalArgumentException("Internal Error Happened !");
 
         }
+        log.info("the scanned at is {} ",attendance.getScannedAt());
             int points = bonusType.getPoint();
             double addedPoint = YouthMeetingCalcPoints.calculatePoints(qrCode.getValidStart(), qrCode.getValidEnd(), points, attendance.getScannedAt());
             UserBonus userBonus = new UserBonus(user.getProfile(), bonusType, addedPoint, sprintData, user, sprintData.getPointPrice(), bonusType.getPoint() , qrCode.getMeetings());
@@ -104,6 +111,7 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         pointTransaction.setUserBonus(userBonus);
         userPointTransactionService.save(pointTransaction);
     }
+
 
 
 }

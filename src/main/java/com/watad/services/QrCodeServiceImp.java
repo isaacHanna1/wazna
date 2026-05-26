@@ -12,6 +12,7 @@ import com.watad.entity.Church;
 import com.watad.entity.Meetings;
 import com.watad.entity.QrCode;
 import com.watad.exceptions.QrCodeException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class QrCodeServiceImp implements  QrCodeService{
 
     private final QrCodeDao qrCodeDao;
@@ -44,18 +46,18 @@ public class QrCodeServiceImp implements  QrCodeService{
 
 
     @Override
-    public boolean isValid(String code) {
+    public boolean isValid(String code , LocalDate theTakenDate ,LocalTime scannedAt) {
 
         QrCode qrCode       = findByCode(code);
         // The server is hosted in Korea, but the application runs in Egypt.
         // We use the Egypt time zone to ensure correct date and time handling.
         ZoneId egyptZone    = ZoneId.of("Africa/Cairo");
         LocalDateTime now   = LocalDateTime.now(egyptZone);
-
-        LocalDate theTakenDate          = now.toLocalDate();
-        LocalTime theTakenTime          = now.toLocalTime();
+        log.info("the time taken is {} ",scannedAt);
+        log.info("valid from {}",qrCode.getValidStart());
+        log.info("valid to {}",qrCode.getValidEnd());
         boolean   isValidDate           = qrCode.getValidDate().equals(theTakenDate);
-        boolean   isValidTime           = theTakenTime.isAfter(qrCode.getValidStart()) && theTakenTime.isBefore(qrCode.getValidEnd());
+        boolean   isValidTime           = scannedAt.isAfter(qrCode.getValidStart()) && scannedAt.isBefore(qrCode.getValidEnd());
 
         if(!isValidDate)
             throw new QrCodeException("The Event Not Today Dear");

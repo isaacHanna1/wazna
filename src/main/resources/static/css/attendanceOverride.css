@@ -1,6 +1,6 @@
 /* ── Reset ──────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-/* */
+/* added to git */
 /* ── Tokens ─────────────────────────────────────────────── */
 :root {
   --font:  'Plus Jakarta Sans', system-ui, sans-serif;

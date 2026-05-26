@@ -248,7 +248,6 @@ function appendHistoryRow(item) {
   recordCount.textContent = `${totalRows} record${totalRows !== 1 ? "s" : ""} saved`;
 }
 
-// ── Full Reset: Only triggered when clicking the explicit Reset Button ──
 function resetForm() {
   document.getElementById("meetingSelect").value   = "";
   document.getElementById("meetingDate").value     = "";

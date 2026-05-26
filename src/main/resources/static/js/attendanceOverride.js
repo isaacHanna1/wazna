@@ -5,8 +5,7 @@
  * Submits records instantly, logs successes to the table, and preserves meeting data for re-use.
  */
 
-// add to git 
-
+// 
 // ── State ────────────────────────────────────────────────
 let selectedUser   = null;   
 let rowCounter     = 1;      // Tracks row numbers for the log table

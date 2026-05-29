@@ -22,7 +22,7 @@ public class BonusTypeRestController {
 
     @GetMapping("/bonusType")
     public List<BonusTypeDto> getBonusType(@RequestParam(defaultValue = "All") String evaluationType){
-        return  bonusTypeService.findAll(evaluationType);
+        return  bonusTypeService.findAllByAttendance(evaluationType,"false");
     }
     @GetMapping("/bonusType/All")
     public List<BonusTypeDto> getBonusTypeActiveAndNotActive(@RequestParam(defaultValue = "All") String evaluationType){

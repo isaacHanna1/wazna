@@ -71,12 +71,14 @@ public class QrCodeServiceImp implements  QrCodeService{
         int churchId            = userServices.getLogInUserChurch().getId();
         int meetingID           = userServices.getLogInUserMeeting().getId();
         List<QrCode> codes      = qrCodeDao.getActiveByDate(localDate,churchId,meetingID);
+        log.info("the meeting id is {} ", meetingID);
         List<String> codeDesc   = new ArrayList<>();
         if(!codes.isEmpty()){
             for(QrCode code : codes){
                 codeDesc.add(code.getCode());
             }
         }
+        log.info("the code desc {} ", codeDesc);
         return codeDesc;
     }
 

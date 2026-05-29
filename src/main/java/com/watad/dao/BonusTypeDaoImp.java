@@ -50,7 +50,7 @@ public class BonusTypeDaoImp implements BonusTypeDao {
     public List<BonusTypeDto> findAll(int churchId , int meetingId) {
         LocalDate now               = timeUtil.now_localDate();
         TypedQuery<BonusTypeDto> query = entityManager.createQuery(
-                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description ,b.point,b.isActive,b.activeFrom,b.activeTo)  FROM BonusType b " +
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description ,b.point,b.isActive,b.physicalAttendanceRequired,b.activeFrom,b.activeTo)  FROM BonusType b " +
                         "WHERE b.activeFrom <= :now " +
                         " AND (b.activeTo IS NULL OR :now <= b.activeTo)"+
                         " AND b.church.id =: churchId"+
@@ -68,7 +68,7 @@ public class BonusTypeDaoImp implements BonusTypeDao {
         LocalDate now = timeUtil.now_localDate();
 
         StringBuilder jpql = new StringBuilder(
-                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive, b.activeFrom, b.activeTo) " +
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive,b.physicalAttendanceRequired ,b.activeFrom, b.activeTo) " +
                         "FROM BonusType b JOIN b.bonusHead bh " +
                         "WHERE b.activeFrom <= :now " +
                         "AND (b.activeTo IS NULL OR :now <= b.activeTo) " +
@@ -120,7 +120,7 @@ public class BonusTypeDaoImp implements BonusTypeDao {
         LocalDate now = timeUtil.now_localDate();
 
         StringBuilder jpql = new StringBuilder(
-                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive, b.activeFrom, b.activeTo) " +
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive,b.physicalAttendanceRequired ,b.activeFrom, b.activeTo) " +
                         "FROM BonusType b JOIN b.bonusHead bh " +
                         "WHERE "+
                         "    b.church.id = :churchId " +
@@ -160,7 +160,7 @@ public class BonusTypeDaoImp implements BonusTypeDao {
         LocalDate now = timeUtil.now_localDate();
 
         StringBuilder jpql = new StringBuilder(
-                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive, b.activeFrom, b.activeTo) " +
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive,b.physicalAttendanceRequired, b.activeFrom, b.activeTo) " +
                         "FROM BonusType b JOIN b.bonusHead bh " +
                         "WHERE b.activeFrom <= :now " +
                         "AND (b.activeTo IS NULL OR :now <= b.activeTo) " +
@@ -201,5 +201,49 @@ public class BonusTypeDaoImp implements BonusTypeDao {
     public void updateBonusType(BonusType bonusType) {
         entityManager.merge(bonusType);
     }
+
+    @Override
+    public List<BonusTypeDto> findAllByAttendance(int churchId, int meetingId, String evaluationType, String physicalAttendanceRequired) {
+        LocalDate now = timeUtil.now_localDate();
+
+        StringBuilder jpql = new StringBuilder(
+                "SELECT new com.watad.dto.BonusTypeDto(b.id, b.description, b.point, b.isActive, b.physicalAttendanceRequired, b.activeFrom, b.activeTo) " +
+                        "FROM BonusType b JOIN b.bonusHead bh " +
+                        "WHERE b.activeFrom <= :now " +
+                        "AND (b.activeTo IS NULL OR :now <= b.activeTo) " +
+                        "AND b.church.id = :churchId " +
+                        "AND b.meetings.id = :meetingId " +
+                        "AND b.isActive = true "
+        );
+
+        // 1. Dynamic Evaluation Type Filter
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            jpql.append("AND bh.evaluationType = :evaluationType ");
+        }
+
+        // 2. Dynamic Physical Attendance Filter (Only appends if not null)
+        if (physicalAttendanceRequired != null) {
+            jpql.append("AND b.physicalAttendanceRequired = :physicalAttendanceRequired ");
+        }
+
+        jpql.append("ORDER BY b.description");
+
+        TypedQuery<BonusTypeDto> query = entityManager.createQuery(jpql.toString(), BonusTypeDto.class);
+        query.setParameter("now", now);
+        query.setParameter("churchId", churchId);
+        query.setParameter("meetingId", meetingId);
+
+        // 3. Conditional Parameter Binding
+        if (evaluationType != null && !"All".equalsIgnoreCase(evaluationType.trim())) {
+            query.setParameter("evaluationType", evaluationType);
+        }
+
+        if (physicalAttendanceRequired != null) {
+            query.setParameter("physicalAttendanceRequired", Boolean.parseBoolean(physicalAttendanceRequired));
+        }
+
+        return query.getResultList();
+    }
+
 
 }

@@ -2,6 +2,7 @@
 
 
     import jakarta.persistence.*;
+    import lombok.Data;
 
     import java.time.LocalDate;
     import java.time.LocalDateTime;
@@ -9,6 +10,7 @@
 
     @Entity
     @Table(name = "qr_codes")
+    @Data
     public class QrCode {
 
         @Id
@@ -43,101 +45,10 @@
         @Column(name = "is_active")
         private boolean active;
 
-
         @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
         @JoinColumn(name = "bonus_type_id")
         private BonusType bonusType ;
 
 
-        public QrCode() {
-        }
 
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public LocalDate getValidDate() {
-            return validDate;
-        }
-
-        public void setValidDate(LocalDate validDate) {
-            this.validDate = validDate;
-        }
-
-        public LocalTime getValidStart() {
-            return validStart;
-        }
-
-        public void setValidStart(LocalTime validStart) {
-            this.validStart = validStart;
-        }
-
-        public LocalTime getValidEnd() {
-            return validEnd;
-        }
-
-        public void setValidEnd(LocalTime validEnd) {
-            this.validEnd = validEnd;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public LocalDateTime getCreateAt() {
-            return createAt;
-        }
-
-        public void setCreateAt(LocalDateTime createAt) {
-            this.createAt = createAt;
-        }
-
-        public Meetings getMeetings() {
-            return meetings;
-        }
-
-        public void setMeetings(Meetings meetings) {
-            this.meetings = meetings;
-        }
-
-        public Church getChurch() {
-            return church;
-        }
-
-        public void setChurch(Church church) {
-            this.church = church;
-        }
-
-        public boolean isActive() {
-            return active;
-        }
-
-        public void setActive(boolean active) {
-            this.active = active;
-        }
-
-
-        public BonusType getBonusType() {
-            return bonusType;
-        }
-
-        public void setBonusType(BonusType bonusType) {
-            this.bonusType = bonusType;
-        }
     }

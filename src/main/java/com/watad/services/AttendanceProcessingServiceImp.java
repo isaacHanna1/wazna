@@ -6,6 +6,7 @@ import com.watad.dto.PointsSummaryDTO;
 import com.watad.entity.*;
 import com.watad.exceptions.QrCodeException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.time.LocalTime;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public  class AttendanceProcessingServiceImp implements AttendanceProcessingService{
 
     private static final Logger log = LoggerFactory.getLogger(AttendanceProcessingServiceImp.class);
@@ -27,7 +28,6 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
     private final SprintDataService sprintDataService;
     private final UserBounsService userBounsService;
     private final UserPointTransactionService userPointTransactionService;
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -45,7 +45,6 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
                     throw new QrCodeException("Sorry, this QR Code is not linked to your current meeting.");
                 }
                 Attendance attendance = new Attendance();
-                System.out.println("the scanned time is "+scannedAt);
                 // to handle manual attendance
                 attendance.setScannedAt(scannedAt);
                 handleAttendanceService(attendance,user,qrCode);
@@ -91,27 +90,34 @@ public  class AttendanceProcessingServiceImp implements AttendanceProcessingServ
         }
 
 
-    private void handleUserPointTran(User user , double addPoint,String  usedFor,UserBonus userBonus) {
-        UserPointTransaction pointTransaction = new UserPointTransaction();
-        pointTransaction.setProfile(user.getProfile());
-        pointTransaction.setTransferTo(null);
+    private void handleUserPointTran(User user, double addPoint, String usedFor, UserBonus userBonus) {
         Profile profile = user.getProfile();
-        int churchId    = profile.getChurch().getId();
-        int meetingID   = profile.getMeetings().getId();
-        pointTransaction.setSprintData(sprintDataService.getSprintDataByIsActive(churchId,meetingID));
-        pointTransaction.setPoints(addPoint);
-        pointTransaction.setActive(true);
-        pointTransaction.setTransactionDate(LocalDateTime.now());
-        pointTransaction.setUsedFor(usedFor);
-        pointTransaction.setTransactionType("Earn");
-        pointTransaction.setChurch(profile.getChurch());
-        pointTransaction.setPointSource("SYSTEM");
-        pointTransaction.setAddedByProfileId(null); // even if the admin insert manually but the admin can not control the num of point  it based on the time
-        pointTransaction.setMeetings(profile.getMeetings());
-        pointTransaction.setUserBonus(userBonus);
+
+        // Fetch dependencies
+        var sprintData = sprintDataService.getSprintDataByIsActive(
+                profile.getChurch().getId(),
+                profile.getMeetings().getId()
+        );
+
+        // Build the object
+        UserPointTransaction pointTransaction = UserPointTransaction.builder()
+                .profile(profile)
+                .transferTo(null)
+                .sprintData(sprintData)
+                .points(addPoint)
+                .isActive(true)
+                .transactionDate(LocalDateTime.now())
+                .usedFor(usedFor)
+                .transactionType("Earn")
+                .church(profile.getChurch())
+                .pointSource("SYSTEM")
+                .addedByProfileId(null)
+                .meetings(profile.getMeetings())
+                .userBonus(userBonus)
+                .build();
+
         userPointTransactionService.save(pointTransaction);
     }
-
 
 
 }

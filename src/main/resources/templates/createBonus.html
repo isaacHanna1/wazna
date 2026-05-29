@@ -6,14 +6,6 @@
   <title>Create Evaluation</title>
   <link th:href="@{/css/styles.css}" rel="stylesheet" />
 
-    <style>
-      /* Start Market Item adding item view */
-        .check-photo{
-          margin-left: 70%;
-          font-size: 12px;
-        }    
-      /* End Market Item */
-    </style>
 </head>
 <body>
 
@@ -24,7 +16,7 @@
   <div class="auth-form">
     <h2 class="auth-title">Evaluation</h2>
       <form th:action="@{/bonus/create}" method="POST" th:object="${bonus}">
-
+  <div class="form-grid-2">
     <div class="form-group">
          <label  class = "form-label" for="evaluationType">Evaluation Type - نوع التقييم</label>
             <select class = "form-input" id ="evaluationType" name=""  required>
@@ -39,8 +31,10 @@
           <option value="" disabled selected>Select</option>
         </select>
     </div>
+  </div>
+ <div class="form-grid-2">
     <div class="form-group">
-        <label for="bonusDescription">Evaluation Description - وصف التقيم :</label>
+        <label for="bonusDescription">Description - وصف التقيم :</label>
         <input class="form-input" type="text" id="bonusDescription" th:field="*{description}" required>
     </div>
 
@@ -48,7 +42,8 @@
         <label for="point">Points - عدد النقط :</label>
         <input class="form-input" type="number" id="point" th:field="*{point}" required>
     </div>
-
+ </div>
+  <div class="form-grid-2">
     <div class="form-group">
         <label for="activeFrom">Active From - مفعلة من : </label>
         <input class="form-input" type="date" id="activeFrom" th:field="*{activeFrom}" required>
@@ -58,10 +53,18 @@
         <label for="activeTo">Active To  - مفعلة الي :</label>
         <input class="form-input" type="date" id="activeTo" th:field="*{activeTo}">
     </div>
-    <div class="form-group">
-        <label for="active">Active:</label>
-        <input type="checkbox" id="active" th:field="*{active}">
-    </div>
+  </div>
+      <div class="checkbox-row-container">
+          <div class="form-check">
+              <input type="checkbox" id="active" name="active" value="true">
+              <label for="active" class="form-label"> Status فعال ؟</label>
+          </div>
+
+          <div class="form-check">
+              <input type="checkbox" id="physical" name="physicalAttendanceRequired" value="true">
+              <label for="physical" class="form-label"> Attendance مرتبط بالحضور</label>
+          </div>
+      </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
 </form>

@@ -521,9 +521,11 @@ body {
 
 /* Config pages that sit below navbar */
 .auth-container.has-navbar {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 68px);
+  justify-content: flex-start;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
-
 /* Sign-in/up logo above form */
 .auth-container .logo {
   width: 96px; height: 96px;
@@ -533,20 +535,20 @@ body {
 
 .auth-form {
   width: 100%;
-  max-width: 520px;
+  max-width: 750px;
   background-color: white;
   border-radius: var(--radius-xl);
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(110,89,165,.15);
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(110,89,165,.12);
 }
 
 /* Form header icon + title */
 .auth-form-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.75rem;
-  padding-bottom: 1.25rem;
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--gray-100);
 }
 .auth-form-icon {
@@ -559,7 +561,7 @@ body {
   flex-shrink: 0;
 }
 .auth-title {
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--youth-primary);
   margin: 0 0 2px 0;
@@ -568,6 +570,8 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 .auth-subtitle {
   font-size: .8rem;
@@ -587,26 +591,25 @@ body {
 }
 
 /* Form group */
-.form-group { margin-bottom: 1rem; }
+.form-group { margin-bottom: .75rem; }
 
 .form-label {
   display: flex;
   align-items: center;
-  gap: .35rem;
-  font-size: .875rem;
-  font-weight: 500;
-  color: var(--gray-700);
-  margin-bottom: .35rem;
+  gap: .3rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin-bottom: .25rem;
 }
 .form-label i { color: var(--youth-primary); font-size: .8rem; }
 
 /* All inputs, selects, textareas */
 .form-input {
   width: 100%;
-  padding: .5rem .75rem;
+  padding: .4rem .65rem;
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius-md);
-  font-size: .875rem;
+  font-size: .82rem;
   font-family: inherit;
   background: var(--gray-50);
   color: var(--gray-800);
@@ -625,6 +628,15 @@ body {
   border-color: var(--error-500);
   background: #fff5f5;
 }
+
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .75rem; }
+
+@media (max-width: 480px) {
+  .form-grid-2,
+  .form-grid-3 { grid-template-columns: 1fr; }
+}
+
 select.form-input { cursor: pointer; }
 textarea.form-input {
   resize: none;
@@ -634,6 +646,12 @@ textarea.form-input {
 }
 
 /* Checkbox row */
+
+.checkbox-row-container {
+    display: flex;
+    gap: 1.5rem; 
+    margin-bottom: .75rem;
+}
 .form-check {
   display: flex;
   align-items: center;

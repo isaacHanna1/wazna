@@ -19,7 +19,8 @@
        <form th:action="@{/market/add}"  method="POST" th:object="${item}" enctype="multipart/form-data" id="item-form">
         <input type="hidden" name="id"  th:value="${item.id}"/>
         <input type="hidden" th:field="${item.version}" />
-      <div class="form-group">
+    <div class="form-grid-3">
+       <div class="form-group">
         <label class="form-label" for="itemName">Item Name :</label>
         <input class="form-input" type="text" id="itemName" name="itemName" th:field = "*{itemName}" th:value="${item.itemName}" required>
       </div>
@@ -28,8 +29,14 @@
         <label class="form-label" for="itemDescription">Item Description :</label>
         <input class="form-input" type="text" id="itemDescription" name="itemDescription" th:field="*{itemDesc}" th:value="${item.itemDesc}" required>
       </div>
-
-      <div class="form-group">
+        <div class="form-group">
+            <label class="form-label" for="supplierName">Supplier Name :</label>
+            <input class="form-input" type="text" id="supplierName" name="supplierName"
+                   th:field="*{supplierName}" th:value="${item.supplierName}" required>
+        </div>
+    </div>
+    <div class="form-grid-3">
+           <div class="form-group">
         <label  class = "form-label" for="waznaNum" >Wazna Point :</label>
         <input  class = "form-input" type="number" id="waznaNum" name="waznaNum" required th:value="${points}" th:field="*{points}">
       </div>
@@ -51,12 +58,8 @@
                <input class="form-input" type="number" id="stockQuantity" name="stockQuantity"
                       th:field="*{stockQuantity}" th:value="${item.stockQuantity}" required>
            </div>
+    </div>
 
-           <div class="form-group">
-               <label class="form-label" for="supplierName">Supplier Name :</label>
-               <input class="form-input" type="text" id="supplierName" name="supplierName"
-                      th:field="*{supplierName}" th:value="${item.supplierName}" required>
-           </div>
       <div class="form-group">
           <label  class = "form-label" for="image">Image : </label>
           <input  class = "form-input" type="file" id="image" name="image"  >

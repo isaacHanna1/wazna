@@ -155,24 +155,25 @@ public class CartServices {
 
         return cartRespond;
     }
-    public void saveTransaction(User user , double addPoint,String  usedFor,SprintData sprint , String transactionType){
-        UserPointTransaction pointTransaction = new UserPointTransaction();
-        pointTransaction.setProfile(user.getProfile());
-        pointTransaction.setTransferTo(null);
+    public void saveTransaction(User user, double addPoint, String usedFor, SprintData sprint, String transactionType) {
         Profile profile = user.getProfile();
-        int churchId    = profile.getChurch().getId();
-        int meetingID   = profile.getMeetings().getId();
-        pointTransaction.setSprintData(sprint);
-        pointTransaction.setPoints(addPoint);
-        pointTransaction.setActive(true);
-        pointTransaction.setTransactionDate(timeUtil.now());
-        pointTransaction.setUsedFor(usedFor);
-        pointTransaction.setTransactionType(transactionType);
-        pointTransaction.setChurch(profile.getChurch());
-        pointTransaction.setPointSource("MANUAL");
-        pointTransaction.setAddedByProfileId(null);
-        pointTransaction.setMeetings(profile.getMeetings());
-        pointTransaction.setUserBonus(null);
+
+        UserPointTransaction pointTransaction = UserPointTransaction.builder()
+                .profile(profile)
+                .transferTo(null)
+                .sprintData(sprint)
+                .points(addPoint)
+                .isActive(true)
+                .transactionDate(timeUtil.now())
+                .usedFor(usedFor)
+                .transactionType(transactionType)
+                .church(profile.getChurch())
+                .pointSource("MANUAL")
+                .addedByProfileId(null)
+                .meetings(profile.getMeetings())
+                .userBonus(null)
+                .build();
+
         userPointTransactionService.save(pointTransaction);
     }
     public boolean checkBalance(int profileId , int sprintId , double requiredPoints){

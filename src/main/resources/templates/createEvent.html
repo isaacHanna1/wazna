@@ -6,14 +6,6 @@
   <title>Create Event</title>
   <link th:href="@{/css/styles.css}" rel="stylesheet" />
 
-    <style>
-      /* Start Market Item adding item view */
-        .check-photo{
-          margin-left: 70%;
-          font-size: 12px;
-        }    
-      /* End Market Item */
-    </style>
 </head>
 <body>
 
@@ -25,7 +17,7 @@
     <h2 class="auth-title">Events</h2>
        <form th:action="@{/event/add}"  method="POST" th:object="${event}" enctype="multipart/form-data"  name="event-form" id="event-form">
         <input type="hidden" name="id"  th:value="${event.id}"/>
-      
+<div class="form-grid-2">
       <div class="form-group">
         <label class="form-label" for="eventTitle">Event Title :</label>
         <input class="form-input" type="text" id="eventTitle" name="title"  th:value="${event.title}" required>
@@ -35,6 +27,8 @@
         <label class="form-label" for="eventDescription">Event Description :</label>
         <input class="form-input" type="text" id="eventDescription" name="description"  th:value="${event.description}" required>
       </div>
+</div>
+<div class="form-grid-3">
       <div class="form-group">
       <label  class = "form-label" for="isPaied">Is Paid :</label>
         <select class = "form-input" id ="isPaied" name="isPaid"  required>
@@ -48,10 +42,10 @@
         <input class="form-input" type="number" id="eventPrice" name="price"  th:value="${event.price}" required>
       </div>
         <div class="form-group">
-        <label class="form-label" for="maxSpendPoint">Max Spent Wazana (اقصي حد من الوزنات):</label>
+        <label class="form-label" for="maxSpendPoint">Max Spent Wazana </label>
         <input class="form-input" type="number" id="maxSpendPoint" name="maxSpendPoint"   th:value="${event.maxSpendPoint}" required>
       </div>
-
+</div>
       <div class="form-group">
         <label  class = "form-label" for="eventType">Event Type :</label>
           <select class = "form-input" id ="eventType" name="eventType.id"  required>
@@ -62,7 +56,7 @@
               </option>
           </select>
       </div>
-
+<div class="form-grid-2">
       <div class="form-group">
         <label  class = "form-label" for="from_date">Event From :</label>
         <input  class = "form-input" type="date" id="from_date" name="from_date"   >
@@ -72,6 +66,7 @@
         <label  class = "form-label" for="to_date">Event To :</label>
         <input  class = "form-input" type="date" id="to_date" name="to_date"   >
       </div>
+</div>
       <div class="form-group">
           <label  class = "form-label" for="imgeName">Image : </label>
           <input  class = "form-input" type="file" id="image" name="image"  >

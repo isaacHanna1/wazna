@@ -1,6 +1,7 @@
 package com.watad.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bonus_type")
+@Data
 public class BonusType {
 
     @Id
@@ -20,9 +22,6 @@ public class BonusType {
 
     @Column(name = "points")
     private int point;
-
-    @Column(name = "is_active")
-    private boolean isActive;
 
     @Column(name = "active_from")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -45,76 +44,11 @@ public class BonusType {
     private BonusHead bonusHead;
 
 
+    @Column(name = "is_active")
+    private boolean isActive;
 
-    public Meetings getMeetings() {
-        return meetings;
-    }
 
-    public void setMeetings(Meetings meetings) {
-        this.meetings = meetings;
-    }
+    @Column(name = "is_physical_attendance_required")
+    private boolean physicalAttendanceRequired;
 
-    public Church getChurch() {
-        return church;
-    }
-
-    public void setChurch(Church church) {
-        this.church = church;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public LocalDate getActiveFrom() {
-        return activeFrom;
-    }
-
-    public void setActiveFrom(LocalDate activeFrom) {
-        this.activeFrom = activeFrom;
-    }
-
-    public LocalDate getActiveTo() {
-        return activeTo;
-    }
-
-    public void setActiveTo(LocalDate activeTo) {
-        this.activeTo = activeTo;
-    }
-
-    public BonusHead getBonusHead() {
-        return bonusHead;
-    }
-
-    public void setBonusHead(BonusHead bonusHead) {
-        this.bonusHead = bonusHead;
-    }
 }

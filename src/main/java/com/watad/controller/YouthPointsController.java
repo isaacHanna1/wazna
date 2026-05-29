@@ -7,6 +7,7 @@ import com.watad.services.BonusTypeService;
 import com.watad.services.UserPointTransactionService;
 import com.watad.services.UserServices;
 import com.watad.services.YouthRankService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/youth/point")
+@RequiredArgsConstructor
 public class YouthPointsController {
 
     private final BonusTypeService bonusTypeService;
@@ -26,13 +28,7 @@ public class YouthPointsController {
     private final YouthRankService youthRankService;
     private final UserPointTransactionService  userPointTransactionService;
 
-    public YouthPointsController(BonusTypeService bonusTypeService, UserPointTransactionService upts, UserServices userServices, YouthRankService youthRankService, UserPointTransactionService userPointTransactionService) {
-        this.bonusTypeService = bonusTypeService;
-        this.upts = upts;
-        this.userServices = userServices;
-        this.youthRankService = youthRankService;
-        this.userPointTransactionService = userPointTransactionService;
-    }
+
 
     @GetMapping("/add")
     public String showFormAddBounce(Model model){

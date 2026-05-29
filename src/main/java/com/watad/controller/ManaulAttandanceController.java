@@ -43,9 +43,7 @@ public class ManaulAttandanceController {
     public  String overrideAttendance(Model model) {
 
         List<String> data       = qrCodeService.getActiveByDate(timeUtil.now_localDate());
-
         model.addAttribute("codes",data);
-
         return "attendanceOverride";
     }
 

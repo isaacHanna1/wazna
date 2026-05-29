@@ -20,6 +20,8 @@ const submitBtn     = document.getElementById("submitBtn");
 const recordsTbody  = document.getElementById("recordsTbody");
 const tableEmpty    = document.getElementById("tableEmpty");
 const recordCount   = document.getElementById("recordCount");
+const meetingDateInput = document.getElementById("meetingDate");
+const meetingSelect = document.getElementById("meetingSelect");
 
 // ── Close suggestions on outside click ───────────────────
 document.addEventListener("click", (e) => {
@@ -256,4 +258,59 @@ function resetForm() {
   document.getElementById("overrideReason").value  = "";
   clearUser();
   checkFormReady();
+}
+
+
+meetingDateInput.addEventListener("change", async (e) => {
+  const selectedDate = e.target.value;
+  
+  // If the date is cleared, reset the dropdown and recheck form validity
+  if (!selectedDate) {
+    resetMeetingSelect();
+    checkFormReady();
+    return;
+  }
+
+  try {
+    // Disable select temporarily while loading data
+    meetingSelect.disabled = true;
+    meetingSelect.innerHTML = `<option value="">Loading meetings...</option>`;
+
+    const res = await fetch(`${baseURL}/api/scan/code?date=${encodeURIComponent(selectedDate)}`);
+    
+    if (!res.ok) throw new Error("Failed to fetch meeting codes");
+    
+    const meetingCodes = await res.json();
+    populateMeetingSelect(meetingCodes);
+    
+  } catch (err) {
+    console.error("Error fetching meeting codes:", err);
+    Toast.error("Error", "Could not load meetings for this date.");
+    resetMeetingSelect();
+  } finally {
+    meetingSelect.disabled = false;
+    checkFormReady(); // Re-validate form state
+  }
+});
+
+// Helper to populate the dropdown with backend data
+function populateMeetingSelect(codes) {
+  meetingSelect.innerHTML = '<option value="" selected disabled>-- Select a Meeting --</option>';
+  
+  if (!codes || codes.length === 0) {
+    meetingSelect.innerHTML = '<option value="" disabled>No active meetings found</option>';
+    return;
+  }
+
+  codes.forEach(code => {
+    const option = document.createElement("option");
+    option.value = code;
+    option.textContent = code; // Or adjust if the endpoint returns objects instead of raw strings
+    meetingSelect.appendChild(option);
+  });
+}
+
+// Helper to clear the dropdown back to default
+function resetMeetingSelect() {
+  meetingSelect.innerHTML = '<option value="" selected disabled>-- Choose Date First --</option>';
 }

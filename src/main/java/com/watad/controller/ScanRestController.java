@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -45,6 +46,11 @@ public class ScanRestController {
         PointsSummaryDTO pointsSummaryDTO =  processingService.attendanceProcessing(user,code,theTakenDate,time);
         pointsSummaryDTO.setRedirectURl("/notifyWithPoints");
         return pointsSummaryDTO;
+    }
+
+    @GetMapping("/scan/code")
+    public List<String> getCodeByDate(@RequestParam LocalDate date){
+           return  qrCodeService.getActiveByDate(date);
     }
 
 }

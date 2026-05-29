@@ -9,12 +9,12 @@ public interface BonusTypeDao {
 
     BonusType getBonusTypeByDescription(String description, int churchId ,int meetingId  );
     List<BonusTypeDto> findAll(int churchId , int MeetingId);
-    List<BonusTypeDto> findAll(int churchId , int meetingId , String evaluationType);
+    List<BonusTypeDto> findAll(int churchId , int meetingId , String evaluationType );
     List<BonusType> findAll(int churchId , int MeetingId,String evaluationType,boolean active);
     List<BonusTypeDto> findAllActiveAndNotActive(int churchId , int MeetingId , String evaluationType);
     BonusType findById(int id);
     void createBonus(BonusType bonusType);
     List<BonusTypeDto> findByDesc(int churchId , int meetingId ,String desc , String evaluationType);
     void updateBonusType(BonusType bonusType);
-
+    List<BonusTypeDto> findAllByAttendance(int churchId , int meetingId , String evaluationType, String  physicalAttendanceRequired);
 }

@@ -66,6 +66,7 @@
                     <th class="th-center mob-hid" onclick="sortTable('bonusTable', 3)">Active From</th>
                     <th class="th-center mob-hid" onclick="sortTable('bonusTable', 4)">Active To</th>
                     <th class="th-center">Status</th>
+                    <th class="th-center">Attendance</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,6 +98,11 @@
                     <td class="td-center">
                         <span th:if="${bonus.isActive == true}"  class="status-badge active">Active</span>
                         <span th:unless="${bonus.isActive == true}" class="status-badge inactive">Inactive</span>
+                    </td>
+
+                    <td class="td-center">
+                        <span th:if="${bonus.physicalAttendanceRequired == true}"  class="status-badge active">Yes</span>
+                        <span th:unless="${bonus.physicalAttendanceRequired == true}" class="status-badge inactive">No</span>
                     </td>
 
                     <input type="hidden"

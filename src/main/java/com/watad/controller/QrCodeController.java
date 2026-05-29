@@ -9,6 +9,7 @@ import com.watad.services.BonusAddingService;
 import com.watad.services.BonusTypeService;
 import com.watad.services.QrCodeService;
 import com.watad.wrapper.QrCodeWrapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -23,18 +24,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/qr")
+@RequiredArgsConstructor
 public class QrCodeController {
 
     private final QrCodeService qrCodeService;
     private final BonusTypeService bonusTypeService;
+    private final TimeUtil timeUtil;
 
-    @Autowired
-    private TimeUtil timeUtil;
-
-    public QrCodeController(QrCodeService qrCodeService, BonusTypeService bonusTypeService) {
-        this.qrCodeService = qrCodeService;
-        this.bonusTypeService = bonusTypeService;
-    }
 
     private LocalDate[] resolveDateRange(LocalDate fromDate, LocalDate toDate) {
         if (fromDate == null) {
@@ -71,7 +67,7 @@ public class QrCodeController {
     @GetMapping("/code")
     public String qrCodeView(Model model){
         model.addAttribute("qrCode",new QrCode());
-        model.addAttribute("bonusType",bonusTypeService.findAll("PO"));
+        model.addAttribute("bonusType",bonusTypeService.findAllByAttendance("PO","true"));
         return  "QRCode";
     }
 

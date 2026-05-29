@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface BonusTypeService {
 
-    BonusType getBonusTypeByDescription(String description);
-    public List<BonusTypeDto> findAll(String evaluationType);
-    public List<BonusTypeResponse> findActiveBonus(String evaluationType);
-    public List<BonusTypeDto> findAll();
-    public List<BonusTypeResponse> findAll(String evaluationType,boolean active);
-    public BonusType findById(int id);
+     List<BonusTypeDto> findAll(String evaluationType);
+     List<BonusTypeResponse> findActiveBonus(String evaluationType);
+     List<BonusTypeDto> findAll();
+     List<BonusTypeResponse> findAll(String evaluationType,boolean active);
+     BonusType findById(int id);
     void createBonusType(BonusType bonusType);
     List<BonusTypeDto> findByDesc(String desc ,String evaluationType);
     void updateBonusType(BonusType bonusType);
     List<BonusTypeDto> findAllActiveAndNotActive(String evaluationType);
+    List<BonusTypeDto> findAllByAttendance(String evaluationType, String  physicalAttendanceRequired);
 
 }

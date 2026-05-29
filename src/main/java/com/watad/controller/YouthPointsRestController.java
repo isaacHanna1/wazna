@@ -9,6 +9,7 @@ import com.watad.services.BonusAddingService;
 import com.watad.services.ProfileService;
 import com.watad.services.UserPointTransactionService;
 import com.watad.services.YouthRankService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class YouthPointsRestController {
 
     private  final YouthRankService youthRankService;
@@ -24,12 +26,6 @@ public class YouthPointsRestController {
     private final BonusAddingService bonusAddingService;
     private final ProfileDao profileDao;
 
-    public YouthPointsRestController(YouthRankService youthRankService, UserPointTransactionService userPointTransactionService, BonusAddingService bonusAddingService, ProfileDao profileDao) {
-        this.youthRankService = youthRankService;
-        this.userPointTransactionService = userPointTransactionService;
-        this.bonusAddingService = bonusAddingService;
-        this.profileDao = profileDao;
-    }
 
     @GetMapping("/youth/rank/top")
     public List<YouthRankDto> getYouthWithHighestPoints(@RequestParam int limit,
